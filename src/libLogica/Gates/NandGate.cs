@@ -32,7 +32,7 @@ public class NandGate : LogicElement
         .Concat(_andGate.GetIds().Select(x => IdPrefix() + x))
         .Concat(_notGate.GetIds().Select(x => IdPrefix() + x));
 
-    protected override IEnumerable<String> GetLocalIds() => 
+    protected override IEnumerable<String> GetLocalIds() =>
     [
         $"{IdPrefix()}{nameof(A)}",
         $"{IdPrefix()}{nameof(B)}",
@@ -43,10 +43,10 @@ public class NandGate : LogicElement
         .Concat(_andGate.GetValues())
         .Concat(_notGate.GetValues());
 
-    protected override IEnumerable<Boolean> GetLocalValues() => 
+    protected override IEnumerable<Boolean> GetLocalValues() =>
     [
-        A.Value, 
-        B.Value, 
+        A.Value,
+        B.Value,
         O.Value
     ];
 }

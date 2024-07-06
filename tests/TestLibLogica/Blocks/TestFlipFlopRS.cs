@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using LibLogica.Blocks;
+﻿using LibLogica.Blocks;
 
 namespace TestLibLogica.Blocks;
 
@@ -40,9 +39,9 @@ public class TestFlipFlopRS
     public static Object[] UpdateQTestCases =
     [
         //             r,     s,     q
-        new Object[] { false, true,  true},
-        new Object[] { true,  false, false },
-        new Object[] { true,  true,  false },
+        new Object[] { false, true, true },
+        new Object[] { true, false, false },
+        new Object[] { true, true, false },
     ];
 
     [TestCaseSource((nameof(UpdateQTestCases)))]
@@ -59,9 +58,9 @@ public class TestFlipFlopRS
     public static Object[] UpdateNQTestCases =
     [
         //             r,     s,     nq
-        new Object[] { false, true,  false },
-        new Object[] { true,  false, true },
-        new Object[] { true,  true,  false },
+        new Object[] { false, true, false },
+        new Object[] { true, false, true },
+        new Object[] { true, true, false },
     ];
 
     [TestCaseSource((nameof(UpdateNQTestCases)))]
@@ -78,7 +77,7 @@ public class TestFlipFlopRS
     [Test]
     public void Update_DoesNotUpdateInitialQ_WhenInputsFalse()
     {
-        Boolean qStart  = _block.Q.Value;
+        Boolean qStart = _block.Q.Value;
         _block.R.Value = false;
         _block.S.Value = false;
 

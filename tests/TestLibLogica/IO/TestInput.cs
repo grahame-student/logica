@@ -15,7 +15,7 @@ internal class TestInput
     [Test]
     public void Connect_UpdatesValue_WhenOutputSignalChanges()
     {
-        var     output = new Output();
+        var output = new Output();
         _input.Connect(output);
 
         output.Value = true;

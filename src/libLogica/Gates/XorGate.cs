@@ -4,9 +4,9 @@ namespace LibLogica.Gates;
 
 public class XorGate : LogicElement
 {
-    private readonly OrGate   _orGate   = new();
+    private readonly OrGate _orGate = new();
     private readonly NandGate _nandGate = new();
-    private readonly AndGate  _andGate  = new();
+    private readonly AndGate _andGate = new();
 
     // Inputs
     public Input A { get; } = new();

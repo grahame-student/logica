@@ -19,12 +19,12 @@ public class WideAdder : LogicElement
     public WideAdder(Int32 width)
     {
         _adders = new BlockArray<FullAdder>(width);
-        A       = new LogicArray<Input>(width);
-        B       = new LogicArray<Input>(width);
-        SumOut  = new LogicArray<Output>(width);
+        A = new LogicArray<Input>(width);
+        B = new LogicArray<Input>(width);
+        SumOut = new LogicArray<Output>(width);
 
         _adders[0].CarryIn.Connect(CarryIn);
-        for (var i = 0; i < _adders.Count; i++)
+        for (Int32 i = 0; i < _adders.Count; i++)
         {
             _adders[i].A.Connect(A[i]);
             _adders[i].B.Connect(B[i]);
@@ -42,7 +42,7 @@ public class WideAdder : LogicElement
 
     public override void Update()
     {
-        for(var i = 0; i < _adders.Count; i++)
+        for (Int32 i = 0; i < _adders.Count; i++)
         {
             _adders[i].Update();
         }
@@ -82,7 +82,7 @@ public class WideAdder : LogicElement
     public override IEnumerable<Boolean> GetValues()
     {
         IEnumerable<Boolean> result = GetLocalValues();
-        for (var i = 0; i < _adders.Count; i++)
+        for (Int32 i = 0; i < _adders.Count; i++)
         {
             result = result.Concat(_adders[i].GetValues());
         }
