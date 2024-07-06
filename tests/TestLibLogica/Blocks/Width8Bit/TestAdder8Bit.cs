@@ -15,11 +15,6 @@ public class TestAdder8Bit
     [Test]
     public void Constructor_SetsInputA_To8BitsWide()
     {
-        foreach (String id in _block.GetIds())
-        {
-            Console.WriteLine(id);
-        }
-
         Assert.That(_block.A.Count, Is.EqualTo(8));
     }
 
@@ -82,11 +77,6 @@ public class TestAdder8Bit
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

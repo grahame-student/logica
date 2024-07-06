@@ -10,7 +10,6 @@ public class TestFlipFlopLevelTriggeredDType
     public void Setup()
     {
         _block = new FlipFlopLevelTriggeredDType();
-        // Console.WriteLine(String.Join(",", _block.GetIds()));
     }
 
     [Test]
@@ -29,13 +28,13 @@ public class TestFlipFlopLevelTriggeredDType
     [
         //             d,     clk,  q
         new Object[] { false, true, false },
-        new Object[] { true,  true, true },
+        new Object[] { true, true, true },
     ];
 
     [TestCaseSource((nameof(UpdateQTestCases)))]
     public void Update_SetsQ(Boolean d, Boolean clk, Boolean expectedQ)
     {
-        _block.D.Value     = d;
+        _block.D.Value = d;
         _block.Clock.Value = clk;
 
         _block.Update();
@@ -47,13 +46,13 @@ public class TestFlipFlopLevelTriggeredDType
     [
         //             d,     clk,  nq
         new Object[] { false, true, true },
-        new Object[] { true,  true, false },
+        new Object[] { true, true, false },
     ];
 
     [TestCaseSource((nameof(UpdateNQTestCases)))]
     public void Update_SetsNQ(Boolean d, Boolean clk, Boolean expectedNQ)
     {
-        _block.D.Value     = d;
+        _block.D.Value = d;
         _block.Clock.Value = clk;
 
         _block.Update();
@@ -64,8 +63,8 @@ public class TestFlipFlopLevelTriggeredDType
     [Test]
     public void Update_DoesNotUpdateInitialQ_WhenClockFalse()
     {
-        Boolean qStart  = _block.Q.Value;
-        _block.D.Value     = true;
+        Boolean qStart = _block.Q.Value;
+        _block.D.Value = true;
         _block.Clock.Value = false;
 
         _block.Update();
@@ -76,12 +75,12 @@ public class TestFlipFlopLevelTriggeredDType
     [Test]
     public void Update_DoesNotUpdateQ_WhenInputsFalse()
     {
-        _block.D.Value     = true;
+        _block.D.Value = true;
         _block.Clock.Value = false;
         _block.Update();
         Boolean qStart = _block.Q.Value;
 
-        _block.D.Value     = false;
+        _block.D.Value = false;
         _block.Clock.Value = false;
         _block.Update();
 
@@ -92,7 +91,7 @@ public class TestFlipFlopLevelTriggeredDType
     public void Update_DoesNotUpdateInitialNQ_WhenClockFalse()
     {
         Boolean nqStart = _block.NQ.Value;
-        _block.D.Value     = false;
+        _block.D.Value = false;
         _block.Clock.Value = false;
 
         _block.Update();
@@ -103,12 +102,12 @@ public class TestFlipFlopLevelTriggeredDType
     [Test]
     public void Update_DoesNotUpdateNQ_WhenInputsFalse()
     {
-        _block.D.Value     = true;
+        _block.D.Value = true;
         _block.Clock.Value = false;
         _block.Update();
         Boolean nqStart = _block.NQ.Value;
 
-        _block.D.Value     = false;
+        _block.D.Value = false;
         _block.Clock.Value = false;
         _block.Update();
 
@@ -118,11 +117,6 @@ public class TestFlipFlopLevelTriggeredDType
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }
