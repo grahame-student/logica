@@ -5,19 +5,29 @@ namespace LibLogica.Blocks;
 
 public class Oscillator : LogicElement
 {
+    private readonly NotGate _not = new();
+
     // Outputs
     public Output O { get; } = new();
 
-    public override void Update() => O.Value = !O.Value;
+    public Oscillator()
+    {
+        O.Connect(_not.O);
+        _not.A.Connect(_not.O);
+    }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds();
+    public override void Update() => _not.Update();
+
+    public override IEnumerable<String> GetIds() => GetLocalIds()
+        .Concat(_not.GetIds().Select(x => IdPrefix() + x));
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues();
+    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
+        .Concat(_not.GetValues());
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [
