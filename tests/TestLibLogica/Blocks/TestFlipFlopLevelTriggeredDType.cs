@@ -29,7 +29,7 @@ public class TestFlipFlopLevelTriggeredDType
     [
         //             d,     clk,  q
         new Object[] { false, true, false },
-        new Object[] { true,  true, true },
+        new Object[] { true, true, true },
     ];
 
     [TestCaseSource((nameof(UpdateQTestCases)))]
@@ -47,7 +47,7 @@ public class TestFlipFlopLevelTriggeredDType
     [
         //             d,     clk,  nq
         new Object[] { false, true, true },
-        new Object[] { true,  true, false },
+        new Object[] { true, true, false },
     ];
 
     [TestCaseSource((nameof(UpdateNQTestCases)))]
