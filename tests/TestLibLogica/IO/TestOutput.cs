@@ -15,7 +15,7 @@ internal class TestOutput
     [Test]
     public void Value_RaisesSignalChangedEvent_WhenValueChanges()
     {
-        var wasRaised = false;
+        Boolean wasRaised = false;
         _output.SignalChanged += (sender, args) => wasRaised = true;
 
         _output.Value = !_output.Value;
@@ -26,7 +26,7 @@ internal class TestOutput
     [Test]
     public void Value_PassesNewValueInSignalChangedEvent_WhenValueChanges()
     {
-        var newValue = false;
+        Boolean newValue = false;
         _output.SignalChanged += (sender, args) => newValue = args.Value;
 
         _output.Value = true;

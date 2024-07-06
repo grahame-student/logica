@@ -17,10 +17,10 @@ public class WideLatch : LogicElement
     public WideLatch(Int32 width)
     {
         _latches = new BlockArray<FlipFlopLevelTriggeredDType>(width);
-        D        = new LogicArray<Input>(width);
-        Q        = new LogicArray<Output>(width);
+        D = new LogicArray<Input>(width);
+        Q = new LogicArray<Output>(width);
 
-        for (var i = 0; i < width; i++)
+        for (Int32 i = 0; i < width; i++)
         {
             _latches[i].D.Connect(D[i]);
             _latches[i].Clock.Connect(Clock);
@@ -30,7 +30,7 @@ public class WideLatch : LogicElement
 
     public override void Update()
     {
-        for (var i = 0; i < _latches.Count; i++)
+        for (Int32 i = 0; i < _latches.Count; i++)
         {
             _latches[i].Update();
         }
@@ -39,7 +39,7 @@ public class WideLatch : LogicElement
     public override IEnumerable<String> GetIds()
     {
         IEnumerable<String> result = GetLocalIds();
-        for (var i = 0; i < _latches.Count; i++)
+        for (Int32 i = 0; i < _latches.Count; i++)
         {
             result = result.Concat(_latches[i].GetIds().Select(x => IdPrefix() + x));
         }
@@ -65,7 +65,7 @@ public class WideLatch : LogicElement
     public override IEnumerable<Boolean> GetValues()
     {
         IEnumerable<Boolean> result = GetLocalValues();
-        for (var i = 0; i < _latches.Count; i++)
+        for (Int32 i = 0; i < _latches.Count; i++)
         {
             result = result.Concat(_latches[i].GetValues());
         }

@@ -11,7 +11,7 @@ public class BlockArray<T> where T : LogicElement, new()
     public BlockArray(Int32 width)
     {
         _blocks = new T[width];
-        for (var i = 0; i < width; i++)
+        for (Int32 i = 0; i < width; i++)
         {
             _blocks[i] = new T();
         }

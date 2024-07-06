@@ -10,7 +10,6 @@ public class TestFullAdder
     public void Setup()
     {
         _block = new FullAdder();
-        Console.WriteLine(String.Join(",", _block.GetIds()));
     }
 
     [Test]
@@ -40,8 +39,8 @@ public class TestFullAdder
     [TestCaseSource((nameof(UpdateSumOutTestCases)))]
     public void Update_SetsSumOut_ToSumOfAAndB(Boolean a, Boolean b, Boolean carryIn, Boolean expectedO)
     {
-        _block.A.Value       = a;
-        _block.B.Value       = b;
+        _block.A.Value = a;
+        _block.B.Value = b;
         _block.CarryIn.Value = carryIn;
 
         _block.Update();
@@ -50,15 +49,15 @@ public class TestFullAdder
     }
 
     public static Object[] UpdateCarryOutTestCases =
-     [
-         new Object[] { false, false, false, false },
-         new Object[] { false, false, true, false },
-         new Object[] { false, true, false, false },
-         new Object[] { false, true, true, true },
-         new Object[] { true, false, false, false },
-         new Object[] { true, false, true, true },
-         new Object[] { true, true, false, true },
-         new Object[] { true, true, true, true },
+    [
+        new Object[] { false, false, false, false },
+        new Object[] { false, false, true, false },
+        new Object[] { false, true, false, false },
+        new Object[] { false, true, true, true },
+        new Object[] { true, false, false, false },
+        new Object[] { true, false, true, true },
+        new Object[] { true, true, false, true },
+        new Object[] { true, true, true, true },
     ];
 
     [TestCaseSource((nameof(UpdateCarryOutTestCases)))]
@@ -76,11 +75,6 @@ public class TestFullAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

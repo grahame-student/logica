@@ -1,14 +1,15 @@
 ﻿namespace LibLogica.Blocks;
 
-using IO;
 using Gates;
+
+using IO;
 
 public class FlipFlopLevelTriggeredDType : LogicElement
 {
-    private readonly NotGate    _not  = new();
-    private readonly AndGate    _and1 = new();
-    private readonly AndGate    _and2 = new();
-    private readonly FlipFlopRS _rs   = new();
+    private readonly NotGate _not = new();
+    private readonly AndGate _and1 = new();
+    private readonly AndGate _and2 = new();
+    private readonly FlipFlopRS _rs = new();
 
     // Inputs
     public Input D { get; } = new();
