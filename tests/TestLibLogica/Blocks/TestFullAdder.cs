@@ -51,14 +51,14 @@ public class TestFullAdder
 
     public static Object[] UpdateCarryOutTestCases =
     [
-         new Object[] { false, false, false, false },
-         new Object[] { false, false, true, false },
-         new Object[] { false, true, false, false },
-         new Object[] { false, true, true, true },
-         new Object[] { true, false, false, false },
-         new Object[] { true, false, true, true },
-         new Object[] { true, true, false, true },
-         new Object[] { true, true, true, true },
+        new Object[] { false, false, false, false },
+        new Object[] { false, false, true, false },
+        new Object[] { false, true, false, false },
+        new Object[] { false, true, true, true },
+        new Object[] { true, false, false, false },
+        new Object[] { true, false, true, true },
+        new Object[] { true, true, false, true },
+        new Object[] { true, true, true, true },
     ];
 
     [TestCaseSource((nameof(UpdateCarryOutTestCases)))]
