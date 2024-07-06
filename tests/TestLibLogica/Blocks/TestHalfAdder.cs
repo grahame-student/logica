@@ -10,7 +10,6 @@ public class TestHalfAdder
     public void Setup()
     {
         _block = new HalfAdder();
-        Console.WriteLine(String.Join(",", _block.GetIds()));
     }
 
     [Test]
@@ -66,11 +65,6 @@ public class TestHalfAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

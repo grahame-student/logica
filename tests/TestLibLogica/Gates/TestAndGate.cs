@@ -46,13 +46,6 @@ public class TestAndGate
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        /*
-        for (var i = 0; i < _gate.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_gate.GetIds().ToArray()[i]} - {_gate.GetValues().ToArray()[i]}"  );
-        }
-        */
-
         Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 }
