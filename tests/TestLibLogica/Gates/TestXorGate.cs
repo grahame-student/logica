@@ -10,7 +10,6 @@ public class TestXorGate
     public void Setup()
     {
         _gate = new XorGate();
-        Console.WriteLine(String.Join(",", _gate.GetIds()));
     }
 
     [Test]
@@ -47,11 +46,6 @@ public class TestXorGate
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (Int32 i = 0; i < _gate.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_gate.GetIds().ToArray()[i]} - {_gate.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 }
