@@ -89,7 +89,17 @@ public class TestAccumulatingAdder
     public void UpdateSetsO_ToA_WhenAddTrue()
     {
         // bits 0 -> 7
-        IList<Boolean> val170 = new List<Boolean>() { false, true, false, true, false, true, false, true, };
+        IList<Boolean> val170 = new List<Boolean>()
+        {
+            false,
+            true,
+            false,
+            true,
+            false,
+            true,
+            false,
+            true,
+        };
         for (var i = 0; i < _block.A.Count; i++)
         {
             _block.A[i].Value = val170[i];
@@ -111,7 +121,17 @@ public class TestAccumulatingAdder
     public void Update_DoesNotUpdateO_WhenAddFalse()
     {
         // bits 0 -> 7
-        IList<Boolean> expected = new List<Boolean>() { true, false, false, false, false, false, false, false, };
+        IList<Boolean> expected = new List<Boolean>()
+        {
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        };
         _block.A[0].Value = true;
         _block.Add.Value  = true;
         _block.Update();
