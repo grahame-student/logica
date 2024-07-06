@@ -55,7 +55,7 @@ public class TestAccumulatingAdder
         new Object[] { 7, },
     ];
 
-    [TestCaseSource((nameof(InitialOValues)))]
+    [TestCaseSource((nameof(InitialAValues)))]
     public void AInputsInitiallyFalse(Int32 bit)
     {
         Assert.That(_block.A[bit].Value, Is.EqualTo(false));
