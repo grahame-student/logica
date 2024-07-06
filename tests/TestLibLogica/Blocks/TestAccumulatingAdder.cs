@@ -1,4 +1,6 @@
-﻿namespace TestLibLogica.Blocks;
+﻿using LibLogica.Blocks;
+
+namespace TestLibLogica.Blocks;
 
 public class TestAccumulatingAdder
 {
@@ -32,4 +34,101 @@ public class TestAccumulatingAdder
      *      D -> Q   when   clk == 1
      *
      */
+
+    private AccumulatingAdder _block;
+
+    [SetUp]
+    public void Setup()
+    {
+        _block = new AccumulatingAdder();
+    }
+
+    public static Object[] InitialAValues=
+    [
+        new Object[] { 0, },
+        new Object[] { 1, },
+        new Object[] { 2, },
+        new Object[] { 3, },
+        new Object[] { 4, },
+        new Object[] { 5, },
+        new Object[] { 6, },
+        new Object[] { 7, },
+    ];
+
+    [TestCaseSource((nameof(InitialOValues)))]
+    public void AInputsInitiallyFalse(Int32 bit)
+    {
+        Assert.That(_block.A[bit].Value, Is.EqualTo(false));
+    }
+
+    [Test]
+    public void AddInitiallyFalse()
+    {
+        Assert.That(_block.Add.Value, Is.EqualTo(false));
+    }
+
+    public static Object[] InitialOValues =
+    [
+        new Object[] { 0, },
+        new Object[] { 1, },
+        new Object[] { 2, },
+        new Object[] { 3, },
+        new Object[] { 4, },
+        new Object[] { 5, },
+        new Object[] { 6, },
+        new Object[] { 7, },
+    ];
+
+    [TestCaseSource((nameof(InitialOValues)))]
+    public void OOutputsInitiallyFalse(Int32 bit)
+    {
+        Assert.That(_block.O[bit].Value, Is.EqualTo(false));
+    }
+
+    [Test]
+    public void UpdateSetsO_ToA_WhenAddTrue()
+    {
+        // bits 0 -> 7
+        IList<Boolean> val170 = new List<Boolean>() { false, true, false, true, false, true, false, true, };
+        for (var i = 0; i < _block.A.Count; i++)
+        {
+            _block.A[i].Value = val170[i];
+        }
+
+        _block.Add.Value = true;
+        _block.Update();
+
+        var result = new List<Boolean>();
+        for (var i = 0; i < _block.O.Count; i++)
+        {
+            result.Add(_block.O[i].Value);
+        }
+        Assert.That(result, Is.EqualTo(val170));
+    }
+
+    [Test]
+    public void Update_DoesNotUpdateO_WhenAddFalse()
+    {
+        // bits 0 -> 7
+        IList<Boolean> expected = new List<Boolean>() { true, false, false, false, false, false, false, false, };
+        _block.A[0].Value = true;
+        _block.Add.Value  = true;
+        _block.Update();
+
+        _block.Add.Value  = false;
+        _block.Update();
+
+        var result = new List<Boolean>();
+        for (var i = 0; i < _block.O.Count; i++)
+        {
+            result.Add(_block.O[i].Value);
+        }
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void GetIdsAndGetValues_ContainSameNumberOfElements()
+    {
+        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
+    }
 }
