@@ -100,7 +100,7 @@ public class TestAccumulatingAdder
             false,
             true,
         };
-        for (var i = 0; i < _block.A.Count; i++)
+        for (Int32 i = 0; i < _block.A.Count; i++)
         {
             _block.A[i].Value = val170[i];
         }
@@ -109,7 +109,7 @@ public class TestAccumulatingAdder
         _block.Update();
 
         var result = new List<Boolean>();
-        for (var i = 0; i < _block.O.Count; i++)
+        for (Int32 i = 0; i < _block.O.Count; i++)
         {
             result.Add(_block.O[i].Value);
         }
@@ -133,14 +133,14 @@ public class TestAccumulatingAdder
             false,
         };
         _block.A[0].Value = true;
-        _block.Add.Value  = true;
+        _block.Add.Value = true;
         _block.Update();
 
         _block.Add.Value = false;
         _block.Update();
 
         var result = new List<Boolean>();
-        for (var i = 0; i < _block.O.Count; i++)
+        for (Int32 i = 0; i < _block.O.Count; i++)
         {
             result.Add(_block.O[i].Value);
         }
