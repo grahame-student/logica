@@ -133,7 +133,7 @@ public class TestAccumulatingAdder
             false,
         };
         _block.A[0].Value = true;
-        _block.Add.Value  = true;
+        _block.Add.Value = true;
         _block.Update();
 
         _block.Add.Value = false;
