@@ -50,7 +50,7 @@ public class TestFullAdder
     }
 
     public static Object[] UpdateCarryOutTestCases =
-     [
+    [
          new Object[] { false, false, false, false },
          new Object[] { false, false, true, false },
          new Object[] { false, true, false, false },

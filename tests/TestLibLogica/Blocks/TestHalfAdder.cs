@@ -45,7 +45,7 @@ public class TestHalfAdder
     }
 
     public static Object[] UpdateCarryOutTestCases =
-     [
+    [
         new Object[] { false, false, false },
         new Object[] { false, true, false },
         new Object[] { true, false, false },
