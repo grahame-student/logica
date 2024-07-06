@@ -84,7 +84,7 @@ public class TestLatch8Bit
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
+        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
         {
             Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
         }

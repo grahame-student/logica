@@ -7,9 +7,9 @@ using LibLogica.Gates;
 
 public class FullAdder : LogicElement
 {
-    private readonly HalfAdder _ha1    = new();
-    private readonly HalfAdder _ha2    = new();
-    private readonly OrGate    _orGate = new();
+    private readonly HalfAdder _ha1 = new();
+    private readonly HalfAdder _ha2 = new();
+    private readonly OrGate _orGate = new();
 
     // Inputs
     public Input A { get; } = new();

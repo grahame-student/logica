@@ -7,7 +7,7 @@ public class LogicArray<T> where T : IInputOutput, new()
     public LogicArray(Int32 width)
     {
         _bits = new T[width];
-        for (var i = 0; i < _bits.Length; i++)
+        for (Int32 i = 0; i < _bits.Length; i++)
         {
             _bits[i] = new T();
         }
