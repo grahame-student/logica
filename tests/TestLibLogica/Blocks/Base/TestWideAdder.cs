@@ -84,13 +84,6 @@ public class TestWideAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
-            /*
-            {
-                Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-            }
-            */
-
-            Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
+        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

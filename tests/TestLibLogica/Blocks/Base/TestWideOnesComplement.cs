@@ -10,12 +10,6 @@ public class TestWideOnesComplement
     public void Setup()
     {
         _block = new WideOnesComplement(8);
-        /*
-        foreach (String id in _block.GetIds())
-        {
-            Console.WriteLine(id);
-        }
-        */
     }
 
     [Test]
@@ -65,11 +59,6 @@ public class TestWideOnesComplement
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
-        {
-            Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
-        }
-
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }
