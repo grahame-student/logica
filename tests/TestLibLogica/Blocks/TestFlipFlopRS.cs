@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using LibLogica.Blocks;
+﻿using LibLogica.Blocks;
 
 namespace TestLibLogica.Blocks;
 
@@ -79,7 +78,7 @@ public class TestFlipFlopRS
     [Test]
     public void Update_DoesNotUpdateInitialQ_WhenInputsFalse()
     {
-        Boolean qStart  = _block.Q.Value;
+        Boolean qStart = _block.Q.Value;
         _block.R.Value = false;
         _block.S.Value = false;
 
@@ -133,7 +132,7 @@ public class TestFlipFlopRS
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
+        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
         {
             Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
         }

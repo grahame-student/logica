@@ -5,7 +5,7 @@ namespace LibLogica.Gates;
 public class NotGate : LogicElement
 {
     // Inputs
-    public Input A { get; } = new(); 
+    public Input A { get; } = new();
 
     // Outputs
     public Output O { get; } = new();
