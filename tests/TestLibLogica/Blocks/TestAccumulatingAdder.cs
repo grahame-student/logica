@@ -28,8 +28,8 @@ public class TestAccumulatingAdder
      *             |
      *             V
      *           Result
-     *     
-     *     
+     *
+     *
      *      QN outputs unused
      *      D -> Q   when   clk == 1
      *
@@ -43,7 +43,7 @@ public class TestAccumulatingAdder
         _block = new AccumulatingAdder();
     }
 
-    public static Object[] InitialAValues=
+    public static Object[] InitialAValues =
     [
         new Object[] { 0, },
         new Object[] { 1, },
@@ -103,6 +103,7 @@ public class TestAccumulatingAdder
         {
             result.Add(_block.O[i].Value);
         }
+
         Assert.That(result, Is.EqualTo(val170));
     }
 
@@ -115,7 +116,7 @@ public class TestAccumulatingAdder
         _block.Add.Value  = true;
         _block.Update();
 
-        _block.Add.Value  = false;
+        _block.Add.Value = false;
         _block.Update();
 
         var result = new List<Boolean>();
@@ -123,6 +124,7 @@ public class TestAccumulatingAdder
         {
             result.Add(_block.O[i].Value);
         }
+
         Assert.That(result, Is.EqualTo(expected));
     }
 
