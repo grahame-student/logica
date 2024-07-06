@@ -69,7 +69,7 @@ public class TestWideLatch
     [TestCaseSource((nameof(UpdateQTestCases)))]
     public void Update_SetsQToD_WhenClockTrue(Int32 bit, Boolean clk, Boolean q)
     {
-        _block             = new WideLatch(8);
+        _block = new WideLatch(8);
         _block.D[bit].Value = true;
         _block.Clock.Value = clk;
 
@@ -82,7 +82,7 @@ public class TestWideLatch
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
+        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
         {
             Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
         }

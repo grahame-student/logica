@@ -16,11 +16,11 @@ public class WideOnesComplement : LogicElement
 
     public WideOnesComplement(Int32 width)
     {
-        A     = new LogicArray<Input>(width);
-        O     = new LogicArray<Output>(width);
+        A = new LogicArray<Input>(width);
+        O = new LogicArray<Output>(width);
         _gate = new XorGate[width];
 
-        for (var i = 0; i < width; i++)
+        for (Int32 i = 0; i < width; i++)
         {
             _gate[i] = new XorGate();
             _gate[i].A.Connect(A[i]);

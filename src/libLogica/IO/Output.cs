@@ -19,7 +19,7 @@ public class Output : IInputOutput
     public void Connect(IInputOutput source)
     {
         // Set to current source value
-        Value                =  source.Value;
+        Value = source.Value;
 
         // Monitor for any future changes
         source.SignalChanged += (o, e) => Value = e.Value;

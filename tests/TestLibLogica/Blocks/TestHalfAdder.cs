@@ -45,7 +45,7 @@ public class TestHalfAdder
     }
 
     public static Object[] UpdateCarryOutTestCases =
-     [
+    [
         new Object[] { false, false, false },
         new Object[] { false, true, false },
         new Object[] { true, false, false },
@@ -66,7 +66,7 @@ public class TestHalfAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        for (var i = 0; i < _block.GetIds().Count(); i++)
+        for (Int32 i = 0; i < _block.GetIds().Count(); i++)
         {
             Console.WriteLine($"{_block.GetIds().ToArray()[i]} - {_block.GetValues().ToArray()[i]}");
         }
