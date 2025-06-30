@@ -69,8 +69,6 @@ check_licenses() {
     echo "⚠️  nuget-license tool not available, skipping .NET license check"
     echo '{"licenses": [], "note": "License tool not available"}' > licenses.json
   fi
-    cd ../..
-  fi
 }
 
 # Main execution
