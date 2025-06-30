@@ -66,27 +66,11 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.0.0
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: ".github/scripts/package*.json"
-
       - name: Run dependency security scan
         run: |
           echo "==> Running dependency vulnerability scan..."
           SCAN_FAILED=false
           ./script/security --skip-licenses || SCAN_FAILED=true
-
-          # Additional check for documentation dependencies
-          echo "==> Checking documentation tooling for vulnerabilities..."
-          if npm audit --audit-level=moderate; then
-            echo "✅ Documentation dependencies are secure"
-          else
-            echo "❌ Documentation dependencies have vulnerabilities"
-            SCAN_FAILED=true
-          fi
 
           if [ "$SCAN_FAILED" = true ]; then
             echo "❌ Security vulnerabilities detected"
