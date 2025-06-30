@@ -8,7 +8,7 @@ internal class TestBufferGate
     // A --|>-- O
     //     ^
     //     Enable
-    // 
+    //
     // | A | Enable | O    |
     // +---+--------+------+
     // | 0 | 1      | 0    |
@@ -55,7 +55,7 @@ internal class TestBufferGate
         Assert.That(_gate.O.IsEnabled.Value, Is.EqualTo(true));
     }
 
-    public static Object[] UpdateTestCases =
+    public static readonly Object[] UpdateTestCases =
     [
         new Object[] { false, false },
         new Object[] { true, true },
@@ -64,7 +64,7 @@ internal class TestBufferGate
     [TestCaseSource((nameof(UpdateTestCases)))]
     public void Update_SetsO_ToAWhenEnabled(Boolean a, Boolean expectedO)
     {
-        _gate.A.Value = a;
+        _gate.A.Value      = a;
         _gate.Enable.Value = true;
 
         _gate.Update();

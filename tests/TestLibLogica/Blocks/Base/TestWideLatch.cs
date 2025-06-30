@@ -65,9 +65,9 @@ public class TestWideLatch
     [TestCaseSource((nameof(UpdateQTestCases)))]
     public void Update_SetsQToD_WhenClockTrue(Int32 bit, Boolean clk, Boolean q)
     {
-        _block = new WideLatch(8);
+        _block              = new WideLatch(8);
         _block.D[bit].Value = true;
-        _block.Clock.Value = clk;
+        _block.Clock.Value  = clk;
 
         _block.Update();
 
