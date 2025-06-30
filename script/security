@@ -77,17 +77,12 @@ SECURITY_CHECKS_FAILED=0
 
 # Parse command line arguments
 SKIP_DOTNET=false
-SKIP_NODEJS=false
 SKIP_LICENSES=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
     --skip-dotnet)
         SKIP_DOTNET=true
-        shift
-        ;;
-    --skip-nodejs)
-        SKIP_NODEJS=true
         shift
         ;;
     --skip-licenses)
