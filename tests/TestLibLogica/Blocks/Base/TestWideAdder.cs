@@ -4,7 +4,8 @@ namespace TestLibLogica.Blocks.Base;
 
 public class TestWideAdder
 {
-    private WideAdder _block;
+    // Only nullable because of the way NUnit works with fields.
+    private WideAdder? _block;
 
     [Test]
     public void Constructor_SetsInputA_ToPassedWidth()
@@ -48,7 +49,7 @@ public class TestWideAdder
     [TestCaseSource((nameof(UpdateSumOutTestCases)))]
     public void Update_SetsSumOut_ToSumOfAAndB(Int32 ax, Int32 bx, Int32 sx)
     {
-        _block = new WideAdder(8);
+        _block             = new WideAdder(8);
         _block.A[ax].Value = true;
         _block.B[bx].Value = true;
 
@@ -60,7 +61,7 @@ public class TestWideAdder
     [Test]
     public void Update_SetsCarryOut_ToCarryOfSumOfAAndB()
     {
-        _block = new WideAdder(8);
+        _block            = new WideAdder(8);
         _block.A[7].Value = true;
         _block.B[7].Value = true;
 
@@ -72,7 +73,7 @@ public class TestWideAdder
     [Test]
     public void Update_AddsCarryIn_ToBit0()
     {
-        _block = new WideAdder(8);
+        _block               = new WideAdder(8);
         _block.CarryIn.Value = true;
 
         _block.Update();
@@ -84,6 +85,7 @@ public class TestWideAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
+        _block = new WideAdder(8);
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }
