@@ -55,7 +55,7 @@ internal class TestBufferGate
         Assert.That(_gate.O.IsEnabled.Value, Is.EqualTo(true));
     }
 
-    public static Object[] UpdateTestCases =
+    public static readonly Object[] UpdateTestCases =
     [
         new Object[] { false, false },
         new Object[] { true, true },
