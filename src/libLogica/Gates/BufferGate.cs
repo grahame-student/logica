@@ -1,4 +1,4 @@
-﻿using LibLogica.IO;
+using LibLogica.IO;
 
 namespace LibLogica.Gates;
 
@@ -16,26 +16,24 @@ public class BufferGate : LogicElement
 
     public override void Update()
     {
-        throw new NotImplementedException();
+        O.Value = A.Value;
     }
 
-    public override IEnumerable<String> GetIds()
-    {
-        throw new NotImplementedException();
-    }
+    public override IEnumerable<String> GetIds() => GetLocalIds();
 
-    protected override IEnumerable<String> GetLocalIds()
-    {
-        throw new NotImplementedException();
-    }
+    protected override IEnumerable<String> GetLocalIds() =>
+    [
+        $"{IdPrefix()}{nameof(A)}",
+        $"{IdPrefix()}{nameof(Enable)}",
+        $"{IdPrefix()}{nameof(O)}",
+    ];
 
-    public override IEnumerable<Boolean> GetValues()
-    {
-        throw new NotImplementedException();
-    }
+    public override IEnumerable<Boolean> GetValues() => GetLocalValues();
 
-    protected override IEnumerable<Boolean> GetLocalValues()
-    {
-        throw new NotImplementedException();
-    }
+    protected override IEnumerable<Boolean> GetLocalValues() =>
+    [
+        A.Value,
+        Enable.Value,
+        O.Value
+    ];
 }

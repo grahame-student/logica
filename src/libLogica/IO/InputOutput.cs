@@ -1,4 +1,4 @@
-﻿namespace LibLogica.IO;
+namespace LibLogica.IO;
 public class InputOutput : IInputOutput
 {
     private Boolean _value;
@@ -24,5 +24,4 @@ public class InputOutput : IInputOutput
         // Monitor for any future changes
         source.SignalChanged += (o, e) => Value = e.Value;
     }
-
 }

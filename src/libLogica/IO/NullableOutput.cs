@@ -1,9 +1,25 @@
-﻿namespace LibLogica.IO;
+namespace LibLogica.IO;
 
 public class NullableOutput : IInputOutput
 {
-    public event EventHandler<SignalChangedArgs>? SignalChanged;
-    public Boolean Value { get; set; }
+    private Boolean _value;
+    public event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
+
+    public Boolean Value
+    {
+        get => _value;
+        set
+        {
+            if (Value == value) return;
+            _value = value;
+
+            // If the output is enabled, signal the change
+            if (IsEnabled.Value)
+            {
+                SignalChanged(this, new SignalChangedArgs(value));
+            }
+        }
+    }
 
     public Input IsEnabled { get; } = new();
 

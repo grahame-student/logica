@@ -54,4 +54,27 @@ internal class TestBufferGate
 
         Assert.That(_gate.O.IsEnabled.Value, Is.EqualTo(true));
     }
+
+    public static Object[] UpdateTestCases =
+    [
+        new Object[] { false, false },
+        new Object[] { true, true },
+    ];
+
+    [TestCaseSource((nameof(UpdateTestCases)))]
+    public void Update_SetsO_ToAWhenEnabled(Boolean a, Boolean expectedO)
+    {
+        _gate.A.Value = a;
+        _gate.Enable.Value = true;
+
+        _gate.Update();
+
+        Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
+    }
+
+    [Test]
+    public void GetIdsAndGetValues_ContainSameNumberOfElements()
+    {
+        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
+    }
 }
