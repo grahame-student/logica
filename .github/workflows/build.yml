@@ -8,7 +8,7 @@ on:
   pull_request:
     types: [opened, synchronize, edited]
 
-  merge_group:  
+  merge_group:
   workflow_dispatch:
 
 
@@ -26,7 +26,7 @@ jobs:
         targetplatform: [x64]
 
     runs-on: ubuntu-latest
-    env: 
+    env:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
@@ -42,17 +42,17 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Cache Nuget Packages
-        uses: actions/cache@v4.0.0
+        uses: actions/cache@v4.2.0
         with:
           path: ${{ github.workspace }}\.nuget\packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files
           restore-keys: |
             ${{ runner.os }}-nuget-
-          
+
       - name: Restore Nuget Packages
         run: |
           dotnet restore "${{ env.SOLUTION_PATH }}"
-         
+
       - name: Build in Debug Mode
         run: dotnet build "${{ env.SOLUTION_PATH }}" --configuration Debug --no-restore
 
