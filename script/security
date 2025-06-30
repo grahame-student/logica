@@ -21,7 +21,7 @@ check_dotnet_vulnerabilities() {
     ./script/bootstrap
 
     # Run vulnerability scan
-    dotnet list package --vulnerable --include-transitive > vulnerability-report.txt 2>&1 || true
+    dotnet list package --vulnerable --include-transitive >vulnerability-report.txt 2>&1 || true
 
     echo "Vulnerability scan results:"
     cat vulnerability-report.txt
@@ -62,12 +62,12 @@ check_licenses() {
             nuget-license -i Logica.sln || echo "License display completed"
         else
             echo "⚠️  License scanning tool failed, creating basic report..."
-            echo '{"licenses": [], "note": "License tool failed"}' > licenses.json
+            echo '{"licenses": [], "note": "License tool failed"}' >licenses.json
             find . -name "*.csproj" -exec grep -H "PackageReference" {} \; | head -10 || echo "No package references found"
         fi
     else
         echo "⚠️  nuget-license tool not available, skipping .NET license check"
-        echo '{"licenses": [], "note": "License tool not available"}' > licenses.json
+        echo '{"licenses": [], "note": "License tool not available"}' >licenses.json
     fi
 }
 
