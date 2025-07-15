@@ -1,4 +1,4 @@
-﻿using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Base;
 
 using System;
 using NUnit.Framework;

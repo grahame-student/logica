@@ -1,4 +1,4 @@
-﻿using LibLogica.Blocks.Width8Bit;
+using LibLogica.Blocks.Width8Bit;
 
 using System;
 using NUnit.Framework;

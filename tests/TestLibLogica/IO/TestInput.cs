@@ -1,4 +1,4 @@
-﻿using LibLogica.IO;
+using LibLogica.IO;
 
 using System;
 using NUnit.Framework;
