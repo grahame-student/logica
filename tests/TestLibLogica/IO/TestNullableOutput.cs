@@ -19,7 +19,7 @@ internal class TestNullableOutput
         _output.SignalChanged += (sender, args) => wasRaised = true;
 
         _output.IsEnabled.Value = true;
-        _output.Value           = !_output.Value;
+        _output.Value = !_output.Value;
 
         Assert.That(wasRaised, Is.EqualTo(true));
     }
@@ -31,7 +31,7 @@ internal class TestNullableOutput
         _output.SignalChanged += (sender, args) => newValue = args.Value;
 
         _output.IsEnabled.Value = true;
-        _output.Value           = true;
+        _output.Value = true;
 
         Assert.That(newValue, Is.EqualTo(true));
     }
@@ -43,7 +43,7 @@ internal class TestNullableOutput
         _output.SignalChanged += (sender, args) => wasRaised = true;
 
         _output.IsEnabled.Value = false;
-        _output.Value           = !_output.Value;
+        _output.Value = !_output.Value;
 
         Assert.That(wasRaised, Is.EqualTo(false));
     }
