@@ -1,10 +1,11 @@
-﻿using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Base;
 
 namespace TestLibLogica.Blocks.Base;
 
 public class TestWideAdder
 {
-    private WideAdder _block;
+    // Only nullable because of the way NUnit works with fields.
+    private WideAdder? _block;
 
     [Test]
     public void Constructor_SetsInputA_ToPassedWidth()
@@ -84,6 +85,7 @@ public class TestWideAdder
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
+        _block = new WideAdder(8);
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

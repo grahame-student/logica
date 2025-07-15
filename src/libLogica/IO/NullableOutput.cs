@@ -1,8 +1,8 @@
 namespace LibLogica.IO;
-public class InputOutput : IInputOutput
+
+public class NullableOutput : IInputOutput
 {
     private Boolean _value;
-
     public event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
 
     public Boolean Value
@@ -12,9 +12,16 @@ public class InputOutput : IInputOutput
         {
             if (Value == value) return;
             _value = value;
-            SignalChanged(this, new SignalChangedArgs(value));
+
+            // If the output is enabled, signal the change
+            if (IsEnabled.Value)
+            {
+                SignalChanged(this, new SignalChangedArgs(value));
+            }
         }
     }
+
+    public Input IsEnabled { get; } = new();
 
     public void Connect(IInputOutput source)
     {

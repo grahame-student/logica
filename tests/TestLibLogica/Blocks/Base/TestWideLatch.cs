@@ -1,4 +1,4 @@
-﻿using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Base;
 
 namespace TestLibLogica.Blocks.Base;
 
@@ -24,7 +24,7 @@ public class TestWideLatch
      *
      */
 
-    private WideLatch _block;
+    private WideLatch? _block;
 
     [Test]
     public void Constructor_SetsInputD_ToPassedWidth()
@@ -78,6 +78,7 @@ public class TestWideLatch
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
+        _block = new WideLatch(8);
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }
