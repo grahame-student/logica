@@ -1,4 +1,8 @@
-﻿using LibLogica.IO;
+using LibLogica.IO;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LibLogica.Gates;
 

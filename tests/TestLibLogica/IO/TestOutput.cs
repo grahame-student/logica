@@ -1,4 +1,7 @@
-﻿namespace TestLibLogica.IO;
+using System;
+using NUnit.Framework;
+
+namespace TestLibLogica.IO;
 
 using LibLogica.IO;
 

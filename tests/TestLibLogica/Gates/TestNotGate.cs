@@ -1,4 +1,8 @@
-﻿namespace TestLibLogica.Gates;
+using System;
+using NUnit.Framework;
+using System.Linq;
+
+namespace TestLibLogica.Gates;
 
 using LibLogica.Gates;
 

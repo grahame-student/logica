@@ -1,4 +1,6 @@
-﻿namespace LibLogica.IO;
+using System;
+
+namespace LibLogica.IO;
 
 public interface IInputOutput
 {
