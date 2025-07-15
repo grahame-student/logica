@@ -64,7 +64,7 @@ internal class TestBufferGate
     [TestCaseSource((nameof(UpdateTestCases)))]
     public void Update_SetsO_ToAWhenEnabled(Boolean a, Boolean expectedO)
     {
-        _gate.A.Value      = a;
+        _gate.A.Value = a;
         _gate.Enable.Value = true;
 
         _gate.Update();
