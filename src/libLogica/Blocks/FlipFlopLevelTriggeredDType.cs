@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LibLogica.Gates;
+using LibLogica.IO;
 
 namespace LibLogica.Blocks;
-
-using Gates;
-
-using IO;
 
 public class FlipFlopLevelTriggeredDType : LogicElement
 {
