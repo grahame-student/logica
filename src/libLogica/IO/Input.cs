@@ -12,7 +12,7 @@ public class Input : IInputOutput
         get => _value;
         set
         {
-            if (Value == value) return;
+            if (_value == value) return;
             _value = value;
             SignalChanged(this, new SignalChangedArgs(value));
         }
