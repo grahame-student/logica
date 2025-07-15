@@ -14,7 +14,7 @@ public class Output : IInputOutput
         {
             if (Value == value) return;
             _value = value;
-            
+
             // Only signal if not in high impedance
             if (!_isHighImpedance)
             {
@@ -30,8 +30,8 @@ public class Output : IInputOutput
         {
             if (_isHighImpedance == value) return;
             _isHighImpedance = value;
-            
-            // Signal the change in impedance state  
+
+            // Signal the change in impedance state
             // We need to signal any change so inputs can re-evaluate
             SignalChanged(this, new SignalChangedArgs(_value));
         }

@@ -57,7 +57,7 @@ public class Input : IInputOutput
         {
             return output.IsHighImpedance;
         }
-        
+
         // For other types (like InputOutput), assume they're always active
         return false;
     }
