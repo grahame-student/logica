@@ -1,4 +1,8 @@
-﻿namespace TestLibLogica.Blocks;
+﻿using System;
+using NUnit.Framework;
+using System.Linq;
+
+namespace TestLibLogica.Blocks;
 
 using LibLogica.Blocks;
 

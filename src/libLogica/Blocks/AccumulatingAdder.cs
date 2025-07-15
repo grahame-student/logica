@@ -1,4 +1,7 @@
-﻿using LibLogica.Blocks.Width8Bit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using LibLogica.Blocks.Width8Bit;
 using LibLogica.Gates;
 using LibLogica.IO;
 

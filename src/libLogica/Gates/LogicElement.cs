@@ -1,4 +1,7 @@
-﻿namespace LibLogica.Gates;
+﻿using System;
+using System.Collections.Generic;
+
+namespace LibLogica.Gates;
 
 public abstract class LogicElement
 {

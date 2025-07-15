@@ -1,5 +1,9 @@
 ﻿using LibLogica.Blocks.Width8Bit;
 
+using System;
+using NUnit.Framework;
+using System.Linq;
+
 namespace TestLibLogica.Blocks.Width8Bit;
 
 public class TestOnesComplement8Bit

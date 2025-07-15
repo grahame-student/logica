@@ -1,4 +1,8 @@
-﻿namespace LibLogica.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LibLogica.IO;
 
 public class LogicArray<T> where T : IInputOutput, new()
 {

@@ -1,4 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 using FFMediaToolkit;

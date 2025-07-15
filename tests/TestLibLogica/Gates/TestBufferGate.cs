@@ -1,5 +1,9 @@
 using LibLogica.Gates;
 
+using System;
+using NUnit.Framework;
+using System.Linq;
+
 namespace TestLibLogica.Gates;
 
 internal class TestBufferGate

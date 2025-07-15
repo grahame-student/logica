@@ -1,5 +1,9 @@
 ﻿using LibLogica.Blocks;
 
+using System;
+using NUnit.Framework;
+using System.Linq;
+
 namespace TestLibLogica.Blocks;
 
 public class TestHalfAdder

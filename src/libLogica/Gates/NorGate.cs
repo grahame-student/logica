@@ -1,5 +1,9 @@
 ﻿using LibLogica.IO;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace LibLogica.Gates;
 
 public class NorGate : LogicElement

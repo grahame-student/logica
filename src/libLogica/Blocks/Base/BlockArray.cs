@@ -1,5 +1,7 @@
 ﻿using LibLogica.Gates;
 
+using System;
+
 namespace LibLogica.Blocks.Base;
 
 public class BlockArray<T> where T : LogicElement, new()

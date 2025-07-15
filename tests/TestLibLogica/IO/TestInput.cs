@@ -1,5 +1,8 @@
 ﻿using LibLogica.IO;
 
+using System;
+using NUnit.Framework;
+
 namespace TestLibLogica.IO;
 
 internal class TestInput
