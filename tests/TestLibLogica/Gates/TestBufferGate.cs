@@ -1,4 +1,4 @@
-﻿using LibLogica.Gates;
+using LibLogica.Gates;
 
 namespace TestLibLogica.Gates;
 
