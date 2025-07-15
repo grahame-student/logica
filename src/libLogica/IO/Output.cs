@@ -1,3 +1,5 @@
+using System;
+
 namespace LibLogica.IO;
 
 public class Output : IInputOutput

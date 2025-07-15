@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace LibLogica.IO;
 
 public class Input : IInputOutput
