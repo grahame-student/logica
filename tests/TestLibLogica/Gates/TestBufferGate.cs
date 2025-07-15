@@ -42,17 +42,18 @@ internal class TestBufferGate
     }
 
     [Test]
-    public void O_Initially_Disabled()
+    public void O_Initially_HighImpedance()
     {
-        Assert.That(_gate.O.IsEnabled.Value, Is.EqualTo(false));
+        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(true));
     }
 
     [Test]
-    public void O_IsEnabled_WhenEnableTrue()
+    public void O_IsNotHighImpedance_WhenEnableTrue()
     {
         _gate.Enable.Value = true;
+        _gate.Update();
 
-        Assert.That(_gate.O.IsEnabled.Value, Is.EqualTo(true));
+        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(false));
     }
 
     public static readonly Object[] UpdateTestCases =
@@ -70,6 +71,7 @@ internal class TestBufferGate
         _gate.Update();
 
         Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
+        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(false));
     }
 
     [Test]

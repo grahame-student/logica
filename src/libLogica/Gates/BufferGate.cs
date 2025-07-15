@@ -7,16 +7,25 @@ public class BufferGate : LogicElement
     public Input A { get; } = new();
     public Input Enable { get; } = new();
 
-    public NullableOutput O { get; } = new();
+    public Output O { get; } = new();
 
     public BufferGate()
     {
-        O.IsEnabled.Connect(Enable);
+        // Buffer gate starts in high impedance state
+        O.IsHighImpedance = true;
     }
 
     public override void Update()
     {
-        O.Value = A.Value;
+        if (Enable.Value)
+        {
+            O.IsHighImpedance = false;
+            O.Value = A.Value;
+        }
+        else
+        {
+            O.IsHighImpedance = true;
+        }
     }
 
     public override IEnumerable<String> GetIds() => GetLocalIds();
