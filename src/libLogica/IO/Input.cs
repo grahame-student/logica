@@ -1,4 +1,4 @@
-﻿namespace LibLogica.IO;
+namespace LibLogica.IO;
 
 public class Input : IInputOutput
 {
