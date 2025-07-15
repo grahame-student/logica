@@ -1,5 +1,9 @@
 using LibLogica.Blocks.Base;
 
+using System;
+using NUnit.Framework;
+using System.Linq;
+
 namespace TestLibLogica.Blocks.Base;
 
 public class TestWideAdder

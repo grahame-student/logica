@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using LibLogica.IO;
 
 namespace LibLogica.Gates;

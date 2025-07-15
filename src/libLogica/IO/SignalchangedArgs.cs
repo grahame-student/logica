@@ -1,3 +1,5 @@
+using System;
+
 namespace LibLogica.IO;
 
 public class SignalChangedArgs(Boolean value) : EventArgs
