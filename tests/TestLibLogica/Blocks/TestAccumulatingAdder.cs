@@ -48,6 +48,8 @@ public class TestAccumulatingAdder
         _block = new AccumulatingAdder();
     }
 
+    // Consolidated test case array that replaces separate InitialAValues and InitialOValues arrays
+    // to eliminate code duplication while maintaining parameterized test coverage for all bit positions
     public static Object[] BitIndices =
     [
         new Object[] { 0, },

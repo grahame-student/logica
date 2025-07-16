@@ -38,6 +38,6 @@
 ## Code Duplication Detection (JSCPD)
 
 - **Architectural patterns**: Similar structure across gates/blocks is expected and acceptable
-- **Configuration**: JSCPD is configured with higher thresholds (10+ lines, 100+ tokens) to focus on true duplication issues
+- **Configuration**: JSCPD is configured with higher thresholds (5% similarity, 10+ lines, 100+ tokens) to focus on true duplication issues
 - **Focus areas**: Look for duplicated business logic, test patterns, or utility functions rather than architectural similarities
 - **Regular review**: When JSCPD flags issues, evaluate if they represent true problems or acceptable patterns
