@@ -111,7 +111,14 @@ public class TestLogicElement
                         element.GetIds();
                     }
                 }
-                catch (Exception ex)
+                catch (InvalidOperationException ex)
+                {
+                    lock (lockObject)
+                    {
+                        exceptions.Add(ex);
+                    }
+                }
+                catch (ArgumentException ex)
                 {
                     lock (lockObject)
                     {
