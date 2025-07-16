@@ -50,7 +50,7 @@ namespace TestLibLogica.Blocks
             new Object[] { true, true, true },
         ];
 
-        [TestCaseSource((nameof(UpdateQTestCases)))]
+        [TestCaseSource(nameof(UpdateQTestCases))]
         public void Update_SetsQ(Boolean d, Boolean isRisingEdge, Boolean expectedQ)
         {
             _block.D.Value = d;
@@ -72,7 +72,7 @@ namespace TestLibLogica.Blocks
             new Object[] { true, true, false },
         ];
 
-        [TestCaseSource((nameof(UpdateNqTestCases)))]
+        [TestCaseSource(nameof(UpdateNqTestCases))]
         public void Update_SetsNQ(Boolean d, Boolean isRisingEdge, Boolean expectedNq)
         {
             _block.D.Value = d;
