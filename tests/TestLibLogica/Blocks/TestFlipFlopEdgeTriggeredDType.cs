@@ -83,7 +83,6 @@ namespace TestLibLogica.Blocks
             Assert.That(_block.NQ.Value, Is.EqualTo(expectedNQ));
         }
 
-
         [Test]
         public void GetIdsAndGetValues_ContainSameNumberOfElements()
         {
