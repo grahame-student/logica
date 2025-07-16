@@ -48,7 +48,9 @@ public class TestAccumulatingAdder
         _block = new AccumulatingAdder();
     }
 
-    public static Object[] InitialAValues =
+    // Consolidated test case array that replaces separate InitialAValues and InitialOValues arrays
+    // to eliminate code duplication while maintaining parameterized test coverage for all bit positions
+    public static Object[] BitIndices =
     [
         new Object[] { 0, },
         new Object[] { 1, },
@@ -60,7 +62,7 @@ public class TestAccumulatingAdder
         new Object[] { 7, },
     ];
 
-    [TestCaseSource((nameof(InitialAValues)))]
+    [TestCaseSource((nameof(BitIndices)))]
     public void AInputsInitiallyFalse(Int32 bit)
     {
         Assert.That(_block.A[bit].Value, Is.EqualTo(false));
@@ -72,19 +74,7 @@ public class TestAccumulatingAdder
         Assert.That(_block.Add.Value, Is.EqualTo(false));
     }
 
-    public static Object[] InitialOValues =
-    [
-        new Object[] { 0, },
-        new Object[] { 1, },
-        new Object[] { 2, },
-        new Object[] { 3, },
-        new Object[] { 4, },
-        new Object[] { 5, },
-        new Object[] { 6, },
-        new Object[] { 7, },
-    ];
-
-    [TestCaseSource((nameof(InitialOValues)))]
+    [TestCaseSource((nameof(BitIndices)))]
     public void OOutputsInitiallyFalse(Int32 bit)
     {
         Assert.That(_block.O[bit].Value, Is.EqualTo(false));

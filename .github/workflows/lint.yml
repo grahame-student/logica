@@ -3,12 +3,12 @@ name: Lint Project
 
 on:
   pull_request_target:
-    branches: ['dependabot/**']
+    branches: ["dependabot/**"]
 
   pull_request:
     types: [opened, synchronize, edited]
 
-  merge_group:  
+  merge_group:
   workflow_dispatch:
 
 permissions: read-all
@@ -25,7 +25,6 @@ jobs:
         with:
           # Get all history to be able to identify changed files
           fetch-depth: 0
-              
       # Runs the Super-Linter action
       - name: Run Super-Linter
         # run the step only when base_ref(target branch name) is not null or branch name is not main
