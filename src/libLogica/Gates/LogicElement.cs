@@ -6,7 +6,7 @@ namespace LibLogica.Gates;
 
 public abstract class LogicElement
 {
-    private static long _gateCount;
+    private static Int64 _gateCount;
     private readonly UInt64 _instanceCount;
 
     protected LogicElement()
