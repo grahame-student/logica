@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace LibLogica.Gates;
 
 public abstract class LogicElement
 {
-    private static UInt64 _gateCount;
+    private static Int64 _gateCount;
     private readonly UInt64 _instanceCount;
 
     protected LogicElement()
@@ -15,7 +16,7 @@ public abstract class LogicElement
 
     private static UInt64 GetNextGateCount()
     {
-        return _gateCount++;
+        return (UInt64)Interlocked.Increment(ref _gateCount);
     }
 
     public abstract void Update();

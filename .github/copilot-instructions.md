@@ -1,18 +1,39 @@
 # GitHub Copilot Instructions
 
-## General Guidelines
+This repository uses Super-Linter for automated code quality checks. Make sure your changes pass all linter rules before submitting.
 
-- Follow the existing code style and conventions in the repository
-- Ensure all files end with a newline character
+## Code Formatting Guidelines
+
+This repository uses an `.editorconfig` file to define coding standards. When making code changes, ensure compliance with the following formatting rules:
+
+### General Formatting Rules
+
+- **Trailing whitespace**: Remove all trailing whitespace from lines
+- **Final newline**: Always insert a final newline at the end of files
+- **Charset**: Use UTF-8 encoding
+- **Line endings**: Use auto line endings
+- **Indentation**: Use consistent indentation as defined in `.editorconfig`
+
+### C# Specific Rules
+
+- **Indentation**: Use 4 spaces (no tabs) for indentation
+- **Braces**: Place opening braces on new lines
+- **Spacing**: Follow standard C# spacing conventions
+- **Naming conventions**:
+  - Use PascalCase for public members and types
+  - Use camelCase with underscore prefix for private fields
+  - Follow the naming conventions defined in `.editorconfig`
+- **Type usage**: Prefer explicit types over var when type is not obvious
+
+### Before Committing
+
+Always ensure your code passes the linting checks:
+
 - Remove trailing whitespace from all lines
-- Use consistent indentation as defined in .editorconfig
-
-## C# Coding Standards
-
-- Follow the naming conventions defined in .editorconfig
-- Use PascalCase for public members and types
-- Use camelCase with underscore prefix for private fields
-- Prefer explicit types over var when type is not obvious
+- Ensure files end with a single newline
+- Verify proper indentation (4 spaces for C#)
+- Check that formatting matches the `.editorconfig` specifications
+- Follow the existing code style and conventions in the repository
 
 ## Testing Guidelines
 
@@ -30,7 +51,7 @@
 
 ## EditorConfig Compliance
 
-- Respect all settings defined in .editorconfig
+- Respect all settings defined in `.editorconfig`
 - Let Git automatically manage line endings unless there are specific tool compatibility issues
 - Follow indentation rules (spaces vs tabs as configured per file type)
 - Maintain consistent formatting across all file types
