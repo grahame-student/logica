@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using LibLogica.Blocks;
-using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks

@@ -3,6 +3,7 @@ root = true
 
 # All files
 [*]
+indent_style = space
 charset = utf-8
 end_of_line = auto
 insert_final_newline = true
@@ -240,28 +241,15 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
 # Microsoft .NET properties
-dotnet_naming_rule.private_constants_rule.import_to_resharper = True
-dotnet_naming_rule.private_constants_rule.resharper_description = Constant fields (private)
-dotnet_naming_rule.private_constants_rule.resharper_guid = 236f7aa5-7b06-43ca-bf2a-9b31bfcff09a
 dotnet_naming_rule.private_constants_rule.severity = warning
 dotnet_naming_rule.private_constants_rule.style = all_upper_style
 dotnet_naming_rule.private_constants_rule.symbols = private_constants_symbols
-dotnet_naming_rule.private_instance_fields_rule.import_to_resharper = True
-dotnet_naming_rule.private_instance_fields_rule.resharper_description = Instance fields (private)
-dotnet_naming_rule.private_instance_fields_rule.resharper_guid = 4a98fdf6-7d98-4f5a-afeb-ea44ad98c70c
 dotnet_naming_rule.private_instance_fields_rule.severity = warning
 dotnet_naming_rule.private_instance_fields_rule.style = lower_camel_case_style
 dotnet_naming_rule.private_instance_fields_rule.symbols = private_instance_fields_symbols
-dotnet_naming_rule.private_static_fields_rule.import_to_resharper = True
-dotnet_naming_rule.private_static_fields_rule.resharper_description = Static fields (private)
-dotnet_naming_rule.private_static_fields_rule.resharper_exclusive_prefixes_suffixes = true
-dotnet_naming_rule.private_static_fields_rule.resharper_guid = f9fce829-e6f4-4cb2-80f1-5497c44f51df
 dotnet_naming_rule.private_static_fields_rule.severity = warning
 dotnet_naming_rule.private_static_fields_rule.style = lower_camel_case_style
 dotnet_naming_rule.private_static_fields_rule.symbols = private_static_fields_symbols
-dotnet_naming_rule.private_static_readonly_rule.import_to_resharper = True
-dotnet_naming_rule.private_static_readonly_rule.resharper_description = Static readonly fields (private)
-dotnet_naming_rule.private_static_readonly_rule.resharper_guid = 15b5b1f1-457c-4ca6-b278-5615aedc07d3
 dotnet_naming_rule.private_static_readonly_rule.severity = warning
 dotnet_naming_rule.private_static_readonly_rule.style = pascal_case
 dotnet_naming_rule.private_static_readonly_rule.symbols = private_static_readonly_symbols
@@ -272,66 +260,17 @@ dotnet_naming_style.lower_camel_case_style.required_prefix = _
 dotnet_naming_symbols.private_constants_symbols.applicable_accessibilities = private
 dotnet_naming_symbols.private_constants_symbols.applicable_kinds = field
 dotnet_naming_symbols.private_constants_symbols.required_modifiers = const
-dotnet_naming_symbols.private_constants_symbols.resharper_applicable_kinds = constant_field
-dotnet_naming_symbols.private_constants_symbols.resharper_required_modifiers = any
 dotnet_naming_symbols.private_instance_fields_symbols.applicable_accessibilities = private
 dotnet_naming_symbols.private_instance_fields_symbols.applicable_kinds = field
-dotnet_naming_symbols.private_instance_fields_symbols.resharper_applicable_kinds = field,readonly_field
-dotnet_naming_symbols.private_instance_fields_symbols.resharper_required_modifiers = instance
 dotnet_naming_symbols.private_static_fields_symbols.applicable_accessibilities = private
 dotnet_naming_symbols.private_static_fields_symbols.applicable_kinds = field
 dotnet_naming_symbols.private_static_fields_symbols.required_modifiers = static
-dotnet_naming_symbols.private_static_fields_symbols.resharper_applicable_kinds = field
-dotnet_naming_symbols.private_static_fields_symbols.resharper_required_modifiers = static
 dotnet_naming_symbols.private_static_readonly_symbols.applicable_accessibilities = private
 dotnet_naming_symbols.private_static_readonly_symbols.applicable_kinds = field
 dotnet_naming_symbols.private_static_readonly_symbols.required_modifiers = readonly,static
-dotnet_naming_symbols.private_static_readonly_symbols.resharper_applicable_kinds = readonly_field
-dotnet_naming_symbols.private_static_readonly_symbols.resharper_required_modifiers = static
-
-# ReSharper properties
-resharper_braces_for_for = not_required
-resharper_braces_for_foreach = not_required
-resharper_braces_for_ifelse = not_required_for_both
-resharper_braces_for_while = not_required
-resharper_braces_redundant = true
-resharper_csharp_blank_lines_inside_region = 0
-resharper_csharp_brace_style = next_line
-resharper_csharp_insert_final_newline = true
-resharper_csharp_int_align_comments = true
-resharper_csharp_keep_existing_enum_arrangement = false
-resharper_for_built_in_types = use_var_when_evident
-resharper_html_insert_final_newline = false
-resharper_int_align_assignments = false
-resharper_int_align_fields = false
-resharper_int_align_switch_expressions = true
-resharper_int_align_switch_sections = true
-resharper_int_align_variables = false
-resharper_keep_existing_declaration_block_arrangement = false
-resharper_keep_existing_embedded_block_arrangement = false
-resharper_place_simple_case_statement_on_same_line = if_owner_is_single_line
-resharper_resx_insert_final_newline = false
-resharper_show_autodetect_configure_formatting_tip = false
-resharper_sql_insert_final_newline = false
-resharper_use_heuristics_for_body_style = true
-resharper_vb_insert_final_newline = false
-resharper_xmldoc_insert_final_newline = false
-resharper_xml_insert_final_newline = false
-
-# ReSharper inspection severities
-resharper_arrange_redundant_parentheses_highlighting = hint
-resharper_arrange_this_qualifier_highlighting = hint
-resharper_arrange_type_member_modifiers_highlighting = hint
-resharper_arrange_type_modifiers_highlighting = hint
-resharper_built_in_type_reference_style_for_member_access_highlighting = hint
-resharper_built_in_type_reference_style_highlighting = hint
-resharper_redundant_base_qualifier_highlighting = warning
-resharper_suggest_var_or_type_built_in_types_highlighting = hint
-resharper_suggest_var_or_type_elsewhere_highlighting = hint
-resharper_suggest_var_or_type_simple_types_highlighting = hint
 
 [*.{blockshader,c,c++,c++m,cc,ccm,cginc,compute,cp,cpp,cppm,cql,cshtml,cu,cuh,cxx,cxxm,fx,fxh,h,h++,hh,hlsl,hlsli,hlslinc,hp,hpp,htm,html,hxx,icc,inc,inl,ino,ipp,ixx,mpp,mq4,mq5,mqh,mxx,razor,shaderFoundry,sql,tcc,tpp,urtshader,usf,ush}]
-indent_style = tab
+indent_style = space
 indent_size = tab
 tab_width = 4
 
@@ -344,3 +283,86 @@ tab_width = 4
 indent_style = space
 indent_size = 2
 tab_width = 2
+
+[*.{c++,cc,cpp,cppm,cxx,h,h++,hh,hpp,hxx,inl,ipp,ixx,tlh,tli}]
+
+# Visual C++ Code Style settings
+
+cpp_generate_documentation_comments = xml
+
+# Visual C++ Formatting settings
+
+indent_style = space
+indent_size = 4
+tab_width= 4
+cpp_indent_braces = false
+cpp_indent_multi_line_relative_to = innermost_parenthesis
+cpp_indent_within_parentheses = indent
+cpp_indent_preserve_within_parentheses = false
+cpp_indent_case_contents = true
+cpp_indent_case_labels = false
+cpp_indent_case_contents_when_block = false
+cpp_indent_lambda_braces_when_parameter = true
+cpp_indent_goto_labels = one_left
+cpp_indent_preprocessor = leftmost_column
+cpp_indent_access_specifiers = false
+cpp_indent_namespace_contents = true
+cpp_indent_preserve_comments = false
+cpp_new_line_before_open_brace_namespace = ignore
+cpp_new_line_before_open_brace_type = ignore
+cpp_new_line_before_open_brace_function = ignore
+cpp_new_line_before_open_brace_block = ignore
+cpp_new_line_before_open_brace_lambda = ignore
+cpp_new_line_scope_braces_on_separate_lines = false
+cpp_new_line_close_brace_same_line_empty_type = false
+cpp_new_line_close_brace_same_line_empty_function = false
+cpp_new_line_before_catch = true
+cpp_new_line_before_else = true
+cpp_new_line_before_while_in_do_while = false
+cpp_space_before_function_open_parenthesis = remove
+cpp_space_within_parameter_list_parentheses = false
+cpp_space_between_empty_parameter_list_parentheses = false
+cpp_space_after_keywords_in_control_flow_statements = true
+cpp_space_within_control_flow_statement_parentheses = false
+cpp_space_before_lambda_open_parenthesis = false
+cpp_space_within_cast_parentheses = false
+cpp_space_after_cast_close_parenthesis = false
+cpp_space_within_expression_parentheses = false
+cpp_space_before_block_open_brace = true
+cpp_space_between_empty_braces = false
+cpp_space_before_initializer_list_open_brace = false
+cpp_space_within_initializer_list_braces = true
+cpp_space_preserve_in_initializer_list = true
+cpp_space_before_open_square_bracket = false
+cpp_space_within_square_brackets = false
+cpp_space_before_empty_square_brackets = false
+cpp_space_between_empty_square_brackets = false
+cpp_space_group_square_brackets = true
+cpp_space_within_lambda_brackets = false
+cpp_space_between_empty_lambda_brackets = false
+cpp_space_before_comma = false
+cpp_space_after_comma = true
+cpp_space_remove_around_member_operators = true
+cpp_space_before_inheritance_colon = true
+cpp_space_before_constructor_colon = true
+cpp_space_remove_before_semicolon = true
+cpp_space_after_semicolon = true
+cpp_space_remove_around_unary_operator = true
+cpp_space_around_binary_operator = insert
+cpp_space_around_assignment_operator = insert
+cpp_space_pointer_reference_alignment = left
+cpp_space_around_ternary_operator = insert
+cpp_use_unreal_engine_macro_formatting = true
+cpp_wrap_preserve_blocks = one_liners
+
+# Visual C++ Include Cleanup settings
+
+cpp_include_cleanup_add_missing_error_tag_type = suggestion
+cpp_include_cleanup_remove_unused_error_tag_type = dimmed
+cpp_include_cleanup_optimize_unused_error_tag_type = suggestion
+cpp_include_cleanup_sort_after_edits = false
+cpp_sort_includes_error_tag_type = none
+cpp_sort_includes_priority_case_sensitive = false
+cpp_sort_includes_priority_style = quoted
+cpp_includes_style = default
+cpp_includes_use_forward_slash = true
