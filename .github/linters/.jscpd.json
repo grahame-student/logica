@@ -1,12 +1,7 @@
 {
   "threshold": 5,
   "reporters": ["console"],
-  "ignore": [
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/bin/**",
-    "**/obj/**"
-  ],
+  "ignore": ["**/node_modules/**", "**/.git/**", "**/bin/**", "**/obj/**"],
   "format": ["csharp", "yaml", "markdown"],
   "minLines": 10,
   "minTokens": 100,
