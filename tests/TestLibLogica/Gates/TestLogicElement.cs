@@ -19,11 +19,11 @@ public class TestLogicElement
         protected override IEnumerable<bool> GetLocalValues() => new[] { true };
     }
 
-    [Test]
-    public void GetNextGateCount_ThreadSafety_GeneratesUniqueIds()
+    [TestCase(2, 10)]
+    [TestCase(5, 20)]
+    [TestCase(10, 100)]
+    public void GetNextGateCount_ConcurrentThreads_GeneratesExpectedNumberOfIds(int threadCount, int elementsPerThread)
     {
-        const int threadCount = 10;
-        const int elementsPerThread = 100;
         var allIds = new HashSet<string>();
         var lockObject = new object();
         var tasks = new Task[threadCount];
@@ -51,9 +51,79 @@ public class TestLogicElement
 
         Task.WaitAll(tasks);
 
-        // Verify that all IDs are unique (no duplicates due to race conditions)
         var expectedCount = threadCount * elementsPerThread;
         Assert.That(allIds.Count, Is.EqualTo(expectedCount));
+    }
+
+    [Test]
+    public void GetNextGateCount_ConcurrentCreation_GeneratesUniqueIds()
+    {
+        const int threadCount = 5;
+        const int elementsPerThread = 50;
+        var allIds = new HashSet<string>();
+        var lockObject = new object();
+        var tasks = new Task[threadCount];
+
+        for (int i = 0; i < threadCount; i++)
+        {
+            tasks[i] = Task.Run(() =>
+            {
+                var localIds = new List<string>();
+                for (int j = 0; j < elementsPerThread; j++)
+                {
+                    var element = new TestableLogicElement();
+                    localIds.AddRange(element.GetIds());
+                }
+
+                lock (lockObject)
+                {
+                    foreach (var id in localIds)
+                    {
+                        allIds.Add(id);
+                    }
+                }
+            });
+        }
+
+        Task.WaitAll(tasks);
+
+        Assert.That(allIds.Count, Is.EqualTo(threadCount * elementsPerThread));
+    }
+
+    [Test]
+    public void GetNextGateCount_ThreadSafety_CompletesWithoutExceptions()
+    {
+        const int threadCount = 10;
+        const int elementsPerThread = 100;
+        var tasks = new Task[threadCount];
+        var exceptions = new List<Exception>();
+        var lockObject = new object();
+
+        for (int i = 0; i < threadCount; i++)
+        {
+            tasks[i] = Task.Run(() =>
+            {
+                try
+                {
+                    for (int j = 0; j < elementsPerThread; j++)
+                    {
+                        var element = new TestableLogicElement();
+                        element.GetIds();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lock (lockObject)
+                    {
+                        exceptions.Add(ex);
+                    }
+                }
+            });
+        }
+
+        Task.WaitAll(tasks);
+
+        Assert.That(exceptions.Count, Is.EqualTo(0));
     }
 
     [Test]
