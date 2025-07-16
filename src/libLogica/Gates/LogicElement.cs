@@ -10,8 +10,12 @@ public abstract class LogicElement
 
     protected LogicElement()
     {
-        _instanceCount = _gateCount;
-        _gateCount++;
+        _instanceCount = GetNextGateCount();
+    }
+
+    private static UInt64 GetNextGateCount()
+    {
+        return _gateCount++;
     }
 
     public abstract void Update();
