@@ -63,7 +63,7 @@ namespace TestLibLogica.Blocks
             Assert.That(_block.Q.Value, Is.EqualTo(expectedQ));
         }
 
-        public static Object[] UpdateNqTestCases =
+        public static Object[] UpdateNQTestCases =
         [
             //             d,     isRising, expectedNq
             new Object[] { false, false, true },
@@ -72,8 +72,8 @@ namespace TestLibLogica.Blocks
             new Object[] { true, true, false },
         ];
 
-        [TestCaseSource(nameof(UpdateNqTestCases))]
-        public void Update_SetsNQ(Boolean d, Boolean isRisingEdge, Boolean expectedNq)
+        [TestCaseSource(nameof(UpdateNQTestCases))]
+        public void Update_SetsNQ(Boolean d, Boolean isRisingEdge, Boolean expectedNQ)
         {
             _block.D.Value = d;
             _block.Clock.Value = !isRisingEdge;
@@ -82,7 +82,7 @@ namespace TestLibLogica.Blocks
             _block.Clock.Value = isRisingEdge;
             _block.Update();
 
-            Assert.That(_block.NQ.Value, Is.EqualTo(expectedNq));
+            Assert.That(_block.NQ.Value, Is.EqualTo(expectedNQ));
         }
 
 
