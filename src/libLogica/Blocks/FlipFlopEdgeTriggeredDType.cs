@@ -70,34 +70,6 @@ namespace LibLogica.Blocks
             _and3.Update();
             _and4.Update();
             _rs2.Update();
-
-            // Debugging output
-            //Console.WriteLine($" D - {D.Value}");
-            //Console.WriteLine($" C - {Clock.Value}");
-            //Console.WriteLine($"NA1 - {_not1.A.Value}");
-            //Console.WriteLine($"NO1 - {_not1.O.Value}");
-            //Console.WriteLine($"NA2 - {_not2.A.Value}");
-            //Console.WriteLine($"NO2 - {_not2.O.Value}");
-            //Console.WriteLine($"1A - {_and1.A.Value}");
-            //Console.WriteLine($"1B - {_and1.B.Value}");
-            //Console.WriteLine($"1O - {_and1.O.Value}");
-            //Console.WriteLine($"2A - {_and2.A.Value}");
-            //Console.WriteLine($"2B - {_and2.B.Value}");
-            //Console.WriteLine($"2O - {_and2.O.Value}");
-            //Console.WriteLine($"FR1 - {_rs1.R.Value}");
-            //Console.WriteLine($"FS1 - {_rs1.S.Value}");
-            //Console.WriteLine($"FQ1 - {_rs1.Q.Value}");
-            //Console.WriteLine($"FNQ1 - {_rs1.NQ.Value}");
-            //Console.WriteLine($"3A - {_and3.A.Value}");
-            //Console.WriteLine($"3B - {_and3.B.Value}");
-            //Console.WriteLine($"3O - {_and3.O.Value}");
-            //Console.WriteLine($"4A - {_and4.A.Value}");
-            //Console.WriteLine($"4B - {_and4.B.Value}");
-            //Console.WriteLine($"4O - {_and4.O.Value}");
-            //Console.WriteLine($"FR2 - {_rs2.R.Value}");
-            //Console.WriteLine($"FS2 - {_rs2.S.Value}");
-            //Console.WriteLine($"FQ2 - {Q.Value}");
-            //Console.WriteLine($"FNQ2 - {NQ.Value}");
         }
 
         public override IEnumerable<String> GetIds() => GetLocalIds()
