@@ -47,10 +47,20 @@ namespace LibLogica.Blocks
             NQ.Connect(_rs2.NQ);
 
             // Initialize the flip-flop to a known state
-            Update();
+            InitializeState();
         }
 
         public override void Update()
+        {
+            PerformUpdate();
+        }
+        
+        private void InitializeState()
+        {
+            PerformUpdate();
+        }
+        
+        private void PerformUpdate()
         {
             _not1.Update();
             _not2.Update();
