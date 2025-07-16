@@ -33,17 +33,17 @@ public class FlipFlopRS : LogicElement
         // R S Q NQ
         // 0 0 0 1
         R.Value = true;
-        _InitializeState();
+        PerformUpdate();
         R.Value = false;
-        _InitializeState();
+        PerformUpdate();
     }
 
     public override void Update()
     {
-        _InitializeState();
+        PerformUpdate();
     }
 
-    private void _InitializeState()
+    private void PerformUpdate()
     {
         // Order is important, unit tests will fail if swapped
         _nor2.Update();
