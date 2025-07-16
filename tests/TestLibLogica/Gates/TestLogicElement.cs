@@ -60,18 +60,18 @@ public class TestLogicElement
     public void GetNextGateCount_SequentialCreation_GeneratesUniqueIds()
     {
         var ids = new HashSet<string>();
-        
+
         for (int i = 0; i < 100; i++)
         {
             var element = new TestableLogicElement();
             var elementIds = element.GetIds();
-            
+
             foreach (var id in elementIds)
             {
                 Assert.That(ids.Add(id), Is.True, $"Duplicate ID found: {id}");
             }
         }
-        
+
         Assert.That(ids.Count, Is.EqualTo(100));
     }
 }
