@@ -34,10 +34,15 @@ public class FlipFlopLevelTriggeredDType : LogicElement
 
         Q.Connect(_rs.Q);
         NQ.Connect(_rs.NQ);
-        Update();
+        PerformUpdate();
     }
 
     public override void Update()
+    {
+        PerformUpdate();
+    }
+
+    private void PerformUpdate()
     {
         _not.Update();
         _and1.Update();
