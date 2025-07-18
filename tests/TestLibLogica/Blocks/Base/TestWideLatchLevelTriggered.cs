@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace TestLibLogica.Blocks.Base;
 
-public class TestWideLatch
+public class TestWideLatchLevelTriggered
 {
     /*
      * x D Type FlipFlops
@@ -28,12 +28,12 @@ public class TestWideLatch
      *
      */
 
-    private WideLatch? _block;
+    private WideLatchLevelTriggered? _block;
 
     [Test]
     public void Constructor_SetsInputD_ToPassedWidth()
     {
-        _block = new WideLatch(8);
+        _block = new WideLatchLevelTriggered(8);
 
         Assert.That(_block.D.Count, Is.EqualTo(8));
     }
@@ -41,12 +41,12 @@ public class TestWideLatch
     [Test]
     public void Constructor_SetsQ_ToPassedWidth()
     {
-        _block = new WideLatch(8);
+        _block = new WideLatchLevelTriggered(8);
 
         Assert.That(_block.Q.Count, Is.EqualTo(8));
     }
 
-    public static Object[] UpdateQTestCases =
+    public static Object[] _updateQTestCases =
     [
         new Object[] { 0, false, false },
         new Object[] { 0, true, true },
@@ -66,10 +66,10 @@ public class TestWideLatch
         new Object[] { 7, true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateQTestCases)))]
+    [TestCaseSource((nameof(_updateQTestCases)))]
     public void Update_SetsQToD_WhenClockTrue(Int32 bit, Boolean clk, Boolean q)
     {
-        _block = new WideLatch(8);
+        _block = new WideLatchLevelTriggered(8);
         _block.D[bit].Value = true;
         _block.Clock.Value = clk;
 
@@ -82,7 +82,7 @@ public class TestWideLatch
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
-        _block = new WideLatch(8);
+        _block = new WideLatchLevelTriggered(8);
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

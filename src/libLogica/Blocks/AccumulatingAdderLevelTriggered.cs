@@ -7,10 +7,10 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks;
 
-public class AccumulatingAdder : LogicElement
+public class AccumulatingAdderLevelTriggered : LogicElement
 {
     private readonly Adder8Bit _adder8 = new();
-    private readonly Latch8Bit _latch8 = new();
+    private readonly LatchLevelTriggered8Bit _latch8 = new();
 
     // Inputs
     public LogicArray<Input> A { get; } = new(8);
@@ -19,7 +19,7 @@ public class AccumulatingAdder : LogicElement
     // Outputs
     public LogicArray<Input> O { get; } = new(8);
 
-    public AccumulatingAdder()
+    public AccumulatingAdderLevelTriggered()
     {
         _adder8.B.Connect(A);
         _latch8.D.Connect(_adder8.SumOut);

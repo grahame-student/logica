@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace TestLibLogica.Blocks;
 
-public class TestAccumulatingAdder
+public class TestAccumulatingAdderLevelTriggered
 {
     /*
      *         A[8] = 0 <- initial value
@@ -40,12 +40,12 @@ public class TestAccumulatingAdder
      *
      */
 
-    private AccumulatingAdder _block;
+    private AccumulatingAdderLevelTriggered _block;
 
     [SetUp]
     public void Setup()
     {
-        _block = new AccumulatingAdder();
+        _block = new AccumulatingAdderLevelTriggered();
     }
 
     // Consolidated test case array that replaces separate InitialAValues and InitialOValues arrays
