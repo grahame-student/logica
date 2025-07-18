@@ -25,6 +25,7 @@ This repository uses an `.editorconfig` file to define coding standards. When ma
   - Follow the naming conventions defined in `.editorconfig`
 - **Type usage**: Prefer explicit types over var when type is not obvious
 - **Global usings**: Never enable global usings
+- **Dynamic typing**: Never us the `dynamic` keyword
 
 ### Before Committing
 
