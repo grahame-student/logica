@@ -51,7 +51,7 @@ public class TestWideLatchEdgeTriggered
         new Object[] { 0, true, true },
         new Object[] { 1, false, false },
         new Object[] { 1, true, true },
-        new Object[] { 2, false, false,  },
+        new Object[] { 2, false, false, },
         new Object[] { 2, true, true },
         new Object[] { 3, false, false},
         new Object[] { 3, true, true },
