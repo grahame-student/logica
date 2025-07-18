@@ -23,7 +23,7 @@ public class TestWideLatchEdgeTriggered
      *
      *
      * QN outputs unused
-     * D -> Q   when   clk == 1
+     * D -> Q   on the rising edge of clk
      *
      */
 
