@@ -46,7 +46,7 @@ public class TestWideLatchLevelTriggered
         Assert.That(_block.Q.Count, Is.EqualTo(8));
     }
 
-    public static Object[] UpdateQTestCases =
+    public static Object[] _updateQTestCases =
     [
         new Object[] { 0, false, false },
         new Object[] { 0, true, true },
@@ -66,7 +66,7 @@ public class TestWideLatchLevelTriggered
         new Object[] { 7, true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateQTestCases)))]
+    [TestCaseSource((nameof(_updateQTestCases)))]
     public void Update_SetsQToD_WhenClockTrue(Int32 bit, Boolean clk, Boolean q)
     {
         _block = new WideLatchLevelTriggered(8);

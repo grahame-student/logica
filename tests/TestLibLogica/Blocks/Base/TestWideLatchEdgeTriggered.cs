@@ -45,7 +45,7 @@ public class TestWideLatchEdgeTriggered
         Assert.That(_block.Q.Count, Is.EqualTo(8));
     }
 
-    public static Object[] UpdateQTestCases =
+    public static Object[] _updateQTestCases =
     [
         new Object[] { 0, false, false },
         new Object[] { 0, true, true },
@@ -65,7 +65,7 @@ public class TestWideLatchEdgeTriggered
         new Object[] { 7, true, true },
     ];
 
-    [TestCaseSource(nameof(UpdateQTestCases))]
+    [TestCaseSource(nameof(_updateQTestCases))]
     public void Update_SetsQToD_WhenClockRising(Int32 bit, Boolean d, Boolean q)
     {
         _block = new WideLatchEdgeTriggered(8);

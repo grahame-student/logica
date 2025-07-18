@@ -115,14 +115,14 @@ public class TestAccumulatingAdderEdgeTriggered
         Assert.That(result, Is.EqualTo(val170));
     }
 
-    public static readonly Object[] clockEdges =
+    public static readonly Object[] _clockEdges =
     [
     new Object[] { false, false },
         new Object[] { true, false },
         new Object[] { true, true },
     ];
 
-    [TestCaseSource(nameof(clockEdges))]
+    [TestCaseSource(nameof(_clockEdges))]
     public void Update_DoesNotUpdateO_WhenAddNotRisingEdge(Boolean edge, Boolean nextEdge)
     {
         // bits 0 -> 7
