@@ -44,7 +44,7 @@ public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, new(
         var aProperty = typeof(TGate).GetProperty("A");
         var bProperty = typeof(TGate).GetProperty("B");
         var oProperty = typeof(TGate).GetProperty("O");
-        
+
         var aInput = aProperty!.GetValue(_gate) as dynamic;
         var bInput = bProperty!.GetValue(_gate) as dynamic;
         var output = oProperty!.GetValue(_gate) as dynamic;

@@ -5,7 +5,7 @@ namespace LibLogica.Blocks.Base;
 
 /// <summary>
 /// Level-triggered wide latch using D-type flip-flops
-/// 
+///
 /// ASCII Diagram:
 /// x D Type FlipFlops
 /// x Clock lines common

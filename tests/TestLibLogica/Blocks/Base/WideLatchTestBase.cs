@@ -43,14 +43,14 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
     protected void TestUpdateSetsQToD(Int32 bit, Boolean d, Boolean expectedQ, Action<TWideLatch> clockOperation)
     {
         _block = CreateWideLatch(8);
-        
+
         var dProperty = typeof(TWideLatch).GetProperty("D");
         if (dProperty?.GetValue(_block) is LogicArray<Input> dArray)
         {
             dArray[bit].Value = d;
-            
+
             clockOperation(_block);
-            
+
             var qProperty = typeof(TWideLatch).GetProperty("Q");
             if (qProperty?.GetValue(_block) is LogicArray<Output> qArray)
             {
