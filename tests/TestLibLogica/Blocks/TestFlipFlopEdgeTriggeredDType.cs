@@ -82,7 +82,7 @@ public class TestFlipFlopEdgeTriggeredDType
 
         // Assert that Q is high to ensure that the test preconditions are met
         // Although this is technically a second assertion, it protects the integrity of the test
-        Debug.Assert(_block.Q.Value == true, "Q should be true");
+        Assert.That(_block.Q.Value, Is.True, "Q should be true");
     }
 
     public static Object[] UpdateNQTestCases =
