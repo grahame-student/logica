@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LibLogica.Gates;
 
-public class NorGate : LogicElement
+public class NorGate : LogicElement, IBinaryGate
 {
     private readonly OrGate _orGate = new();
     private readonly NotGate _notGate = new();

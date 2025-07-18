@@ -16,64 +16,24 @@ public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTrigger
     [Test]
     public void Update_SetsQToD_WhenClockRising_Bit0_False()
     {
-        TestUpdateSetsQToD(0, false, false, block =>
-        {
-            var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            if (clockProperty?.GetValue(block) is Input clock)
-            {
-                clock.Value = false;
-                block.Update();
-                clock.Value = true;
-                block.Update();
-            }
-        });
+        TestUpdateSetsQToD(0, false, false, PerformRisingEdgeClockOperation);
     }
 
     [Test]
     public void Update_SetsQToD_WhenClockRising_Bit0_True()
     {
-        TestUpdateSetsQToD(0, true, true, block =>
-        {
-            var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            if (clockProperty?.GetValue(block) is Input clock)
-            {
-                clock.Value = false;
-                block.Update();
-                clock.Value = true;
-                block.Update();
-            }
-        });
+        TestUpdateSetsQToD(0, true, true, PerformRisingEdgeClockOperation);
     }
 
     [Test]
     public void Update_SetsQToD_WhenClockRising_Bit7_False()
     {
-        TestUpdateSetsQToD(7, false, false, block =>
-        {
-            var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            if (clockProperty?.GetValue(block) is Input clock)
-            {
-                clock.Value = false;
-                block.Update();
-                clock.Value = true;
-                block.Update();
-            }
-        });
+        TestUpdateSetsQToD(7, false, false, PerformRisingEdgeClockOperation);
     }
 
     [Test]
     public void Update_SetsQToD_WhenClockRising_Bit7_True()
     {
-        TestUpdateSetsQToD(7, true, true, block =>
-        {
-            var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            if (clockProperty?.GetValue(block) is Input clock)
-            {
-                clock.Value = false;
-                block.Update();
-                clock.Value = true;
-                block.Update();
-            }
-        });
+        TestUpdateSetsQToD(7, true, true, PerformRisingEdgeClockOperation);
     }
 }

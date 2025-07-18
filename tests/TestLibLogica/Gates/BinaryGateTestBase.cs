@@ -5,7 +5,7 @@ using LibLogica.Gates;
 
 namespace TestLibLogica.Gates;
 
-public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, new()
+public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, IBinaryGate, new()
 {
     protected TGate _gate = null!;
 
@@ -18,19 +18,13 @@ public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, new(
     [Test]
     public void InputAInitiallyFalse()
     {
-        var property = typeof(TGate).GetProperty("A");
-        Assert.That(property, Is.Not.Null, "Gate should have an A input");
-        var input = property!.GetValue(_gate) as dynamic;
-        Assert.That(input!.Value, Is.EqualTo(false));
+        Assert.That(_gate.A.Value, Is.EqualTo(false));
     }
 
     [Test]
     public void InputBInitiallyFalse()
     {
-        var property = typeof(TGate).GetProperty("B");
-        Assert.That(property, Is.Not.Null, "Gate should have a B input");
-        var input = property!.GetValue(_gate) as dynamic;
-        Assert.That(input!.Value, Is.EqualTo(false));
+        Assert.That(_gate.B.Value, Is.EqualTo(false));
     }
 
     [Test]
@@ -41,19 +35,11 @@ public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, new(
 
     protected void TestLogicOperation(Boolean a, Boolean b, Boolean expectedO)
     {
-        var aProperty = typeof(TGate).GetProperty("A");
-        var bProperty = typeof(TGate).GetProperty("B");
-        var oProperty = typeof(TGate).GetProperty("O");
-
-        var aInput = aProperty!.GetValue(_gate) as dynamic;
-        var bInput = bProperty!.GetValue(_gate) as dynamic;
-        var output = oProperty!.GetValue(_gate) as dynamic;
-
-        aInput!.Value = a;
-        bInput!.Value = b;
+        _gate.A.Value = a;
+        _gate.B.Value = b;
 
         _gate.Update();
 
-        Assert.That(output!.Value, Is.EqualTo(expectedO));
+        Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
     }
 }

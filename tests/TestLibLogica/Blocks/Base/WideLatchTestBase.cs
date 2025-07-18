@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace TestLibLogica.Blocks.Base;
 
-public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElement
+public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElement, LibLogica.Blocks.Base.IWideLatch
 {
     protected TWideLatch? _block;
 
@@ -14,23 +14,16 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
     public void Constructor_SetsInputD_ToPassedWidth()
     {
         _block = CreateWideLatch(8);
-        var dProperty = typeof(TWideLatch).GetProperty("D");
-        if (dProperty?.GetValue(_block) is LogicArray<Input> dArray)
-        {
-            Assert.That(dArray.Count, Is.EqualTo(8));
-        }
+        Assert.That(_block.D.Count, Is.EqualTo(8));
     }
 
     [Test]
     public void Constructor_SetsQ_ToPassedWidth()
     {
         _block = CreateWideLatch(8);
-        var qProperty = typeof(TWideLatch).GetProperty("Q");
-        if (qProperty?.GetValue(_block) is LogicArray<Output> qArray)
-        {
-            Assert.That(qArray.Count, Is.EqualTo(8));
-        }
+        Assert.That(_block.Q.Count, Is.EqualTo(8));
     }
+
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
@@ -43,19 +36,39 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
     protected void TestUpdateSetsQToD(Int32 bit, Boolean d, Boolean expectedQ, Action<TWideLatch> clockOperation)
     {
         _block = CreateWideLatch(8);
+        _block.D[bit].Value = d;
 
-        var dProperty = typeof(TWideLatch).GetProperty("D");
-        if (dProperty?.GetValue(_block) is LogicArray<Input> dArray)
-        {
-            dArray[bit].Value = d;
+        clockOperation(_block);
 
-            clockOperation(_block);
+        Assert.That(_block.Q[bit].Value, Is.EqualTo(expectedQ));
+    }
 
-            var qProperty = typeof(TWideLatch).GetProperty("Q");
-            if (qProperty?.GetValue(_block) is LogicArray<Output> qArray)
-            {
-                Assert.That(qArray[bit].Value, Is.EqualTo(expectedQ));
-            }
-        }
+    /// <summary>
+    /// Helper method for edge-triggered latches - performs a rising edge clock operation.
+    /// </summary>
+    protected void PerformRisingEdgeClockOperation(TWideLatch block)
+    {
+        block.Clock.Value = false;
+        block.Update();
+        block.Clock.Value = true;
+        block.Update();
+    }
+
+    /// <summary>
+    /// Helper method for level-triggered latches - sets clock high and updates.
+    /// </summary>
+    protected void PerformHighLevelClockOperation(TWideLatch block)
+    {
+        block.Clock.Value = true;
+        block.Update();
+    }
+
+    /// <summary>
+    /// Helper method for level-triggered latches - sets clock low and updates.
+    /// </summary>
+    protected void PerformLowLevelClockOperation(TWideLatch block)
+    {
+        block.Clock.Value = false;
+        block.Update();
     }
 }

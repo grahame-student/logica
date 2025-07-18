@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LibLogica.Gates;
 
-public class OrGate : LogicElement
+public class OrGate : LogicElement, IBinaryGate
 {
     // Inputs
     public Input A { get; } = new();

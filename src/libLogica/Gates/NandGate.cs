@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LibLogica.Gates;
 
-public class NandGate : LogicElement
+public class NandGate : LogicElement, IBinaryGate
 {
     private readonly AndGate _andGate = new();
     private readonly NotGate _notGate = new();

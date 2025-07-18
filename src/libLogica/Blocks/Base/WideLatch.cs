@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Base;
 
-public abstract class WideLatch<TFlipFlop> : LogicElement
+public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
     where TFlipFlop : LogicElement, IDTypeFlipFlop, new()
 {
     private readonly BlockArray<TFlipFlop> _latches;
