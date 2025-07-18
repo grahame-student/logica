@@ -36,7 +36,7 @@ public class TestAndGate
         new Object[] { true, true, true }
     ];
 
-    [TestCaseSource((nameof(UpdateTestCases)))]
+    [TestCaseSource(nameof(UpdateTestCases))]
     public void Update_SetsO_ToLogicalAndOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
         _gate.A.Value = a;
