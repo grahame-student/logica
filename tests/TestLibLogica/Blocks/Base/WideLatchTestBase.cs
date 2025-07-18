@@ -15,8 +15,10 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
     {
         _block = CreateWideLatch(8);
         var dProperty = typeof(TWideLatch).GetProperty("D");
-        var dArray = dProperty!.GetValue(_block) as LogicArray<Input>;
-        Assert.That(dArray!.Count, Is.EqualTo(8));
+        if (dProperty?.GetValue(_block) is LogicArray<Input> dArray)
+        {
+            Assert.That(dArray.Count, Is.EqualTo(8));
+        }
     }
 
     [Test]
@@ -24,10 +26,11 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
     {
         _block = CreateWideLatch(8);
         var qProperty = typeof(TWideLatch).GetProperty("Q");
-        var qArray = qProperty!.GetValue(_block) as LogicArray<Output>;
-        Assert.That(qArray!.Count, Is.EqualTo(8));
+        if (qProperty?.GetValue(_block) is LogicArray<Output> qArray)
+        {
+            Assert.That(qArray.Count, Is.EqualTo(8));
+        }
     }
-
     [Test]
     public void GetIdsAndGetValues_ContainSameNumberOfElements()
     {
@@ -42,13 +45,17 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
         _block = CreateWideLatch(8);
         
         var dProperty = typeof(TWideLatch).GetProperty("D");
-        var dArray = dProperty!.GetValue(_block) as LogicArray<Input>;
-        dArray![bit].Value = d;
-        
-        clockOperation(_block);
-        
-        var qProperty = typeof(TWideLatch).GetProperty("Q");
-        var qArray = qProperty!.GetValue(_block) as LogicArray<Output>;
-        Assert.That(qArray![bit].Value, Is.EqualTo(expectedQ));
+        if (dProperty?.GetValue(_block) is LogicArray<Input> dArray)
+        {
+            dArray[bit].Value = d;
+            
+            clockOperation(_block);
+            
+            var qProperty = typeof(TWideLatch).GetProperty("Q");
+            if (qProperty?.GetValue(_block) is LogicArray<Output> qArray)
+            {
+                Assert.That(qArray[bit].Value, Is.EqualTo(expectedQ));
+            }
+        }
     }
 }

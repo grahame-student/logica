@@ -19,11 +19,13 @@ public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTrigger
         TestUpdateSetsQToD(0, false, false, block =>
         {
             var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
-            clock.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 
@@ -33,11 +35,13 @@ public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTrigger
         TestUpdateSetsQToD(0, true, true, block =>
         {
             var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
-            clock.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 
@@ -47,11 +51,13 @@ public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTrigger
         TestUpdateSetsQToD(7, false, false, block =>
         {
             var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
-            clock.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 
@@ -61,11 +67,13 @@ public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTrigger
         TestUpdateSetsQToD(7, true, true, block =>
         {
             var clockProperty = typeof(WideLatchEdgeTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
-            clock.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 }

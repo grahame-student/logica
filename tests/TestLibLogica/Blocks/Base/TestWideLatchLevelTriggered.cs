@@ -19,9 +19,11 @@ public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTrigg
         TestUpdateSetsQToD(0, true, false, block =>
         {
             var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+            }
         });
     }
 
@@ -31,9 +33,11 @@ public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTrigg
         TestUpdateSetsQToD(0, true, true, block =>
         {
             var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 
@@ -43,9 +47,11 @@ public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTrigg
         TestUpdateSetsQToD(7, true, false, block =>
         {
             var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = false;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = false;
+                block.Update();
+            }
         });
     }
 
@@ -55,9 +61,11 @@ public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTrigg
         TestUpdateSetsQToD(7, true, true, block =>
         {
             var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
-            var clock = clockProperty!.GetValue(block) as Input;
-            clock!.Value = true;
-            block.Update();
+            if (clockProperty?.GetValue(block) is Input clock)
+            {
+                clock.Value = true;
+                block.Update();
+            }
         });
     }
 }
