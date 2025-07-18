@@ -1,88 +1,63 @@
 using LibLogica.Blocks.Base;
-
 using System;
 using NUnit.Framework;
 using System.Linq;
+using LibLogica.IO;
 
 namespace TestLibLogica.Blocks.Base;
 
-public class TestWideLatchLevelTriggered
+public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTriggered>
 {
-    /*
-     * x D Type FlipFlops
-     * x Clock lines common
-     *
-     *      D [x]
-     *        V
-     * +---------------+
-     * |               |
-     * |  x-bit Latch  + < Clk
-     * |               |
-     * +---------------+
-     *        V
-     *      Q [x]
-     *
-     *
-     * QN outputs unused
-     * D -> Q   when   clk == 1
-     *
-     */
-
-    private WideLatchLevelTriggered? _block;
-
-    [Test]
-    public void Constructor_SetsInputD_ToPassedWidth()
+    protected override WideLatchLevelTriggered CreateWideLatch(int width)
     {
-        _block = new WideLatchLevelTriggered(8);
-
-        Assert.That(_block.D.Count, Is.EqualTo(8));
+        return new WideLatchLevelTriggered(width);
     }
 
     [Test]
-    public void Constructor_SetsQ_ToPassedWidth()
+    public void Update_SetsQToD_WhenClockTrue_Bit0_False()
     {
-        _block = new WideLatchLevelTriggered(8);
-
-        Assert.That(_block.Q.Count, Is.EqualTo(8));
+        TestUpdateSetsQToD(0, true, false, block =>
+        {
+            var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
+            var clock = clockProperty!.GetValue(block) as Input;
+            clock!.Value = false;
+            block.Update();
+        });
     }
-
-    public static Object[] _updateQTestCases =
-    [
-        new Object[] { 0, false, false },
-        new Object[] { 0, true, true },
-        new Object[] { 1, false, false },
-        new Object[] { 1, true, true },
-        new Object[] { 2, false, false },
-        new Object[] { 2, true, true },
-        new Object[] { 3, false, false },
-        new Object[] { 3, true, true },
-        new Object[] { 4, false, false },
-        new Object[] { 4, true, true },
-        new Object[] { 5, false, false },
-        new Object[] { 5, true, true },
-        new Object[] { 6, false, false },
-        new Object[] { 6, true, true },
-        new Object[] { 7, false, false },
-        new Object[] { 7, true, true },
-    ];
-
-    [TestCaseSource((nameof(_updateQTestCases)))]
-    public void Update_SetsQToD_WhenClockTrue(Int32 bit, Boolean clk, Boolean q)
-    {
-        _block = new WideLatchLevelTriggered(8);
-        _block.D[bit].Value = true;
-        _block.Clock.Value = clk;
-
-        _block.Update();
-
-        Assert.That(_block.Q[bit].Value, Is.EqualTo(q));
-    }
-
 
     [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
+    public void Update_SetsQToD_WhenClockTrue_Bit0_True()
     {
-        _block = new WideLatchLevelTriggered(8);
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
+        TestUpdateSetsQToD(0, true, true, block =>
+        {
+            var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
+            var clock = clockProperty!.GetValue(block) as Input;
+            clock!.Value = true;
+            block.Update();
+        });
+    }
+
+    [Test]
+    public void Update_SetsQToD_WhenClockTrue_Bit7_False()
+    {
+        TestUpdateSetsQToD(7, true, false, block =>
+        {
+            var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
+            var clock = clockProperty!.GetValue(block) as Input;
+            clock!.Value = false;
+            block.Update();
+        });
+    }
+
+    [Test]
+    public void Update_SetsQToD_WhenClockTrue_Bit7_True()
+    {
+        TestUpdateSetsQToD(7, true, true, block =>
+        {
+            var clockProperty = typeof(WideLatchLevelTriggered).GetProperty("Clock");
+            var clock = clockProperty!.GetValue(block) as Input;
+            clock!.Value = true;
+            block.Update();
+        });
     }
 }

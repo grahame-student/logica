@@ -1,55 +1,32 @@
 using System;
 using NUnit.Framework;
-using System.Linq;
+using LibLogica.Gates;
 
 namespace TestLibLogica.Gates;
 
-using LibLogica.Gates;
-
-public class TestOrGate
+public class TestOrGate : BinaryGateTestBase<OrGate>
 {
-    private OrGate _gate;
-
-    [SetUp]
-    public void Setup()
+    [Test]
+    public void Update_SetsO_ToLogicalOrOfAAndB_FalseFalse()
     {
-        _gate = new OrGate();
+        TestLogicOperation(false, false, false);
     }
 
     [Test]
-    public void InputAInitiallyFalse()
+    public void Update_SetsO_ToLogicalOrOfAAndB_FalseTrue()
     {
-        Assert.That(_gate.A.Value, Is.EqualTo(false));
+        TestLogicOperation(false, true, true);
     }
 
     [Test]
-    public void InputBInitiallyFalse()
+    public void Update_SetsO_ToLogicalOrOfAAndB_TrueFalse()
     {
-        Assert.That(_gate.B.Value, Is.EqualTo(false));
-    }
-
-    public static Object[] UpdateTestCases =
-    [
-        new Object[] { false, false, false },
-        new Object[] { false, true, true },
-        new Object[] { true, false, true },
-        new Object[] { true, true, true }
-    ];
-
-    [TestCaseSource((nameof(UpdateTestCases)))]
-    public void Update_SetsO_ToLogicalOrOfAAndB(Boolean a, Boolean b, Boolean expectedO)
-    {
-        _gate.A.Value = a;
-        _gate.B.Value = b;
-
-        _gate.Update();
-
-        Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
+        TestLogicOperation(true, false, true);
     }
 
     [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
+    public void Update_SetsO_ToLogicalOrOfAAndB_TrueTrue()
     {
-        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
+        TestLogicOperation(true, true, true);
     }
 }
