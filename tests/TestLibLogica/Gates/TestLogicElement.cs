@@ -19,10 +19,7 @@ public class TestLogicElement
         protected override IEnumerable<bool> GetLocalValues() => new[] { true };
     }
 
-    [TestCase(2, 10)]
-    [TestCase(5, 20)]
-    [TestCase(10, 100)]
-    public void GetNextGateCount_ConcurrentThreads_GeneratesExpectedNumberOfIds(int threadCount, int elementsPerThread)
+    private HashSet<string> RunConcurrentIdGenerationTest(int threadCount, int elementsPerThread)
     {
         var allIds = new HashSet<string>();
         var lockObject = new object();
@@ -50,7 +47,15 @@ public class TestLogicElement
         }
 
         Task.WaitAll(tasks);
+        return allIds;
+    }
 
+    [TestCase(2, 10)]
+    [TestCase(5, 20)]
+    [TestCase(10, 100)]
+    public void GetNextGateCount_ConcurrentThreads_GeneratesExpectedNumberOfIds(int threadCount, int elementsPerThread)
+    {
+        var allIds = RunConcurrentIdGenerationTest(threadCount, elementsPerThread);
         var expectedCount = threadCount * elementsPerThread;
         Assert.That(allIds.Count, Is.EqualTo(expectedCount));
     }
@@ -60,33 +65,7 @@ public class TestLogicElement
     {
         const int threadCount = 5;
         const int elementsPerThread = 50;
-        var allIds = new HashSet<string>();
-        var lockObject = new object();
-        var tasks = new Task[threadCount];
-
-        for (int i = 0; i < threadCount; i++)
-        {
-            tasks[i] = Task.Run(() =>
-            {
-                var localIds = new List<string>();
-                for (int j = 0; j < elementsPerThread; j++)
-                {
-                    var element = new TestableLogicElement();
-                    localIds.AddRange(element.GetIds());
-                }
-
-                lock (lockObject)
-                {
-                    foreach (var id in localIds)
-                    {
-                        allIds.Add(id);
-                    }
-                }
-            });
-        }
-
-        Task.WaitAll(tasks);
-
+        var allIds = RunConcurrentIdGenerationTest(threadCount, elementsPerThread);
         Assert.That(allIds.Count, Is.EqualTo(threadCount * elementsPerThread));
     }
 

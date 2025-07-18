@@ -1,11 +1,10 @@
-using LibLogica.IO;
-
 using System;
 using System.Collections.Generic;
+using LibLogica.IO;
 
 namespace LibLogica.Gates;
 
-public class AndGate : LogicElement
+public class AndGate : LogicElement, IBinaryGate
 {
     // Inputs
     public Input A { get; } = new();

@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
@@ -40,7 +40,7 @@ public class TestFullAdder
         new Object[] { true, true, true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateSumOutTestCases)))]
+    [TestCaseSource(nameof(UpdateSumOutTestCases))]
     public void Update_SetsSumOut_ToSumOfAAndB(Boolean a, Boolean b, Boolean carryIn, Boolean expectedO)
     {
         _block.A.Value = a;
@@ -64,7 +64,7 @@ public class TestFullAdder
         new Object[] { true, true, true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateCarryOutTestCases)))]
+    [TestCaseSource(nameof(UpdateCarryOutTestCases))]
     public void Update_SetsCarryOut_ToCarryOfSumOfAAndB(Boolean a, Boolean b, Boolean carryIn, Boolean expectedO)
     {
         _block.A.Value = a;

@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
@@ -28,7 +28,7 @@ public class TestNotGate
         new Object[] { true, false },
     ];
 
-    [TestCaseSource((nameof(UpdateTestCases)))]
+    [TestCaseSource(nameof(UpdateTestCases))]
     public void Update_SetsO_ToLogicalNotOfA(Boolean a, Boolean expectedO)
     {
         _gate.A.Value = a;

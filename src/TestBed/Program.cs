@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Drawing;
 using System.Drawing.Imaging;
-
+using System.IO;
+using System.Linq;
 using FFMediaToolkit;
 using FFMediaToolkit.Encoding;
 using FFMediaToolkit.Graphics;
-
 using LibLogica.Blocks.Width8Bit;
 
 namespace TestBed;

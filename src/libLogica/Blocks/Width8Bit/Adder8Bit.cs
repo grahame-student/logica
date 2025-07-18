@@ -1,4 +1,4 @@
-﻿using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Base;
 
 namespace LibLogica.Blocks.Width8Bit;
 

@@ -1,12 +1,11 @@
-using LibLogica.IO;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LibLogica.IO;
 
 namespace LibLogica.Gates;
 
-public class NorGate : LogicElement
+public class NorGate : LogicElement, IBinaryGate
 {
     private readonly OrGate _orGate = new();
     private readonly NotGate _notGate = new();

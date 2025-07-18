@@ -1,8 +1,7 @@
-using LibLogica.Blocks;
-
 using System;
-using NUnit.Framework;
 using System.Linq;
+using LibLogica.Blocks;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
@@ -36,7 +35,7 @@ public class TestHalfAdder
         new Object[] { true, true, false }
     ];
 
-    [TestCaseSource((nameof(UpdateSumOutTestCases)))]
+    [TestCaseSource(nameof(UpdateSumOutTestCases))]
     public void Update_SetsSumOut_ToSumOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
         _block.A.Value = a;
@@ -55,7 +54,7 @@ public class TestHalfAdder
         new Object[] { true, true, true }
     ];
 
-    [TestCaseSource((nameof(UpdateCarryOutTestCases)))]
+    [TestCaseSource(nameof(UpdateCarryOutTestCases))]
     public void Update_SetsCarryOut_ToSumOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
         _block.A.Value = a;

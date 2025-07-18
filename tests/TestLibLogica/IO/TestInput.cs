@@ -1,6 +1,5 @@
-using LibLogica.IO;
-
 using System;
+using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica.IO;

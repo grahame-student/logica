@@ -1,6 +1,5 @@
-using LibLogica.Gates;
-
 using System;
+using LibLogica.Gates;
 
 namespace LibLogica.Blocks.Base;
 
