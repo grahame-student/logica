@@ -26,7 +26,7 @@ internal class TestRippleCounter
         Assert.That(GetCounterValue(), Is.Zero);
     }
 
-    public static Object[] UpdateCounterTestCases =
+    public static readonly Object[] UpdateCounterTestCases =
     [
         new Object[] { 1, 1u },
         new Object[] { 2, 2u },
@@ -53,9 +53,9 @@ internal class TestRippleCounter
     private UInt32 GetCounterValue()
     {
         UInt32 value = 0;
-        for (Int32 i = 0; i < _counter?.Q.Count; i++)
+        for (Int32 i = 0; i < _counter.Q.Count; i++)
         {
-            if (_counter.Q[i].Value == true)
+            if (_counter.Q[i].Value)
             {
                 value |= 1u << i;
             }
