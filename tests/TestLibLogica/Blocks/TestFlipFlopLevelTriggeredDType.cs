@@ -34,7 +34,7 @@ public class TestFlipFlopLevelTriggeredDType
         new Object[] { true, true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateQTestCases)))]
+    [TestCaseSource(nameof(UpdateQTestCases))]
     public void Update_SetsQ(Boolean d, Boolean clk, Boolean expectedQ)
     {
         _block.D.Value = d;
@@ -52,7 +52,7 @@ public class TestFlipFlopLevelTriggeredDType
         new Object[] { true, true, false },
     ];
 
-    [TestCaseSource((nameof(UpdateNQTestCases)))]
+    [TestCaseSource(nameof(UpdateNQTestCases))]
     public void Update_SetsNQ(Boolean d, Boolean clk, Boolean expectedNQ)
     {
         _block.D.Value = d;

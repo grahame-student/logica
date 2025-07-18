@@ -49,7 +49,7 @@ public class TestWideAdder
         new Object[] { 6, 6, 7 },
     ];
 
-    [TestCaseSource((nameof(UpdateSumOutTestCases)))]
+    [TestCaseSource(nameof(UpdateSumOutTestCases))]
     public void Update_SetsSumOut_ToSumOfAAndB(Int32 ax, Int32 bx, Int32 sx)
     {
         _block = new WideAdder(8);

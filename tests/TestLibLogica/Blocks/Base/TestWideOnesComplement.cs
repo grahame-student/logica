@@ -48,7 +48,7 @@ public class TestWideOnesComplement
         new Object[] { 7, true, false },
     ];
 
-    [TestCaseSource((nameof(InvertTestCases)))]
+    [TestCaseSource(nameof(InvertTestCases))]
     public void Update_SetsO_ToNotAWhenInvertSet(Int32 bit, Boolean invert, Boolean output)
     {
         _block.A[bit].Value = true;

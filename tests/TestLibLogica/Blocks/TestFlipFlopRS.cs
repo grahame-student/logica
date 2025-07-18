@@ -47,7 +47,7 @@ public class TestFlipFlopRS
         new Object[] { true, true, false },
     ];
 
-    [TestCaseSource((nameof(UpdateQTestCases)))]
+    [TestCaseSource(nameof(UpdateQTestCases))]
     public void Update_SetsQ(Boolean r, Boolean s, Boolean expectedQ)
     {
         _block.R.Value = r;
@@ -66,7 +66,7 @@ public class TestFlipFlopRS
         new Object[] { true, true, false },
     ];
 
-    [TestCaseSource((nameof(UpdateNQTestCases)))]
+    [TestCaseSource(nameof(UpdateNQTestCases))]
     public void Update_SetsNQ(Boolean r, Boolean s, Boolean expectedNQ)
     {
         _block.R.Value = r;
