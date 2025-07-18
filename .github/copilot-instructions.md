@@ -24,6 +24,7 @@ This repository uses an `.editorconfig` file to define coding standards. When ma
   - Use camelCase with underscore prefix for private fields
   - Follow the naming conventions defined in `.editorconfig`
 - **Type usage**: Prefer explicit types over var when type is not obvious
+- **Global usings**: Never enable global usings
 
 ### Before Committing
 
@@ -41,6 +42,7 @@ Always ensure your code passes the linting checks:
 - **Use parameterized tests**: When testing similar scenarios with different inputs, use `[TestCaseSource]` to eliminate code duplication
 - **Test naming**: Use descriptive test method names that clearly indicate what is being tested and the expected outcome
 - **Avoid code duplication**: If you find yourself copying test code, refactor to use parameterized tests instead
+- **No reflection**: Always look for a clean solution that does not require the use of reflection
 
 ## Code Duplication Prevention
 
