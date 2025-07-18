@@ -23,7 +23,7 @@ internal class TestRippleCounter
     [Test]
     public void QValues_False_Initially()
     {
-        Assert.That(GetCounterValue, Is.Zero);
+        Assert.That(GetCounterValue(), Is.Zero);
     }
 
     public static Object[] UpdateCounterTestCases =
