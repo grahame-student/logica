@@ -45,7 +45,7 @@ internal class TestRippleCounter
             _counter.Update();
             _counter.Clk.Value = true;
             _counter.Update();
-            Console.WriteLine($"Counter value after {i + 1} rising edges: {GetCounterValue()}");
+            TestContext.WriteLine($"Counter value after {i + 1} rising edges: {GetCounterValue()}");
         }
         Assert.That(GetCounterValue(), Is.EqualTo(expected));
     }
