@@ -7,9 +7,6 @@ namespace LibLogica.Gates;
 
 public class NorGate : LogicElement, IBinaryGate
 {
-    private readonly OrGate _orGate = new();
-    private readonly NotGate _notGate = new();
-
     // Inputs
     public Input A { get; } = new();
     public Input B { get; } = new();
@@ -17,23 +14,13 @@ public class NorGate : LogicElement, IBinaryGate
     // Outputs
     public Output O { get; } = new();
 
-    public NorGate()
-    {
-        _orGate.A.Connect(A);
-        _orGate.B.Connect(B);
-        _notGate.A.Connect(_orGate.O);
-        O.Connect(_notGate.O);
-    }
-
     public override void Update()
     {
-        _orGate.Update();
-        _notGate.Update();
+        // Direct NOR computation - more efficient than OR + NOT chain
+        O.Value = !(A.Value || B.Value);
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_orGate.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_notGate.GetIds().Select(x => IdPrefix() + x));
+    public override IEnumerable<String> GetIds() => GetLocalIds();
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -42,9 +29,7 @@ public class NorGate : LogicElement, IBinaryGate
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_orGate.GetValues())
-        .Concat(_notGate.GetValues());
+    public override IEnumerable<Boolean> GetValues() => GetLocalValues();
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

@@ -1,5 +1,6 @@
 using System;
 using LibLogica.Blocks.Base;
+using LibLogica.Blocks;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Base;
