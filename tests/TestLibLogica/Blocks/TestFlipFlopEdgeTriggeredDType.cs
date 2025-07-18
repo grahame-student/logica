@@ -56,7 +56,7 @@ public class TestFlipFlopEdgeTriggeredDType
     [TestCaseSource(nameof(UpdateQTestCases))]
     public void Update_SetsQ(Boolean initQ, Boolean d, Boolean isRisingEdge, Boolean expectedQ)
     {
-        SetQHigh(initQ);
+        SetInitialQState(initQ);
 
         _block.D.Value = d;
         _block.Clock.Value = !isRisingEdge;
@@ -68,7 +68,7 @@ public class TestFlipFlopEdgeTriggeredDType
         Assert.That(_block.Q.Value, Is.EqualTo(expectedQ));
     }
 
-    private void SetQHigh(Boolean initQ)
+    private void SetInitialQState(Boolean initQ)
     {
         if (!initQ) return;
 
@@ -102,7 +102,7 @@ public class TestFlipFlopEdgeTriggeredDType
     [TestCaseSource(nameof(UpdateNQTestCases))]
     public void Update_SetsNQ(Boolean initQ, Boolean d, Boolean isRisingEdge, Boolean expectedNQ)
     {
-        SetQHigh(initQ);
+        SetInitialQState(initQ);
 
         _block.D.Value = d;
         _block.Clock.Value = !isRisingEdge;
