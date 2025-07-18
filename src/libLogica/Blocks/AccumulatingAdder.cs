@@ -10,7 +10,7 @@ namespace LibLogica.Blocks;
 public class AccumulatingAdder : LogicElement
 {
     private readonly Adder8Bit _adder8 = new();
-    private readonly Latch8Bit _latch8 = new();
+    private readonly LatchLevelTriggered8Bit _latch8 = new();
 
     // Inputs
     public LogicArray<Input> A { get; } = new(8);

@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Base;
 
-public class WideLatch : LogicElement
+public class WideLatchLevelTriggered : LogicElement
 {
     private readonly BlockArray<FlipFlopLevelTriggeredDType> _latches;
 
@@ -17,7 +17,7 @@ public class WideLatch : LogicElement
     // Outputs
     public LogicArray<Output> Q { get; }
 
-    public WideLatch(Int32 width)
+    public WideLatchLevelTriggered(Int32 width)
     {
         _latches = new BlockArray<FlipFlopLevelTriggeredDType>(width);
         D = new LogicArray<Input>(width);
