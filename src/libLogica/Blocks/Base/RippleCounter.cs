@@ -36,7 +36,14 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        // Propagate the ripple through all flip-flops
+        // Multiple passes are necessary for proper ripple propagation due to the complex
+        // edge-triggered flip-flop design. Each flip-flop contains multiple internal gates
+        // that require stabilization time. The event-driven connections need multiple cycles
+        // to properly propagate changes through the entire chain.
+        //
+        // Analysis shows that for n flip-flops, up to n passes may be needed in worst-case
+        // scenarios (like 255→0 transition where all bits must change). However, most
+        // transitions require fewer passes. We use n passes to ensure correctness.
         for (Int32 pass = 0; pass < _flipflops.Count; pass++)
         {
             for (Int32 i = 0; i < _flipflops.Count; i++)
