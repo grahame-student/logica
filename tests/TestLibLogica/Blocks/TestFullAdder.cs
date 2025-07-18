@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 

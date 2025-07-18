@@ -1,32 +1,22 @@
 using System;
-using NUnit.Framework;
 using LibLogica.Gates;
+using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
 public class TestOrGate : BinaryGateTestBase<OrGate>
 {
-    [Test]
-    public void Update_SetsO_ToLogicalOrOfAAndB_FalseFalse()
-    {
-        TestLogicOperation(false, false, false);
-    }
+    public static Object[] UpdateTestCases =
+    [
+        new Object[] { false, false, false },
+        new Object[] { false, true, true },
+        new Object[] { true, false, true },
+        new Object[] { true, true, true }
+    ];
 
-    [Test]
-    public void Update_SetsO_ToLogicalOrOfAAndB_FalseTrue()
+    [TestCaseSource(nameof(UpdateTestCases))]
+    public void Update_SetsO_ToLogicalOrOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
-        TestLogicOperation(false, true, true);
-    }
-
-    [Test]
-    public void Update_SetsO_ToLogicalOrOfAAndB_TrueFalse()
-    {
-        TestLogicOperation(true, false, true);
-    }
-
-    [Test]
-    public void Update_SetsO_ToLogicalOrOfAAndB_TrueTrue()
-    {
-        TestLogicOperation(true, true, true);
+        TestLogicOperation(a, b, expectedO);
     }
 }

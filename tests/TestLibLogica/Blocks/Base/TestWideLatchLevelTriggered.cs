@@ -1,8 +1,8 @@
-using LibLogica.Blocks.Base;
 using System;
-using NUnit.Framework;
 using System.Linq;
+using LibLogica.Blocks.Base;
 using LibLogica.IO;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Base;
 
@@ -13,27 +13,31 @@ public class TestWideLatchLevelTriggered : WideLatchTestBase<WideLatchLevelTrigg
         return new WideLatchLevelTriggered(width);
     }
 
-    [Test]
-    public void Update_SetsQToD_WhenClockTrue_Bit0_False()
+    public static Object[] UpdateQWhenClockHighTestCases =
+    [
+        new Object[] { 0, false, false },
+        new Object[] { 0, true, true },
+        new Object[] { 7, false, false },
+        new Object[] { 7, true, true },
+    ];
+
+    [TestCaseSource(nameof(UpdateQWhenClockHighTestCases))]
+    public void Update_SetsQToD_WhenClockHigh(Int32 bit, Boolean d, Boolean expectedQ)
     {
-        TestUpdateSetsQToD(0, true, false, PerformLowLevelClockOperation);
+        TestUpdateSetsQToD(bit, d, expectedQ, PerformHighLevelClockOperation);
     }
 
-    [Test]
-    public void Update_SetsQToD_WhenClockTrue_Bit0_True()
-    {
-        TestUpdateSetsQToD(0, true, true, PerformHighLevelClockOperation);
-    }
+    public static Object[] UpdateQWhenClockLowTestCases =
+    [
+        new Object[] { 0, false, false },
+        new Object[] { 0, true, false },
+        new Object[] { 7, false, false },
+        new Object[] { 7, true, false },
+    ];
 
-    [Test]
-    public void Update_SetsQToD_WhenClockTrue_Bit7_False()
+    [TestCaseSource(nameof(UpdateQWhenClockLowTestCases))]
+    public void Update_DoesNotSetQToD_WhenClockLow(Int32 bit, Boolean d, Boolean expectedQ)
     {
-        TestUpdateSetsQToD(7, true, false, PerformLowLevelClockOperation);
-    }
-
-    [Test]
-    public void Update_SetsQToD_WhenClockTrue_Bit7_True()
-    {
-        TestUpdateSetsQToD(7, true, true, PerformHighLevelClockOperation);
+        TestUpdateSetsQToD(bit, d, expectedQ, PerformLowLevelClockOperation);
     }
 }

@@ -11,12 +11,12 @@ public interface IWideLatch
     /// Data inputs for the latch.
     /// </summary>
     LogicArray<Input> D { get; }
-    
+
     /// <summary>
     /// Clock input for the latch.
     /// </summary>
     Input Clock { get; }
-    
+
     /// <summary>
     /// Data outputs from the latch.
     /// </summary>

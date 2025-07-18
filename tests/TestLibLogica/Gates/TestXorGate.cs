@@ -1,32 +1,22 @@
 using System;
-using NUnit.Framework;
 using LibLogica.Gates;
+using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
 public class TestXorGate : BinaryGateTestBase<XorGate>
 {
-    [Test]
-    public void Update_SetsO_ToLogicalXorOfAAndB_FalseFalse()
-    {
-        TestLogicOperation(false, false, false);
-    }
+    public static Object[] UpdateTestCases =
+    [
+        new Object[] { false, false, false },
+        new Object[] { false, true, true },
+        new Object[] { true, false, true },
+        new Object[] { true, true, false }
+    ];
 
-    [Test]
-    public void Update_SetsO_ToLogicalXorOfAAndB_FalseTrue()
+    [TestCaseSource(nameof(UpdateTestCases))]
+    public void Update_SetsO_ToLogicalXorOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
-        TestLogicOperation(false, true, true);
-    }
-
-    [Test]
-    public void Update_SetsO_ToLogicalXorOfAAndB_TrueFalse()
-    {
-        TestLogicOperation(true, false, true);
-    }
-
-    [Test]
-    public void Update_SetsO_ToLogicalXorOfAAndB_TrueTrue()
-    {
-        TestLogicOperation(true, true, false);
+        TestLogicOperation(a, b, expectedO);
     }
 }

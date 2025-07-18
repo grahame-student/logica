@@ -11,12 +11,12 @@ public interface IBinaryGate
     /// First input of the binary gate.
     /// </summary>
     Input A { get; }
-    
+
     /// <summary>
     /// Second input of the binary gate.
     /// </summary>
     Input B { get; }
-    
+
     /// <summary>
     /// Output of the binary gate.
     /// </summary>

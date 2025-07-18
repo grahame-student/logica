@@ -1,8 +1,7 @@
-using LibLogica.Blocks;
-
 using System;
-using NUnit.Framework;
 using System.Linq;
+using LibLogica.Blocks;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
