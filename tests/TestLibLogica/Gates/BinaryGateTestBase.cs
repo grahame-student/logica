@@ -7,7 +7,7 @@ namespace TestLibLogica.Gates;
 
 public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, IBinaryGate, new()
 {
-    protected TGate _gate = null!;
+    protected TGate _gate;
 
     [SetUp]
     public virtual void Setup()
