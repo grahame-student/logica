@@ -115,8 +115,15 @@ public class TestAccumulatingAdderEdgeTriggered
         Assert.That(result, Is.EqualTo(val170));
     }
 
-    [Test]
-    public void Update_DoesNotUpdateO_WhenAddFalse()
+    public static readonly Object[] clockEdges =
+    [
+    new Object[] { false, false },
+        new Object[] { true, false },
+        new Object[] { true, true },
+    ];
+
+    [TestCaseSource(nameof(clockEdges))]
+    public void Update_DoesNotUpdateO_WhenAddNotRisingEdge(Boolean edge, Boolean nextEdge)
     {
         // bits 0 -> 7
         IList<Boolean> expected =
@@ -131,10 +138,16 @@ public class TestAccumulatingAdderEdgeTriggered
             false, // msb
         ];
         _block.A[0].Value = true;
+        // rising edge of clock
+        _block.Add.Value = false;
+        _block.Update();
         _block.Add.Value = true;
         _block.Update();
 
-        _block.Add.Value = false;
+        // test sequence of clock edges
+        _block.Add.Value = edge;
+        _block.Update();
+        _block.Add.Value = nextEdge;
         _block.Update();
 
         var result = new List<Boolean>();
