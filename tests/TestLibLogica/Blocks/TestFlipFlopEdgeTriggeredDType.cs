@@ -41,16 +41,22 @@ public class TestFlipFlopEdgeTriggeredDType
 
     public static Object[] UpdateQTestCases =
     [
-        //             d,     isRising, expectedQ
-        new Object[] { false, false, false },
-        new Object[] { false, true, false },
-        new Object[] { true, false, false },
-        new Object[] { true, true, true },
+        //             initQ, d,    isRising, expectedQ
+        new Object[] { false, false, false, false },
+        new Object[] { false, false, true, false },
+        new Object[] { false, true, false, false },
+        new Object[] { false, true, true, true },
+        new Object[] { true, false, false, true },
+        new Object[] { true, false, true, false },
+        new Object[] { true, true, false, true },
+        new Object[] { true, true, true, true },
     ];
 
     [TestCaseSource(nameof(UpdateQTestCases))]
-    public void Update_SetsQ(Boolean d, Boolean isRisingEdge, Boolean expectedQ)
+    public void Update_SetsQ(Boolean initQ, Boolean d, Boolean isRisingEdge, Boolean expectedQ)
     {
+        SetQHigh(initQ);
+
         _block.D.Value = d;
         _block.Clock.Value = !isRisingEdge;
         _block.Update();
@@ -61,18 +67,39 @@ public class TestFlipFlopEdgeTriggeredDType
         Assert.That(_block.Q.Value, Is.EqualTo(expectedQ));
     }
 
+    private void SetQHigh(Boolean initQ)
+    {
+        if (!initQ) return;
+
+        // If we want to set Q high, we need to simulate a rising edge on the clock
+        _block.D.Value = true;
+        _block.Clock.Value = false;
+        _block.Update();
+        _block.Clock.Value = true;
+        // Rising edge to set Q high
+        _block.Update();
+        Assert.That(_block.Q.Value, Is.True);
+    }
+
     public static Object[] UpdateNQTestCases =
     [
-        //             d,     isRising, expectedNq
-        new Object[] { false, false, true },
-        new Object[] { false, true, true },
-        new Object[] { true, false, true },
-        new Object[] { true, true, false },
+        //             initQ, d,     isRising, expectedNq
+        new Object[] { false, false, false, true },
+        new Object[] { false, false, true, true },
+        new Object[] { false, true, false, true },
+        new Object[] { false, true, true, false },
+
+        new Object[] { true, false, false, false },
+        new Object[] { true, false, true, false },
+        new Object[] { true, true, false, false },
+        new Object[] { true, true, true, false },
     ];
 
     [TestCaseSource(nameof(UpdateNQTestCases))]
-    public void Update_SetsNQ(Boolean d, Boolean isRisingEdge, Boolean expectedNQ)
+    public void Update_SetsNQ(Boolean initQ, Boolean d, Boolean isRisingEdge, Boolean expectedNQ)
     {
+        SetQHigh(initQ);
+
         _block.D.Value = d;
         _block.Clock.Value = !isRisingEdge;
         _block.Update();
