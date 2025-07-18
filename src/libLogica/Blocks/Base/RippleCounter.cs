@@ -36,21 +36,42 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        // Multiple passes are necessary for proper ripple propagation due to the complex
-        // edge-triggered flip-flop design. Each flip-flop contains multiple internal gates
-        // that require stabilization time. The event-driven connections need multiple cycles
-        // to properly propagate changes through the entire chain.
-        //
-        // Analysis shows that for n flip-flops, up to n passes may be needed in worst-case
-        // scenarios (like 255→0 transition where all bits must change). However, most
-        // transitions require fewer passes. We use n passes to ensure correctness.
-        for (Int32 pass = 0; pass < _flipflops.Count; pass++)
+        // Optimized update using change detection to achieve O(n) complexity.
+        // Instead of always doing n×n updates, we continue updating until
+        // the circuit stabilizes (no more changes occur).
+        Boolean hasChanges;
+        Int32 pass = 0;
+        const Int32 maxPasses = 32; // Safety limit to prevent infinite loops
+
+        do
         {
+            hasChanges = false;
+
+            // Capture the current state before updating
+            Boolean[] previousStates = new Boolean[_flipflops.Count];
+            for (Int32 i = 0; i < _flipflops.Count; i++)
+            {
+                previousStates[i] = _flipflops[i].Q.Value;
+            }
+
+            // Update all flip-flops once
             for (Int32 i = 0; i < _flipflops.Count; i++)
             {
                 _flipflops[i].Update();
             }
-        }
+
+            // Check if any outputs changed
+            for (Int32 i = 0; i < _flipflops.Count; i++)
+            {
+                if (_flipflops[i].Q.Value != previousStates[i])
+                {
+                    hasChanges = true;
+                    break;
+                }
+            }
+
+            pass++;
+        } while (hasChanges && pass < maxPasses);
     }
 
     public override IEnumerable<String> GetIds()
