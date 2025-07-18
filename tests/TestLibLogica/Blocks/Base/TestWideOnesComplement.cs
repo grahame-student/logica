@@ -1,8 +1,7 @@
-using LibLogica.Blocks.Base;
-
 using System;
-using NUnit.Framework;
 using System.Linq;
+using LibLogica.Blocks.Base;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Base;
 
@@ -49,7 +48,7 @@ public class TestWideOnesComplement
         new Object[] { 7, true, false },
     ];
 
-    [TestCaseSource((nameof(InvertTestCases)))]
+    [TestCaseSource(nameof(InvertTestCases))]
     public void Update_SetsO_ToNotAWhenInvertSet(Int32 bit, Boolean invert, Boolean output)
     {
         _block.A[bit].Value = true;

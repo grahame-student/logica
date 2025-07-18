@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
@@ -36,7 +36,7 @@ public class TestNorGate
         new Object[] { true, true, false }
     ];
 
-    [TestCaseSource((nameof(UpdateTestCases)))]
+    [TestCaseSource(nameof(UpdateTestCases))]
     public void Update_SetsO_ToLogicalNorOfAAndB(Boolean a, Boolean b, Boolean expectedO)
     {
         _gate.A.Value = a;

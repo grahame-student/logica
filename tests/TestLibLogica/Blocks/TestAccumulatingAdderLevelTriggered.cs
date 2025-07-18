@@ -1,9 +1,8 @@
-using LibLogica.Blocks;
-
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using LibLogica.Blocks;
+using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
@@ -62,7 +61,7 @@ public class TestAccumulatingAdderLevelTriggered
         new Object[] { 7, },
     ];
 
-    [TestCaseSource((nameof(BitIndices)))]
+    [TestCaseSource(nameof(BitIndices))]
     public void AInputsInitiallyFalse(Int32 bit)
     {
         Assert.That(_block.A[bit].Value, Is.EqualTo(false));
@@ -74,7 +73,7 @@ public class TestAccumulatingAdderLevelTriggered
         Assert.That(_block.Add.Value, Is.EqualTo(false));
     }
 
-    [TestCaseSource((nameof(BitIndices)))]
+    [TestCaseSource(nameof(BitIndices))]
     public void OOutputsInitiallyFalse(Int32 bit)
     {
         Assert.That(_block.O[bit].Value, Is.EqualTo(false));

@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks;
 
-public class FlipFlopLevelTriggeredDType : LogicElement
+public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
 {
     private readonly NotGate _not = new();
     private readonly AndGate _and1 = new();

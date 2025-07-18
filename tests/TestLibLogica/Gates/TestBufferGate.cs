@@ -1,8 +1,7 @@
-using LibLogica.Gates;
-
 using System;
-using NUnit.Framework;
 using System.Linq;
+using LibLogica.Gates;
+using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
@@ -66,7 +65,7 @@ internal class TestBufferGate
         new Object[] { true, true },
     ];
 
-    [TestCaseSource((nameof(UpdateTestCases)))]
+    [TestCaseSource(nameof(UpdateTestCases))]
     public void Update_SetsO_ToAWhenEnabled(Boolean a, Boolean expectedO)
     {
         _gate.A.Value = a;
