@@ -36,37 +36,14 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        for (Int32 i = 0; i < _flipflops.Count; i++)
+        const Int32 passes = 8;
+        for (Int32 j = 0; j < passes; ++j)
         {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
-        }
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            _flipflops[i].Update();
+            for (Int32 i = 0; i < _flipflops.Count; i++)
+            {
+                _flipflops[i].Update();
+            }
+
         }
     }
 
