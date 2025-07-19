@@ -6,14 +6,14 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestFlipFlopEdgeTriggeredDType
+public class TestFlipFlopEdgeTriggeredDTypeSimple
 {
-    private FlipFlopEdgeTriggeredDType _block;
+    private FlipFlopEdgeTriggeredDTypeSimple _block;
 
     [SetUp]
     public void Setup()
     {
-        _block = new FlipFlopEdgeTriggeredDType();
+        _block = new FlipFlopEdgeTriggeredDTypeSimple();
     }
 
     [Test]
@@ -112,6 +112,32 @@ public class TestFlipFlopEdgeTriggeredDType
         _block.Update();
 
         Assert.That(_block.NQ.Value, Is.EqualTo(expectedNQ));
+    }
+
+    [Test]
+    public void Update_SetsQ_WhenPresetIsTrue()
+    {
+        // D input does not matter when preset is true
+        _block.D.Value = false;
+        _block.Preset.Value = true;
+        _block.Update();
+
+        Assert.That(_block.Q.Value, Is.True);
+    }
+
+    [Test]
+    public void Update_ResetsQ_WhenClearIsTrue()
+    {
+        _block.Preset.Value = true;
+        _block.Update();
+
+        // D input does not matter when clear is true
+        _block.D.Value = true;
+        _block.Preset.Value = false;
+        _block.Clear.Value = true;
+        _block.Update();
+
+        Assert.That(_block.Q.Value, Is.False);
     }
 
     [Test]
