@@ -1,18 +1,19 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using LibLogica.Blocks;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestFlipFlopEdgeTriggeredDTypeSimple
+public class TestFlipFlopEdgeTriggeredDType
 {
-    private FlipFlopEdgeTriggeredDTypeSimple _block;
+    private FlipFlopEdgeTriggeredDType _block;
 
     [SetUp]
     public void Setup()
     {
-        _block = new FlipFlopEdgeTriggeredDTypeSimple();
+        _block = new FlipFlopEdgeTriggeredDType();
     }
 
     [Test]
