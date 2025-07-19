@@ -47,6 +47,30 @@ public class RippleCounter : LogicElement
         }
     }
 
+    /// <summary>
+    /// Test method for single-pass update - for optimization testing only
+    /// </summary>
+    public void UpdateSinglePass()
+    {
+        for (Int32 i = 0; i < _flipflops.Count; i++)
+        {
+            _flipflops[i].Update();
+        }
+    }
+
+    /// <summary>
+    /// Test method for sequential single-pass update - for optimization testing only
+    /// </summary>
+    public void UpdateSinglePassSequential()
+    {
+        // Update flip-flops sequentially from first to last
+        // This allows changes to propagate through the chain in a single pass
+        for (Int32 i = 0; i < _flipflops.Count; i++)
+        {
+            _flipflops[i].Update();
+        }
+    }
+
     public override IEnumerable<String> GetIds()
     {
         IEnumerable<String> result = GetLocalIds();
