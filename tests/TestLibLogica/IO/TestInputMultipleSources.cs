@@ -27,7 +27,7 @@ internal class TestInputMultipleSources
         _input.Connect(_output1);
         _input.Connect(_output2);
 
-        Assert.That(_input.Value, Is.EqualTo(true));
+        Assert.That(_input.Value, Is.True);
     }
 
     [Test]
@@ -40,11 +40,11 @@ internal class TestInputMultipleSources
         _input.Connect(_output1);
         _input.Connect(_output2);
 
-        Assert.That(_input.Value, Is.EqualTo(true));
+        Assert.That(_input.Value, Is.True);
 
         // Now make output1 high impedance too - input should keep current value
         _output1.IsHighImpedance = true;
-        Assert.That(_input.Value, Is.EqualTo(true)); // Keeps the previous value
+        Assert.That(_input.Value, Is.True); // Keeps the previous value
     }
 
     [Test]
@@ -71,12 +71,12 @@ internal class TestInputMultipleSources
         _input.Connect(_output1);
         _input.Connect(_output2);
 
-        Assert.That(_input.Value, Is.EqualTo(true));
+        Assert.That(_input.Value, Is.True);
 
         // First make output1 high impedance, then activate output2
         _output1.IsHighImpedance = true;
         _output2.IsHighImpedance = false;
 
-        Assert.That(_input.Value, Is.EqualTo(false));
+        Assert.That(_input.Value, Is.False);
     }
 }

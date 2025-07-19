@@ -18,25 +18,25 @@ public class TestFlipFlopRS
     [Test]
     public void InputRInitiallyFalse()
     {
-        Assert.That(_block.R.Value, Is.EqualTo(false));
+        Assert.That(_block.R.Value, Is.False);
     }
 
     [Test]
     public void InputSInitiallyFalse()
     {
-        Assert.That(_block.S.Value, Is.EqualTo(false));
+        Assert.That(_block.S.Value, Is.False);
     }
 
     [Test]
     public void OutputQInitiallyFalse()
     {
-        Assert.That(_block.Q.Value, Is.EqualTo(false));
+        Assert.That(_block.Q.Value, Is.False);
     }
 
     [Test]
     public void OutputNQInitiallyTrue()
     {
-        Assert.That(_block.NQ.Value, Is.EqualTo(true));
+        Assert.That(_block.NQ.Value, Is.True);
     }
 
     public static Object[] UpdateQTestCases =

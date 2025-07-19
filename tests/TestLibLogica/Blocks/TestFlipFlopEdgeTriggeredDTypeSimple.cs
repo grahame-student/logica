@@ -19,25 +19,25 @@ public class TestFlipFlopEdgeTriggeredDType
     [Test]
     public void InputD_InitiallyFalse()
     {
-        Assert.That(_block.D.Value, Is.EqualTo(false));
+        Assert.That(_block.D.Value, Is.False);
     }
 
     [Test]
     public void InputClock_InitiallyFalse()
     {
-        Assert.That(_block.Clock.Value, Is.EqualTo(false));
+        Assert.That(_block.Clock.Value, Is.False);
     }
 
     [Test]
     public void OutputQ_InitiallyFalse()
     {
-        Assert.That(_block.Q.Value, Is.EqualTo(false));
+        Assert.That(_block.Q.Value, Is.False);
     }
 
     [Test]
     public void OutputNQ_InitiallyTrue()
     {
-        Assert.That(_block.NQ.Value, Is.EqualTo(true));
+        Assert.That(_block.NQ.Value, Is.True);
     }
 
     public static Object[] UpdateQTestCases =

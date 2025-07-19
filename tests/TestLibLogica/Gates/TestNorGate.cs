@@ -19,13 +19,13 @@ public class TestNorGate
     [Test]
     public void InputAInitiallyFalse()
     {
-        Assert.That(_gate.A.Value, Is.EqualTo(false));
+        Assert.That(_gate.A.Value, Is.False);
     }
 
     [Test]
     public void InputBInitiallyFalse()
     {
-        Assert.That(_gate.B.Value, Is.EqualTo(false));
+        Assert.That(_gate.B.Value, Is.False);
     }
 
     public static Object[] UpdateTestCases =

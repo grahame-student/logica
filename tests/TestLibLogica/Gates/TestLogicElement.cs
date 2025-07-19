@@ -109,7 +109,7 @@ public class TestLogicElement
 
         Task.WaitAll(tasks);
 
-        Assert.That(exceptions.Count, Is.EqualTo(0));
+        Assert.That(exceptions.Count, Is.Zero);
     }
 
     [Test]

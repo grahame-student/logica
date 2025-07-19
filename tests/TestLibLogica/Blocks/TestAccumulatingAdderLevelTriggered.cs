@@ -64,19 +64,19 @@ public class TestAccumulatingAdderLevelTriggered
     [TestCaseSource(nameof(BitIndices))]
     public void AInputsInitiallyFalse(Int32 bit)
     {
-        Assert.That(_block.A[bit].Value, Is.EqualTo(false));
+        Assert.That(_block.A[bit].Value, Is.False);
     }
 
     [Test]
     public void AddInitiallyFalse()
     {
-        Assert.That(_block.Add.Value, Is.EqualTo(false));
+        Assert.That(_block.Add.Value, Is.False);
     }
 
     [TestCaseSource(nameof(BitIndices))]
     public void OOutputsInitiallyFalse(Int32 bit)
     {
-        Assert.That(_block.O[bit].Value, Is.EqualTo(false));
+        Assert.That(_block.O[bit].Value, Is.False);
     }
 
     [Test]

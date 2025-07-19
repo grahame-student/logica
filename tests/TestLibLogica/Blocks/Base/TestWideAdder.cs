@@ -58,7 +58,7 @@ public class TestWideAdder
 
         _block.Update();
 
-        Assert.That(_block.SumOut[sx].Value, Is.EqualTo(true));
+        Assert.That(_block.SumOut[sx].Value, Is.True);
     }
 
     [Test]
@@ -70,7 +70,7 @@ public class TestWideAdder
 
         _block.Update();
 
-        Assert.That(_block.CarryOut.Value, Is.EqualTo(true));
+        Assert.That(_block.CarryOut.Value, Is.True);
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class TestWideAdder
 
         _block.Update();
 
-        Assert.That(_block.SumOut[0].Value, Is.EqualTo(true));
+        Assert.That(_block.SumOut[0].Value, Is.True);
 
     }
 
