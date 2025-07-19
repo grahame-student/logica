@@ -36,13 +36,11 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        // Propagate the ripple through all flip-flops
+        // Propagate the ripple through all flip-flops        
         for (Int32 pass = 0; pass < _flipflops.Count; pass++)
         {
-            for (Int32 i = 0; i < _flipflops.Count; i++)
-            {
-                _flipflops[i].Update();
-            }
+            _flipflops[pass].Update();
+            _flipflops[pass].Update();
         }
     }
 
