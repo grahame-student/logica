@@ -8,7 +8,7 @@ namespace LibLogica.Blocks.Base;
 
 public class RippleCounter : LogicElement
 {
-    private readonly BlockArray<FlipFlopEdgeTriggeredDType> _flipflops;
+    private readonly BlockArray<FlipFlopEdgeTriggeredDTypeSimple> _flipflops;
 
     // Inputs
     public Input Clk { get; } = new();
@@ -18,7 +18,7 @@ public class RippleCounter : LogicElement
 
     public RippleCounter(Int32 width)
     {
-        _flipflops = new BlockArray<FlipFlopEdgeTriggeredDType>(width);
+        _flipflops = new BlockArray<FlipFlopEdgeTriggeredDTypeSimple>(width);
         Q = new LogicArray<Output>(width);
 
         _flipflops[0].Clock.Connect(Clk);
@@ -36,42 +36,14 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        // Optimized update using change detection to achieve O(n) complexity.
-        // Instead of always doing n×n updates, we continue updating until
-        // the circuit stabilizes (no more changes occur).
-        Boolean hasChanges;
-        Int32 pass = 0;
-        const Int32 maxPasses = 32; // Safety limit to prevent infinite loops
-
-        do
+        const Int32 passes = 8;
+        for (Int32 j = 0; j < passes; ++j)
         {
-            hasChanges = false;
-
-            // Capture the current state before updating
-            Boolean[] previousStates = new Boolean[_flipflops.Count];
-            for (Int32 i = 0; i < _flipflops.Count; i++)
-            {
-                previousStates[i] = _flipflops[i].Q.Value;
-            }
-
-            // Update all flip-flops once
             for (Int32 i = 0; i < _flipflops.Count; i++)
             {
                 _flipflops[i].Update();
             }
-
-            // Check if any outputs changed
-            for (Int32 i = 0; i < _flipflops.Count; i++)
-            {
-                if (_flipflops[i].Q.Value != previousStates[i])
-                {
-                    hasChanges = true;
-                    break;
-                }
-            }
-
-            pass++;
-        } while (hasChanges && pass < maxPasses);
+        }
     }
 
     public override IEnumerable<String> GetIds()
