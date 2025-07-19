@@ -8,7 +8,7 @@ namespace LibLogica.Blocks.Base;
 
 public class RippleCounter : LogicElement
 {
-    private readonly BlockArray<FlipFlopEdgeTriggeredDType> _flipflops;
+    private readonly BlockArray<FlipFlopEdgeTriggeredDTypeSimple> _flipflops;
 
     // Inputs
     public Input Clk { get; } = new();
@@ -18,7 +18,7 @@ public class RippleCounter : LogicElement
 
     public RippleCounter(Int32 width)
     {
-        _flipflops = new BlockArray<FlipFlopEdgeTriggeredDType>(width);
+        _flipflops = new BlockArray<FlipFlopEdgeTriggeredDTypeSimple>(width);
         Q = new LogicArray<Output>(width);
 
         _flipflops[0].Clock.Connect(Clk);
@@ -36,13 +36,14 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        // Propagate the ripple through all flip-flops
-        for (Int32 pass = 0; pass < _flipflops.Count; pass++)
+        const Int32 passes = 8;
+        for (Int32 j = 0; j < passes; ++j)
         {
             for (Int32 i = 0; i < _flipflops.Count; i++)
             {
                 _flipflops[i].Update();
             }
+
         }
     }
 
