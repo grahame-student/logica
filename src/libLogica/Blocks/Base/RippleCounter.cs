@@ -36,7 +36,14 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
-        const Int32 passes = 8;
+        // With FlipFlopEdgeTriggeredDTypeSimple, each flip-flop stabilizes in 1 update,
+        // but ripple propagation through the chain requires one pass per stage.
+        // In the worst case (e.g., 255→0), all flip-flops must toggle sequentially,
+        // requiring exactly _flipflops.Count passes for full propagation.
+        // This is O(n) and significantly more efficient than the previous fixed 8 passes
+        // for all counter widths.
+        Int32 passes = _flipflops.Count;
+        
         for (Int32 j = 0; j < passes; ++j)
         {
             for (Int32 i = 0; i < _flipflops.Count; i++)
