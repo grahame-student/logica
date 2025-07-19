@@ -18,13 +18,13 @@ public class TestFlipFlopLevelTriggeredDType
     [Test]
     public void InputD_InitiallyFalse()
     {
-        Assert.That(_block.D.Value, Is.EqualTo(false));
+        Assert.That(_block.D.Value, Is.False);
     }
 
     [Test]
     public void InputClock_InitiallyFalse()
     {
-        Assert.That(_block.Clock.Value, Is.EqualTo(false));
+        Assert.That(_block.Clock.Value, Is.False);
     }
 
     public static Object[] UpdateQTestCases =

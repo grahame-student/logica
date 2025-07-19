@@ -23,7 +23,7 @@ internal class TestOutput
 
         _output.Value = !_output.Value;
 
-        Assert.That(wasRaised, Is.EqualTo(true));
+        Assert.That(wasRaised, Is.True);
     }
 
     [Test]
@@ -34,6 +34,6 @@ internal class TestOutput
 
         _output.Value = true;
 
-        Assert.That(newValue, Is.EqualTo(true));
+        Assert.That(newValue, Is.True);
     }
 }

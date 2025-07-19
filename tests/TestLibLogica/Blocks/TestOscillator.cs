@@ -18,7 +18,7 @@ public class TestOscillator
     [Test]
     public void OutputO_InitiallyFalse()
     {
-        Assert.That(_block.O.Value, Is.EqualTo(false));
+        Assert.That(_block.O.Value, Is.False);
     }
 
     [Test]

@@ -19,7 +19,7 @@ public class TestNotGate
     [Test]
     public void InputAInitiallyFalse()
     {
-        Assert.That(_gate.A.Value, Is.EqualTo(false));
+        Assert.That(_gate.A.Value, Is.False);
     }
 
     public static Object[] UpdateTestCases =

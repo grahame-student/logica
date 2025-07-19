@@ -18,13 +18,13 @@ public class TestHalfAdder
     [Test]
     public void InputAInitiallyFalse()
     {
-        Assert.That(_block.A.Value, Is.EqualTo(false));
+        Assert.That(_block.A.Value, Is.False);
     }
 
     [Test]
     public void InputBInitiallyFalse()
     {
-        Assert.That(_block.B.Value, Is.EqualTo(false));
+        Assert.That(_block.B.Value, Is.False);
     }
 
     public static Object[] UpdateSumOutTestCases =

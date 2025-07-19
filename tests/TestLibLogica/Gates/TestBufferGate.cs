@@ -29,25 +29,25 @@ internal class TestBufferGate
     [Test]
     public void A_Initially_False()
     {
-        Assert.That(_gate.A.Value, Is.EqualTo(false));
+        Assert.That(_gate.A.Value, Is.False);
     }
 
     [Test]
     public void Enable_Initially_False()
     {
-        Assert.That(_gate.Enable.Value, Is.EqualTo(false));
+        Assert.That(_gate.Enable.Value, Is.False);
     }
 
     [Test]
     public void O_Initially_Null()
     {
-        Assert.That(_gate.O.Value, Is.EqualTo(false));
+        Assert.That(_gate.O.Value, Is.False);
     }
 
     [Test]
     public void O_Initially_HighImpedance()
     {
-        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(true));
+        Assert.That(_gate.O.IsHighImpedance, Is.True);
     }
 
     [Test]
@@ -56,7 +56,7 @@ internal class TestBufferGate
         _gate.Enable.Value = true;
         _gate.Update();
 
-        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(false));
+        Assert.That(_gate.O.IsHighImpedance, Is.False);
     }
 
     public static readonly Object[] UpdateTestCases =
@@ -74,7 +74,7 @@ internal class TestBufferGate
         _gate.Update();
 
         Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
-        Assert.That(_gate.O.IsHighImpedance, Is.EqualTo(false));
+        Assert.That(_gate.O.IsHighImpedance, Is.False);
     }
 
     [Test]

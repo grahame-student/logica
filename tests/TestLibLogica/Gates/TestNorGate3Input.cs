@@ -20,19 +20,19 @@ public class TestNorGate3Input
     [Test]
     public void InputAInitiallyFalse()
     {
-        Assert.That(_gate.A.Value, Is.EqualTo(false));
+        Assert.That(_gate.A.Value, Is.False);
     }
 
     [Test]
     public void InputBInitiallyFalse()
     {
-        Assert.That(_gate.B.Value, Is.EqualTo(false));
+        Assert.That(_gate.B.Value, Is.False);
     }
 
     [Test]
     public void InputCInitiallyFalse()
     {
-        Assert.That(_gate.C.Value, Is.EqualTo(false));
+        Assert.That(_gate.C.Value, Is.False);
     }
 
     public static Object[] UpdateTestCases =
