@@ -118,7 +118,7 @@ public class TestFlipFlopEdgeTriggeredDTypeSimple
     public void Update_SetsQ_WhenPresetIsTrue()
     {
         // D input does not matter when preset is true
-        _block.D.Value = false; 
+        _block.D.Value = false;
         _block.Preset.Value = true;
         _block.Update();
 
