@@ -39,6 +39,8 @@ public class RippleCounter : LogicElement
         // Propagate the ripple through all flip-flops        
         for (Int32 pass = 0; pass < _flipflops.Count; pass++)
         {
+            // Each flip-flop requires two updates to correctly propagate the ripple effect.
+            // This simulates the behavior of edge-triggered flip-flops in hardware.
             _flipflops[pass].Update();
             _flipflops[pass].Update();
         }
