@@ -44,7 +44,7 @@ public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
     {
         // Convert BlockArray to array for AddChildren
         var latchChildren = new LogicElement[_latches.Count];
-        for (int i = 0; i < _latches.Count; i++)
+        for (Int32 i = 0; i < _latches.Count; i++)
         {
             latchChildren[i] = _latches[i];
         }

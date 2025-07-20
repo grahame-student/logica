@@ -50,7 +50,7 @@ public class RippleCounter : LogicElement
     {
         // Convert BlockArray to array for AddChildren
         var flipflopChildren = new LogicElement[_flipflops.Count];
-        for (int i = 0; i < _flipflops.Count; i++)
+        for (Int32 i = 0; i < _flipflops.Count; i++)
         {
             flipflopChildren[i] = _flipflops[i];
         }
