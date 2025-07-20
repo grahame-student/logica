@@ -26,7 +26,7 @@ internal class TestDecoder3to8 : LogicElementTestBase<Decoder3to8>
 
     public static readonly Object[] TestCaseData =
     [
-        //            address, write, activeOutput 
+        //            address, write, activeOutput
         new Object[] {0b000u, true,  0b00000001u },
         new Object[] {0b001u, true, 0b00000010u },
         new Object[] {0b010u, true, 0b00000100u },
