@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
-internal class TestBufferGate
+internal class TestBufferGate : LogicElementTestBase<BufferGate>
 {
     //
     // A --|>-- O
@@ -21,9 +21,10 @@ internal class TestBufferGate
     private BufferGate _gate;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _gate = new BufferGate();
+        base.Setup();
+        _gate = _element;
     }
 
     [Test]
@@ -75,11 +76,5 @@ internal class TestBufferGate
 
         Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
         Assert.That(_gate.O.IsHighImpedance, Is.False);
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 }

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestAccumulatingAdderLevelTriggered
+public class TestAccumulatingAdderLevelTriggered : LogicElementTestBase<AccumulatingAdderLevelTriggered>
 {
     /*
      *         A[8] = 0 <- initial value
@@ -42,9 +42,10 @@ public class TestAccumulatingAdderLevelTriggered
     private AccumulatingAdderLevelTriggered _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new AccumulatingAdderLevelTriggered();
+        base.Setup();
+        _block = _element;
     }
 
     // Consolidated test case array that replaces separate InitialAValues and InitialOValues arrays
@@ -140,11 +141,5 @@ public class TestAccumulatingAdderLevelTriggered
         }
 
         Assert.That(result, Is.EqualTo(expected));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

@@ -5,14 +5,15 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestFlipFlopEdgeTriggeredDType
+public class TestFlipFlopEdgeTriggeredDType : LogicElementTestBase<FlipFlopEdgeTriggeredDType>
 {
     private FlipFlopEdgeTriggeredDType _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new FlipFlopEdgeTriggeredDType();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -111,11 +112,5 @@ public class TestFlipFlopEdgeTriggeredDType
         _block.Update();
 
         Assert.That(_block.NQ.Value, Is.EqualTo(expectedNQ));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

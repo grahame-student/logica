@@ -64,4 +64,22 @@ public class TestWideOnesComplement
     {
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
+
+    [Test]
+    public void GetIdsAndGetValues_CorrespondByPosition()
+    {
+        LogicElementTestHelper.ValidateIdsAndValuesCorrespondence(_block, "WideOnesComplement");
+    }
+
+    [Test]
+    public void GetIds_AllIdsFollowCorrectFormat()
+    {
+        var ids = _block.GetIds().ToList();
+
+        foreach (var id in ids)
+        {
+            Assert.That(id.StartsWith("WideOnesComplement_"), Is.True,
+                $"ID '{id}' should start with the class name prefix 'WideOnesComplement_'");
+        }
+    }
 }

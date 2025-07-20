@@ -7,14 +7,15 @@ namespace TestLibLogica.Gates;
 using LibLogica.Gates;
 using LibLogica.IO;
 
-public class TestNorGate3Input
+public class TestNorGate3Input : LogicElementTestBase<NorGate3Input>
 {
     private NorGate3Input _gate;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _gate = new NorGate3Input();
+        base.Setup();
+        _gate = _element;
     }
 
     [Test]
@@ -57,11 +58,5 @@ public class TestNorGate3Input
         _gate.Update();
 
         Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 }

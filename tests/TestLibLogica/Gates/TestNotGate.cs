@@ -6,14 +6,15 @@ namespace TestLibLogica.Gates;
 
 using LibLogica.Gates;
 
-public class TestNotGate
+public class TestNotGate : LogicElementTestBase<NotGate>
 {
     private NotGate _gate;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _gate = new NotGate();
+        base.Setup();
+        _gate = _element;
     }
 
     [Test]
@@ -36,11 +37,5 @@ public class TestNotGate
         _gate.Update();
 
         Assert.That(_gate.O.Value, Is.EqualTo(expectedO));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 }

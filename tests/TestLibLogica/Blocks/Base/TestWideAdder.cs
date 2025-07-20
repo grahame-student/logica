@@ -91,4 +91,24 @@ public class TestWideAdder
         _block = new WideAdder(8);
         Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
+
+    [Test]
+    public void GetIdsAndGetValues_CorrespondByPosition()
+    {
+        _block = new WideAdder(8);
+        LogicElementTestHelper.ValidateIdsAndValuesCorrespondence(_block, "WideAdder");
+    }
+
+    [Test]
+    public void GetIds_AllIdsFollowCorrectFormat()
+    {
+        _block = new WideAdder(8);
+        var ids = _block.GetIds().ToList();
+
+        foreach (var id in ids)
+        {
+            Assert.That(id.StartsWith("WideAdder_"), Is.True,
+                $"ID '{id}' should start with the class name prefix 'WideAdder_'");
+        }
+    }
 }
