@@ -98,7 +98,7 @@ public class WideAdder : LogicElement
             .AddArray(nameof(SumOut), SumOut)
             .AddLocal(nameof(CarryOut), CarryOut);
 
-        for (Int32 i = 0; i < _adders.Count; i++)
+        for (Int32 i = _adders.Count - 1; i >= 0; i--)
         {
             builder.AddChild(_adders[i]);
         }

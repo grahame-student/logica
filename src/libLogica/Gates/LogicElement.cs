@@ -35,10 +35,10 @@ public abstract class LogicElement
     /// <summary>
     /// Helper to create both GetIds() and GetValues() implementations with the same builder.
     /// This ensures perfect alignment and eliminates the need to duplicate the builder calls.
-    /// Usage: protected (IEnumerable&lt;string&gt; ids, IEnumerable&lt;bool&gt; values) BuildDebugInfo() =>
+    /// Usage: protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
     ///          DebugInfo().AddLocals(...).Build();
-    /// Then: public override IEnumerable&lt;string&gt; GetIds() => BuildDebugInfo().ids;
-    ///       public override IEnumerable&lt;bool&gt; GetValues() => BuildDebugInfo().values;
+    /// Then: public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+    ///       public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
     /// </summary>
     protected DebugInfoBuilder DebugInfo() => new DebugInfoBuilder(this);
 
