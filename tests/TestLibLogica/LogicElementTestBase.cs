@@ -17,7 +17,6 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     /// Pattern for validating the main class identifier: ClassName_Number
     /// </summary>
     private const string CLASS_NAME_PATTERN = @"^[A-Za-z][A-Za-z0-9]*_[0-9]+";
-    
     /// <summary>
     /// Pattern for validating property names (alphanumeric, may have numbers)
     /// </summary>
@@ -78,21 +77,21 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     private static void ValidateIdFormat(string id)
     {
         Assert.That(id, Is.Not.Null.And.Not.Empty, $"ID should not be null or empty");
-        
+
         var parts = id.Split('.');
-        Assert.That(parts.Length, Is.GreaterThanOrEqualTo(2), 
+        Assert.That(parts.Length, Is.GreaterThanOrEqualTo(2),
             $"ID '{id}' should have at least main class and property (format: ClassName_Number.PropertyName)");
-        
+
         // First part should be the main class with number
         var mainClassMatch = Regex.Match(parts[0], CLASS_NAME_PATTERN);
         Assert.That(mainClassMatch.Success, Is.True,
             $"ID '{id}' should start with ClassName_Number format, but got '{parts[0]}'");
-        
+
         // Last part should be a valid property name
         var propertyMatch = Regex.Match(parts[^1], PROPERTY_NAME_PATTERN);
         Assert.That(propertyMatch.Success, Is.True,
             $"ID '{id}' should end with a valid property name, but got '{parts[^1]}'");
-        
+
         // Middle parts (if any) should be nested class identifiers
         for (int i = 1; i < parts.Length - 1; i++)
         {
@@ -157,7 +156,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     /// <summary>
     /// Test that validates multiple aspects of ID and value correspondence:
     /// 1. IDs and values can be accessed consistently by the same index position
-    /// 2. All IDs at each position are non-null and non-empty 
+    /// 2. All IDs at each position are non-null and non-empty
     /// 3. All values at each position are valid boolean types
     /// 4. Collections maintain consistency across multiple calls
     /// This ensures proper index-based correspondence and data validity.
@@ -222,11 +221,11 @@ public static class LogicElementTestHelper
             Assert.That(values[i], Is.TypeOf<bool>(),
                 $"{name}: Value at position {i} should be a boolean");
         }
-        
+
         // Test consistency across multiple calls
         var idsAgain = element.GetIds().ToList();
         var valuesAgain = element.GetValues().ToList();
-        
+
         for (int i = 0; i < ids.Count; i++)
         {
             Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
