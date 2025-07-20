@@ -121,12 +121,12 @@ public class TestDebugInfoBuilderPerformance
         // Both approaches should complete in reasonable time
         Assert.That(sw1.ElapsedMilliseconds, Is.LessThan(1000), "Single builder approach should complete efficiently");
         Assert.That(sw2.ElapsedMilliseconds, Is.LessThan(1000), "Separate calls should complete efficiently");
-        
+
         // Verify that both approaches produce the same results
         var (singleIds, singleValues) = element.BuildDebugInfoPublic();
         var separateIds = element.GetIds();
         var separateValues = element.GetValues();
-        
+
         Assert.That(singleIds.ToList(), Is.EqualTo(separateIds.ToList()), "Both approaches should produce identical IDs");
         Assert.That(singleValues.ToList(), Is.EqualTo(separateValues.ToList()), "Both approaches should produce identical values");
     }
