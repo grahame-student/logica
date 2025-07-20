@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using LibLogica.Blocks.Base;
 using LibLogica.IO;
 
 namespace LibLogica.Gates;
@@ -117,21 +118,23 @@ public abstract class LogicElement
         }
 
         /// <summary>
+        /// Add children from a BlockArray in MSB->LSB order for multibit consistency.
+        /// </summary>
+        public DebugInfoBuilder AddChildren<T>(BlockArray<T> blockArray) where T : LogicElement, new()
+        {
+            for (Int32 i = blockArray.Count - 1; i >= 0; i--)
+            {
+                AddChild(blockArray[i]);
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Build and return the final IDs and values collections.
         /// </summary>
         public (IEnumerable<String> ids, IEnumerable<Boolean> values) Build()
         {
             return (_ids, _values);
         }
-
-        /// <summary>
-        /// Build and return only the IDs collection.
-        /// </summary>
-        public IEnumerable<String> BuildIds() => _ids;
-
-        /// <summary>
-        /// Build and return only the values collection.
-        /// </summary>
-        public IEnumerable<Boolean> BuildValues() => _values;
     }
 }
