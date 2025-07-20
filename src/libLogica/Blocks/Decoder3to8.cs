@@ -41,6 +41,24 @@ public class Decoder3to8 : LogicElement
         _andGates[1].A.Connect(_notGates[2].O);
         _andGates[1].B.Connect(_notGates[1].O);
         _andGates[1].C.Connect(Address[0]);
+        _andGates[2].A.Connect(_notGates[2].O);
+        _andGates[2].B.Connect(Address[1]);
+        _andGates[2].C.Connect(_notGates[0].O);
+        _andGates[3].A.Connect(_notGates[2].O);
+        _andGates[3].B.Connect(Address[1]);
+        _andGates[3].C.Connect(Address[0]);
+        _andGates[4].A.Connect(Address[2]);
+        _andGates[4].B.Connect(_notGates[1].O);
+        _andGates[4].C.Connect(_notGates[0].O);
+        _andGates[5].A.Connect(Address[2]);
+        _andGates[5].B.Connect(_notGates[1].O);
+        _andGates[5].C.Connect(Address[0]);
+        _andGates[6].A.Connect(Address[2]);
+        _andGates[6].B.Connect(Address[1]);
+        _andGates[6].C.Connect(_notGates[0].O);
+        _andGates[7].A.Connect(Address[2]);
+        _andGates[7].B.Connect(Address[1]);
+        _andGates[7].C.Connect(Address[0]);
     }
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
