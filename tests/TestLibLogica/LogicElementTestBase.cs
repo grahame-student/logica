@@ -14,11 +14,14 @@ namespace TestLibLogica;
 public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 {
     /// <summary>
-    /// Regex pattern that validates ID format: supports both simple and nested component IDs.
-    /// Examples: 'AndGate_1.A' (simple), 'HalfAdder_8.XorGate_6.OrGate_1.A' (nested)
-    /// Pattern: ClassName_Number.Property or ClassName_Number.NestedClass_Number.Property (with arbitrary nesting depth)
+    /// Pattern for validating the main class identifier: ClassName_Number
     /// </summary>
-    private const string ID_FORMAT_PATTERN = @"^[A-Za-z0-9_]+\.[A-Za-z0-9_.]*[A-Za-z0-9]+$";
+    private const string CLASS_NAME_PATTERN = @"^[A-Za-z][A-Za-z0-9]*_[0-9]+";
+    
+    /// <summary>
+    /// Pattern for validating property names (alphanumeric, may have numbers)
+    /// </summary>
+    private const string PROPERTY_NAME_PATTERN = @"[A-Za-z][A-Za-z0-9]*$";
 
     protected T _element;
 
@@ -60,12 +63,42 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetIds_AllIdsFollowCorrectFormat()
     {
         var ids = _element.GetIds().ToList();
-        var expectedPattern = new Regex(ID_FORMAT_PATTERN);
 
         foreach (var id in ids)
         {
-            Assert.That(expectedPattern.IsMatch(id), Is.True,
-                $"ID '{id}' does not follow expected format with proper class prefixes and property names");
+            ValidateIdFormat(id);
+        }
+    }
+
+    /// <summary>
+    /// Validates that an ID follows the expected format with clear error reporting.
+    /// Supports both simple IDs (ClassName_Number.PropertyName) and nested IDs
+    /// (ClassName_Number.NestedClass_Number.PropertyName) with arbitrary nesting depth.
+    /// </summary>
+    private static void ValidateIdFormat(string id)
+    {
+        Assert.That(id, Is.Not.Null.And.Not.Empty, $"ID should not be null or empty");
+        
+        var parts = id.Split('.');
+        Assert.That(parts.Length, Is.GreaterThanOrEqualTo(2), 
+            $"ID '{id}' should have at least main class and property (format: ClassName_Number.PropertyName)");
+        
+        // First part should be the main class with number
+        var mainClassMatch = Regex.Match(parts[0], CLASS_NAME_PATTERN);
+        Assert.That(mainClassMatch.Success, Is.True,
+            $"ID '{id}' should start with ClassName_Number format, but got '{parts[0]}'");
+        
+        // Last part should be a valid property name
+        var propertyMatch = Regex.Match(parts[^1], PROPERTY_NAME_PATTERN);
+        Assert.That(propertyMatch.Success, Is.True,
+            $"ID '{id}' should end with a valid property name, but got '{parts[^1]}'");
+        
+        // Middle parts (if any) should be nested class identifiers
+        for (int i = 1; i < parts.Length - 1; i++)
+        {
+            var nestedClassMatch = Regex.Match(parts[i], CLASS_NAME_PATTERN);
+            Assert.That(nestedClassMatch.Success, Is.True,
+                $"ID '{id}' has invalid nested class identifier '{parts[i]}' - should follow ClassName_Number format");
         }
     }
 
@@ -122,8 +155,12 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     }
 
     /// <summary>
-    /// Test that IDs and values can be accessed consistently by the same index position.
-    /// This ensures the collections maintain proper index-based correspondence and consistency.
+    /// Test that validates multiple aspects of ID and value correspondence:
+    /// 1. IDs and values can be accessed consistently by the same index position
+    /// 2. All IDs at each position are non-null and non-empty 
+    /// 3. All values at each position are valid boolean types
+    /// 4. Collections maintain consistency across multiple calls
+    /// This ensures proper index-based correspondence and data validity.
     /// </summary>
     [Test]
     public void GetIdsAndGetValues_CorrespondByPosition()
@@ -153,6 +190,49 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
                 $"ID at position {i} should be consistent across multiple calls");
             Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
                 $"Value at position {i} should be consistent across multiple calls");
+        }
+    }
+}
+
+/// <summary>
+/// Shared validation helper for LogicElement testing.
+/// </summary>
+public static class LogicElementTestHelper
+{
+    /// <summary>
+    /// Validates that GetIds() and GetValues() correspond by position for any LogicElement.
+    /// This helper can be used by test classes that cannot inherit from LogicElementTestBase
+    /// due to constructor constraints.
+    /// </summary>
+    public static void ValidateIdsAndValuesCorrespondence(LogicElement element, string? elementName = null)
+    {
+        var ids = element.GetIds().ToList();
+        var values = element.GetValues().ToList();
+        var name = elementName ?? element.GetType().Name;
+
+        Assert.That(ids.Count, Is.EqualTo(values.Count),
+            $"{name}: IDs and values must have the same count to correspond by position");
+
+        // Verify that for each index i, we can consistently access both ids[i] and values[i]
+        // and that they represent valid data
+        for (int i = 0; i < ids.Count; i++)
+        {
+            Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
+                $"{name}: ID at position {i} should be valid");
+            Assert.That(values[i], Is.TypeOf<bool>(),
+                $"{name}: Value at position {i} should be a boolean");
+        }
+        
+        // Test consistency across multiple calls
+        var idsAgain = element.GetIds().ToList();
+        var valuesAgain = element.GetValues().ToList();
+        
+        for (int i = 0; i < ids.Count; i++)
+        {
+            Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
+                $"{name}: ID at position {i} should be consistent across multiple calls");
+            Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
+                $"{name}: Value at position {i} should be consistent across multiple calls");
         }
     }
 }
