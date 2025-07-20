@@ -35,9 +35,15 @@ public abstract class AccumulatingAdder<TLatch> : LogicElement
         _latch8.Update();
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_adder8.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_latch8.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddArray(nameof(A), A)
+            .AddLocal(nameof(Add), Add)
+            .AddArray(nameof(O), O)
+            .AddChildren(_adder8, _latch8)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds()
     {
@@ -55,9 +61,7 @@ public abstract class AccumulatingAdder<TLatch> : LogicElement
         return result;
     }
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_adder8.GetValues())
-        .Concat(_latch8.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() => A.GetValues()
         .Append(Add.Value)

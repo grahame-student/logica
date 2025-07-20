@@ -40,15 +40,24 @@ public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
         }
     }
 
-    public override IEnumerable<String> GetIds()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
     {
-        IEnumerable<String> result = GetLocalIds();
-        for (Int32 i = 0; i < _latches.Count; i++)
+        // Convert BlockArray to array for AddChildren
+        var latchChildren = new LogicElement[_latches.Count];
+        for (int i = 0; i < _latches.Count; i++)
         {
-            result = result.Concat(_latches[i].GetIds().Select(x => IdPrefix() + x));
+            latchChildren[i] = _latches[i];
         }
-        return result;
+        
+        return DebugInfo()
+            .AddArray(nameof(D), D)
+            .AddLocal(nameof(Clock), Clock)
+            .AddArray(nameof(Q), Q)
+            .AddChildren(latchChildren)
+            .Build();
     }
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds()
     {
@@ -66,15 +75,7 @@ public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
         return result;
     }
 
-    public override IEnumerable<Boolean> GetValues()
-    {
-        IEnumerable<Boolean> result = GetLocalValues();
-        for (Int32 i = 0; i < _latches.Count; i++)
-        {
-            result = result.Concat(_latches[i].GetValues());
-        }
-        return result;
-    }
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues()
     {
