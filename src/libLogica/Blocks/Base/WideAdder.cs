@@ -59,12 +59,12 @@ public class WideAdder : LogicElement
             .AddLocal(nameof(CarryIn), CarryIn)
             .AddArray(nameof(SumOut), SumOut)
             .AddLocal(nameof(CarryOut), CarryOut);
-            
+
         for (Int32 i = _adders.Count - 1; i >= 0; i--)
         {
             builder.AddChild(_adders[i]);
         }
-        
+
         return builder.BuildIds();
     }
 
@@ -97,12 +97,12 @@ public class WideAdder : LogicElement
             .AddLocal(nameof(CarryIn), CarryIn)
             .AddArray(nameof(SumOut), SumOut)
             .AddLocal(nameof(CarryOut), CarryOut);
-            
+
         for (Int32 i = 0; i < _adders.Count; i++)
         {
             builder.AddChild(_adders[i]);
         }
-        
+
         return builder.BuildValues();
     }
 

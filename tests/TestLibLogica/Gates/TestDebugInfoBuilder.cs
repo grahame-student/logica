@@ -46,7 +46,7 @@ public class TestDebugInfoBuilder
     {
         public Input A { get; } = new();
         public Output O { get; } = new();
-        
+
         private readonly SimpleTestElement _child1 = new();
         private readonly SimpleTestElement _child2 = new();
 

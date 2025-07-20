@@ -5,6 +5,7 @@ This document demonstrates how the new `DebugInfoBuilder` reduces boilerplate co
 ## Problem Statement
 
 Previously, implementing debugging output for `LogicElement` required:
+
 1. Manually implementing `GetIds()` and `GetLocalIds()`
 2. Manually implementing `GetValues()` and `GetLocalValues()`
 3. Careful manual concatenation with proper prefixing
@@ -14,6 +15,7 @@ Previously, implementing debugging output for `LogicElement` required:
 ## Solution: DebugInfoBuilder
 
 The `DebugInfoBuilder` provides a fluent interface that:
+
 - Ensures perfect alignment between IDs and values
 - Eliminates manual concatenation and prefixing
 - Reduces boilerplate code significantly
@@ -24,6 +26,7 @@ The `DebugInfoBuilder` provides a fluent interface that:
 ### Simple Element (AndGate)
 
 **Before (43 lines):**
+
 ```csharp
 public override IEnumerable<String> GetIds() => GetLocalIds();
 
@@ -45,6 +48,7 @@ protected override IEnumerable<Boolean> GetLocalValues() =>
 ```
 
 **After (41 lines, but with guaranteed alignment):**
+
 ```csharp
 protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
     DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build();
@@ -64,6 +68,7 @@ public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 ### Complex Element with Children (HalfAdder)
 
 **Before (62 lines with manual concatenation):**
+
 ```csharp
 public override IEnumerable<String> GetIds() => GetLocalIds()
     .Concat(_xorGate.GetIds().Select(x => IdPrefix() + x))
@@ -91,6 +96,7 @@ protected override IEnumerable<Boolean> GetLocalValues() =>
 ```
 
 **After (50 lines with automatic alignment):**
+
 ```csharp
 protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
     DebugInfo()
@@ -120,7 +126,7 @@ public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 - `AddArray<T>(string baseName, LogicArray<T> array)` - Add array elements (reverse order)
 - `AddChild(LogicElement child)` - Add child element with proper prefixing
 - `AddChildren(params LogicElement[] children)` - Add multiple children
-- `Build()` - Returns tuple of (IEnumerable<string> ids, IEnumerable<bool> values)
+- `Build()` - Returns tuple of (IEnumerable<string> IDs, IEnumerable<bool> values)
 - `BuildIds()` - Returns only the IDs
 - `BuildValues()` - Returns only the values
 
