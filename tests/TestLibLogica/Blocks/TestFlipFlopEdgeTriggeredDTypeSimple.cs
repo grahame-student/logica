@@ -6,14 +6,15 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestFlipFlopEdgeTriggeredDTypeSimple
+public class TestFlipFlopEdgeTriggeredDTypeSimple : LogicElementTestBase<FlipFlopEdgeTriggeredDTypeSimple>
 {
     private FlipFlopEdgeTriggeredDTypeSimple _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new FlipFlopEdgeTriggeredDTypeSimple();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -138,11 +139,5 @@ public class TestFlipFlopEdgeTriggeredDTypeSimple
         _block.Update();
 
         Assert.That(_block.Q.Value, Is.False);
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

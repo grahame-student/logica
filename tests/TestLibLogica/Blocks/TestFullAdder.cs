@@ -6,14 +6,15 @@ namespace TestLibLogica.Blocks;
 
 using LibLogica.Blocks;
 
-public class TestFullAdder
+public class TestFullAdder : LogicElementTestBase<FullAdder>
 {
     private FullAdder _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new FullAdder();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -74,11 +75,5 @@ public class TestFullAdder
         _block.Update();
 
         Assert.That(_block.CarryOut.Value, Is.EqualTo(expectedO));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

@@ -5,14 +5,15 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestFlipFlopRS
+public class TestFlipFlopRS : LogicElementTestBase<FlipFlopRS>
 {
     private FlipFlopRS _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new FlipFlopRS();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -129,11 +130,5 @@ public class TestFlipFlopRS
         _block.Update();
 
         Assert.That(_block.NQ.Value, Is.EqualTo(nqStart));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

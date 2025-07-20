@@ -5,14 +5,15 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestOscillator
+public class TestOscillator : LogicElementTestBase<Oscillator>
 {
     private Oscillator _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new Oscillator();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -29,11 +30,5 @@ public class TestOscillator
         _block.Update();
 
         Assert.That(_block.O.Value, Is.Not.EqualTo(start));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }

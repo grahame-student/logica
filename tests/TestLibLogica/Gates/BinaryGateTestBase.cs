@@ -5,14 +5,16 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
-public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, IBinaryGate, new()
+public abstract class BinaryGateTestBase<TGate> : LogicElementTestBase<TGate> 
+    where TGate : LogicElement, IBinaryGate, new()
 {
     protected TGate _gate;
 
     [SetUp]
-    public virtual void Setup()
+    public override void Setup()
     {
-        _gate = new TGate();
+        base.Setup();
+        _gate = _element;
     }
 
     [Test]
@@ -25,12 +27,6 @@ public abstract class BinaryGateTestBase<TGate> where TGate : LogicElement, IBin
     public void InputBInitiallyFalse()
     {
         Assert.That(_gate.B.Value, Is.False);
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_gate.GetIds().Count(), Is.EqualTo(_gate.GetValues().Count()));
     }
 
     protected void TestLogicOperation(Boolean a, Boolean b, Boolean expectedO)

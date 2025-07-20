@@ -5,14 +5,15 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks;
 
-public class TestHalfAdder
+public class TestHalfAdder : LogicElementTestBase<HalfAdder>
 {
     private HalfAdder _block;
 
     [SetUp]
-    public void Setup()
+    public override void Setup()
     {
-        _block = new HalfAdder();
+        base.Setup();
+        _block = _element;
     }
 
     [Test]
@@ -63,11 +64,5 @@ public class TestHalfAdder
         _block.Update();
 
         Assert.That(_block.CarryOut.Value, Is.EqualTo(expectedO));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
     }
 }
