@@ -50,37 +50,5 @@ public class WideOnesComplement : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds()
-    {
-        IEnumerable<String> result = new List<String>();
-        for (Int32 i = A.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(A)}{i}");
-        }
-        result = result.Append($"{IdPrefix()}{nameof(Invert)}");
-        for (Int32 i = O.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(O)}{i}");
-        }
-
-        return result;
-    }
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues()
-    {
-        IEnumerable<Boolean> result = new List<Boolean>();
-        for (Int32 i = A.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(A[i].Value);
-        }
-        result = result.Append(Invert.Value);
-        for (Int32 i = O.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(O[i].Value);
-        }
-
-        return result;
-    }
 }

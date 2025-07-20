@@ -18,23 +18,7 @@ public class NorGate3Input : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds() =>
-    [
-        $"{IdPrefix()}{nameof(A)}",
-        $"{IdPrefix()}{nameof(B)}",
-        $"{IdPrefix()}{nameof(C)}",
-        $"{IdPrefix()}{nameof(O)}",
-    ];
-
     public override void Update() => O.Value = !(A.Value || B.Value || C.Value);
 
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() =>
-    [
-        A.Value,
-        B.Value,
-        C.Value,
-        O.Value
-    ];
 }

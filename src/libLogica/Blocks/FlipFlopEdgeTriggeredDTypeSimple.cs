@@ -84,25 +84,5 @@ public class FlipFlopEdgeTriggeredDTypeSimple : LogicElement, IDTypeFlipFlop
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds() =>
-    [
-        $"{IdPrefix()}{nameof(D)}",
-        $"{IdPrefix()}{nameof(Clock)}",
-        $"{IdPrefix()}{nameof(Clear)}",
-        $"{IdPrefix()}{nameof(Preset)}",
-        $"{IdPrefix()}{nameof(Q)}",
-        $"{IdPrefix()}{nameof(NQ)}",
-    ];
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() =>
-    [
-        D.Value,
-        Clock.Value,
-        Clear.Value,
-        Preset.Value,
-        Q.Value,
-        NQ.Value
-    ];
 }

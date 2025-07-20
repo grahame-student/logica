@@ -45,25 +45,5 @@ public abstract class AccumulatingAdder<TLatch> : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds()
-    {
-        IList<String> result = new List<String>();
-        for (Int32 i = A.Count - 1; i >= 0; i--)
-        {
-            result.Add($"{IdPrefix()}{nameof(A)}{i}");
-        }
-        result.Add($"{IdPrefix()}{nameof(Add)}");
-        for (Int32 i = O.Count - 1; i >= 0; i--)
-        {
-            result.Add($"{IdPrefix()}{nameof(O)}{i}");
-        }
-
-        return result;
-    }
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() => A.GetValues()
-        .Append(Add.Value)
-        .Concat(O.GetValues());
 }
