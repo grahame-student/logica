@@ -31,9 +31,13 @@ public class NorGate : LogicElement, IBinaryGate
         _notGate.Update();
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_orGate.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_notGate.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
+            .AddChildren(_orGate, _notGate)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -42,9 +46,7 @@ public class NorGate : LogicElement, IBinaryGate
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_orGate.GetValues())
-        .Concat(_notGate.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

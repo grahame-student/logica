@@ -14,7 +14,10 @@ public class NotGate : LogicElement
 
     public override void Update() => O.Value = !A.Value;
 
-    public override IEnumerable<String> GetIds() => GetLocalIds();
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo().AddLocals((nameof(A), A), (nameof(O), O)).Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -22,7 +25,7 @@ public class NotGate : LogicElement
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues();
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

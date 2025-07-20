@@ -40,9 +40,15 @@ public class WideOnesComplement : LogicElement
         }
     }
 
-    public override IEnumerable<String> GetIds() => _gate
-        .Aggregate(GetLocalIds(), (current, t) => current
-            .Concat(t.GetIds().Select(x => IdPrefix() + x)));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddArray(nameof(A), A)
+            .AddLocal(nameof(Invert), Invert)
+            .AddArray(nameof(O), O)
+            .AddChildren(_gate)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds()
     {
@@ -60,8 +66,7 @@ public class WideOnesComplement : LogicElement
         return result;
     }
 
-    public override IEnumerable<Boolean> GetValues() => _gate
-        .Aggregate(GetLocalValues(), (current, t) => current.Concat(t.GetValues()));
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues()
     {

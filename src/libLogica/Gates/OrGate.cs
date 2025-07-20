@@ -15,7 +15,10 @@ public class OrGate : LogicElement, IBinaryGate
 
     public override void Update() => O.Value = A.Value || B.Value;
 
-    public override IEnumerable<String> GetIds() => GetLocalIds();
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -24,7 +27,7 @@ public class OrGate : LogicElement, IBinaryGate
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues();
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [
