@@ -77,15 +77,16 @@ internal class TestOrGate8Input : LogicElementTestBase<OrGate8Input>
     ];
 
     [TestCaseSource(nameof(TestCaseData))]
-    public void OrGate8Input_UpdatesCorrectly(Boolean a,
-                                              Boolean b,
-                                              Boolean c,
-                                              Boolean d,
-                                              Boolean e,
-                                              Boolean f,
-                                              Boolean g,
-                                              Boolean h,
-                                              Boolean expected)
+    public void OrGate8Input_UpdatesCorrectly(
+        Boolean a,
+        Boolean b,
+        Boolean c,
+        Boolean d,
+        Boolean e,
+        Boolean f,
+        Boolean g,
+        Boolean h,
+        Boolean expected)
     {
         _element.A.Value = a;
         _element.B.Value = b;
