@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LibLogica.Gates;
 using LibLogica.IO;
 
@@ -35,9 +34,13 @@ public class HalfAdder : LogicElement
         _andGate.Update();
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_xorGate.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_andGate.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(B), B), (nameof(SumOut), SumOut), (nameof(CarryOut), CarryOut))
+            .AddChildren(_xorGate, _andGate)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -47,9 +50,7 @@ public class HalfAdder : LogicElement
         $"{IdPrefix()}{nameof(CarryOut)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_xorGate.GetValues())
-        .Concat(_andGate.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [
