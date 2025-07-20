@@ -58,21 +58,5 @@ public class FlipFlopRS : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds() =>
-    [
-        $"{IdPrefix()}{nameof(R)}",
-        $"{IdPrefix()}{nameof(S)}",
-        $"{IdPrefix()}{nameof(Q)}",
-        $"{IdPrefix()}{nameof(NQ)}",
-    ];
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() =>
-    [
-        R.Value,
-        S.Value,
-        Q.Value,
-        NQ.Value,
-    ];
 }

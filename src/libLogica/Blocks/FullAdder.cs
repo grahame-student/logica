@@ -50,23 +50,5 @@ public class FullAdder : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds() =>
-    [
-        $"{IdPrefix()}{nameof(A)}",
-        $"{IdPrefix()}{nameof(B)}",
-        $"{IdPrefix()}{nameof(CarryIn)}",
-        $"{IdPrefix()}{nameof(SumOut)}",
-        $"{IdPrefix()}{nameof(CarryOut)}",
-    ];
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() =>
-    [
-        A.Value,
-        B.Value,
-        CarryIn.Value,
-        SumOut.Value,
-        CarryOut.Value,
-    ];
 }

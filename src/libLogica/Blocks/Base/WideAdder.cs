@@ -68,27 +68,6 @@ public class WideAdder : LogicElement
         return builder.BuildIds();
     }
 
-    protected override IEnumerable<String> GetLocalIds()
-    {
-        IEnumerable<String> result = new List<String>();
-        for (Int32 i = A.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(A)}{i}");
-        }
-        for (Int32 i = B.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(B)}{i}");
-        }
-        result = result.Append($"{IdPrefix()}{nameof(CarryIn)}");
-        for (Int32 i = SumOut.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(SumOut)}{i}");
-        }
-        result = result.Append($"{IdPrefix()}{nameof(CarryOut)}");
-
-        return result;
-    }
-
     public override IEnumerable<Boolean> GetValues()
     {
         var builder = DebugInfo()
@@ -104,26 +83,5 @@ public class WideAdder : LogicElement
         }
 
         return builder.BuildValues();
-    }
-
-    protected override IEnumerable<Boolean> GetLocalValues()
-    {
-        IEnumerable<Boolean> result = new List<Boolean>();
-        for (Int32 i = A.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(A[i].Value);
-        }
-        for (Int32 i = B.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(B[i].Value);
-        }
-        result = result.Append(CarryIn.Value);
-        for (Int32 i = SumOut.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(SumOut[i].Value);
-        }
-        result = result.Append(CarryOut.Value);
-
-        return result;
     }
 }

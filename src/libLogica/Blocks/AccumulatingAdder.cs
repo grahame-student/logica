@@ -46,8 +46,4 @@ public abstract class AccumulatingAdder<TLatch> : LogicElement
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<String> GetLocalIds() => [];
-
-    protected override IEnumerable<Boolean> GetLocalValues() => [];
 }

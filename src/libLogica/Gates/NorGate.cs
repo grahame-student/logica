@@ -39,19 +39,5 @@ public class NorGate : LogicElement, IBinaryGate
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds() =>
-    [
-        $"{IdPrefix()}{nameof(A)}",
-        $"{IdPrefix()}{nameof(B)}",
-        $"{IdPrefix()}{nameof(O)}",
-    ];
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues() =>
-    [
-        A.Value,
-        B.Value,
-        O.Value
-    ];
 }

@@ -38,48 +38,30 @@ public class Memory8Bit : LogicElement
         }
     }
 
-    public override IEnumerable<String> GetIds()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
     {
-        IEnumerable<String> result = GetLocalIds();
-        for (Int32 i = _memoryBits.Count - 1; i >= 0; i--)
+        // Convert BlockArray to array for AddChildren
+        var memoryChildren = new LogicElement[_memoryBits.Count];
+        for (Int32 i = 0; i < _memoryBits.Count; i++)
         {
-            result = result.Concat(_memoryBits[i].GetIds().Select(x => IdPrefix() + x));
+            memoryChildren[i] = _memoryBits[i];
         }
-        return result;
+
+        return DebugInfo()
+            .AddArray(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddArray(nameof(DataOut), DataOut)
+            .AddChildren(memoryChildren)
+            .Build();
     }
 
-    protected override IEnumerable<String> GetLocalIds()
+    public override IEnumerable<String> GetIds()
     {
-        return
-        [
-            $"{IdPrefix()}{nameof(DataIn)}",
-            $"{IdPrefix()}{nameof(Write)}",
-            $"{IdPrefix()}{nameof(DataOut)}"
-        ];
+        throw new NotImplementedException();
     }
 
     public override IEnumerable<Boolean> GetValues()
     {
-        IEnumerable<Boolean> result = GetLocalValues();
-        for (Int32 i = _memoryBits.Count - 1; i >= 0; i--)
-        {
-            result = result.Concat(_memoryBits[i].GetValues());
-        }
-        return result;
-    }
-
-    protected override IEnumerable<Boolean> GetLocalValues()
-    {
-        IEnumerable<Boolean> result = new List<Boolean>();
-        for (Int32 i = 0; i < DataIn.Count; i++)
-        {
-            result = result.Append(DataIn[i].Value);
-        }
-        result = result.Append(Write.Value);
-        for (Int32 i = 0; i < DataOut.Count; i++)
-        {
-            result = result.Append(DataOut[i].Value);
-        }
-        return result;
+        throw new NotImplementedException();
     }
 }
