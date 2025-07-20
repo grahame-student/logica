@@ -117,21 +117,23 @@ public abstract class LogicElement
         }
 
         /// <summary>
+        /// Add children from a BlockArray in order.
+        /// </summary>
+        public DebugInfoBuilder AddChildren<T>(Blocks.Base.BlockArray<T> blockArray) where T : LogicElement, new()
+        {
+            for (Int32 i = 0; i < blockArray.Count; i++)
+            {
+                AddChild(blockArray[i]);
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Build and return the final IDs and values collections.
         /// </summary>
         public (IEnumerable<String> ids, IEnumerable<Boolean> values) Build()
         {
             return (_ids, _values);
         }
-
-        /// <summary>
-        /// Build and return only the IDs collection.
-        /// </summary>
-        public IEnumerable<String> BuildIds() => _ids;
-
-        /// <summary>
-        /// Build and return only the values collection.
-        /// </summary>
-        public IEnumerable<Boolean> BuildValues() => _values;
     }
 }
