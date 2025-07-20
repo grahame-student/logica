@@ -64,29 +64,5 @@ public class RippleCounter : LogicElement
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    protected override IEnumerable<String> GetLocalIds()
-    {
-        IEnumerable<String> result = [];
-        result = result.Append($"{IdPrefix()}{nameof(Clk)}");
-        for (Int32 i = Q.Count - 1; i >= 0; i--)
-        {
-            result = result.Append($"{IdPrefix()}{nameof(Q)}{i}");
-        }
-
-        return result;
-    }
-
     public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
-
-    protected override IEnumerable<Boolean> GetLocalValues()
-    {
-        IEnumerable<Boolean> result = [];
-        result = result.Append(Clk.Value);
-        for (Int32 i = Q.Count - 1; i >= 0; i--)
-        {
-            result = result.Append(Q[i].Value);
-        }
-
-        return result;
-    }
 }

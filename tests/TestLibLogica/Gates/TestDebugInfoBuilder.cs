@@ -27,8 +27,6 @@ public class TestDebugInfoBuilder
                 .BuildIds();
         }
 
-        protected override IEnumerable<string> GetLocalIds() => throw new NotImplementedException();
-
         public override IEnumerable<bool> GetValues()
         {
             return DebugInfo()
@@ -37,8 +35,6 @@ public class TestDebugInfoBuilder
                 .AddLocal(nameof(O), O)
                 .BuildValues();
         }
-
-        protected override IEnumerable<bool> GetLocalValues() => throw new NotImplementedException();
     }
 
     // Test element with child elements
@@ -62,8 +58,6 @@ public class TestDebugInfoBuilder
                 .BuildIds();
         }
 
-        protected override IEnumerable<string> GetLocalIds() => throw new NotImplementedException();
-
         public override IEnumerable<bool> GetValues()
         {
             return DebugInfo()
@@ -73,8 +67,6 @@ public class TestDebugInfoBuilder
                 .AddChild(_child2)
                 .BuildValues();
         }
-
-        protected override IEnumerable<bool> GetLocalValues() => throw new NotImplementedException();
     }
 
     // Test element using the combined Build() approach
@@ -95,11 +87,7 @@ public class TestDebugInfoBuilder
 
         public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
 
-        protected override IEnumerable<string> GetLocalIds() => throw new NotImplementedException();
-
         public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
-
-        protected override IEnumerable<bool> GetLocalValues() => throw new NotImplementedException();
     }
     private class ArrayTestElement : LogicElement
     {
@@ -116,8 +104,6 @@ public class TestDebugInfoBuilder
                 .BuildIds();
         }
 
-        protected override IEnumerable<string> GetLocalIds() => throw new NotImplementedException();
-
         public override IEnumerable<bool> GetValues()
         {
             return DebugInfo()
@@ -125,8 +111,6 @@ public class TestDebugInfoBuilder
                 .AddLocal(nameof(O), O)
                 .BuildValues();
         }
-
-        protected override IEnumerable<bool> GetLocalValues() => throw new NotImplementedException();
     }
 
     [Test]

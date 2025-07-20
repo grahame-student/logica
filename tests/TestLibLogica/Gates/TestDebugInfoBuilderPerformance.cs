@@ -54,11 +54,7 @@ public class TestDebugInfoBuilderPerformance
 
         public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
 
-        protected override IEnumerable<string> GetLocalIds() => throw new NotImplementedException();
-
         public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
-
-        protected override IEnumerable<bool> GetLocalValues() => throw new NotImplementedException();
     }
 
     [TestCase(2, 3)] // 2 levels deep, 3 children each = ~13 elements

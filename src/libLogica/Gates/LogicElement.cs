@@ -23,9 +23,7 @@ public abstract class LogicElement
 
     public abstract void Update();
     public abstract IEnumerable<String> GetIds();
-    protected abstract IEnumerable<String> GetLocalIds();
     public abstract IEnumerable<Boolean> GetValues();
-    protected abstract IEnumerable<Boolean> GetLocalValues();
 
     protected String IdPrefix()
     {

@@ -14,9 +14,7 @@ public class TestLogicElement
     {
         public override void Update() { }
         public override IEnumerable<string> GetIds() => new[] { IdPrefix() + "test" };
-        protected override IEnumerable<string> GetLocalIds() => new[] { "test" };
         public override IEnumerable<bool> GetValues() => new[] { true };
-        protected override IEnumerable<bool> GetLocalValues() => new[] { true };
     }
 
     private HashSet<string> RunConcurrentIdGenerationTest(int threadCount, int elementsPerThread)
