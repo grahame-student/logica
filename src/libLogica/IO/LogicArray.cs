@@ -27,7 +27,7 @@ public class LogicArray<T> where T : IInputOutput, new()
         // for example if the function required LogicArray<T> then
         // <input>.connect<input>  would be valid, but
         // <input>.connect<output> would not be valid
-        for (var i = 0; i < Count; i++)
+        for (Int32 i = 0; i < Count; i++)
         {
             Int32 i1 = i;
             sources[i].SignalChanged += (o, e) => _bits[i1].Value = e.Value;
