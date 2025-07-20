@@ -66,7 +66,7 @@ public class Decoder3to8 : LogicElement
             _notGates[i].Update();
         }
         // Update the AND gates
-        for (Int32  i = 0; i < _andGates.Count; i++)
+        for (Int32 i = 0; i < _andGates.Count; i++)
         {
             _andGates[i].Update();
         }
