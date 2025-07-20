@@ -14,8 +14,9 @@ namespace TestLibLogica;
 public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 {
     /// <summary>
-    /// Regex pattern that validates ID format: ClassName_Number.NestedClassName_Number.PropertyName
-    /// Allows for nested components with dot separators and alphanumeric characters with underscores
+    /// Regex pattern that validates ID format: supports both simple and nested component IDs.
+    /// Examples: 'AndGate_1.A' (simple), 'HalfAdder_8.XorGate_6.OrGate_1.A' (nested)
+    /// Pattern: ClassName_Number.Property or ClassName_Number.NestedClass_Number.Property (with arbitrary nesting depth)
     /// </summary>
     private const string ID_FORMAT_PATTERN = @"^[A-Za-z0-9_]+\.[A-Za-z0-9_.]*[A-Za-z0-9]+$";
 
@@ -122,7 +123,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 
     /// <summary>
     /// Test that IDs and values can be accessed consistently by the same index position.
-    /// This ensures the collections maintain proper index-based correspondence.
+    /// This ensures the collections maintain proper index-based correspondence and consistency.
     /// </summary>
     [Test]
     public void GetIdsAndGetValues_CorrespondByPosition()
@@ -134,6 +135,10 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         Assert.That(ids.Count, Is.EqualTo(values.Count),
             "IDs and values must have the same count to correspond by position");
 
+        // Get second snapshots once to verify consistency across multiple calls
+        var idsAgain = _element.GetIds().ToList();
+        var valuesAgain = _element.GetValues().ToList();
+
         // Verify that for each index i, we can consistently access both ids[i] and values[i]
         // and that they represent valid data
         for (int i = 0; i < ids.Count; i++)
@@ -144,8 +149,6 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
                 $"Value at position {i} should be a boolean");
 
             // Verify consistency: accessing the same index multiple times should yield the same results
-            var idsAgain = _element.GetIds().ToList();
-            var valuesAgain = _element.GetValues().ToList();
             Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
                 $"ID at position {i} should be consistent across multiple calls");
             Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
