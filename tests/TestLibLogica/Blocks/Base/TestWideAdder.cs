@@ -98,12 +98,12 @@ public class TestWideAdder
         _block = new WideAdder(8);
         var ids = _block.GetIds().ToList();
         var values = _block.GetValues().ToList();
-        
+
         Assert.That(ids.Count, Is.EqualTo(values.Count));
-        
+
         // Test that IDs and values correspond by position
         var correspondences = ids.Zip(values, (id, value) => new { Id = id, Value = value }).ToList();
-        Assert.That(correspondences.Count, Is.EqualTo(ids.Count), 
+        Assert.That(correspondences.Count, Is.EqualTo(ids.Count),
             "IDs and values should correspond by position");
     }
 
@@ -112,10 +112,10 @@ public class TestWideAdder
     {
         _block = new WideAdder(8);
         var ids = _block.GetIds().ToList();
-        
+
         foreach (var id in ids)
         {
-            Assert.That(id.Contains("WideAdder_"), Is.True, 
+            Assert.That(id.Contains("WideAdder_"), Is.True,
                 $"ID '{id}' should contain the class name prefix 'WideAdder_'");
         }
     }

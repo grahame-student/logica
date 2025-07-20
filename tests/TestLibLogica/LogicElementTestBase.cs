@@ -26,8 +26,8 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var ids = _element.GetIds().ToList();
         var values = _element.GetValues().ToList();
-        
-        Assert.That(ids.Count, Is.EqualTo(values.Count), 
+
+        Assert.That(ids.Count, Is.EqualTo(values.Count),
             "GetIds() and GetValues() must return the same number of elements");
     }
 
@@ -35,8 +35,8 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetIds_ReturnsNonEmptyCollection()
     {
         var ids = _element.GetIds().ToList();
-        
-        Assert.That(ids, Is.Not.Empty, 
+
+        Assert.That(ids, Is.Not.Empty,
             "GetIds() should return at least one element");
     }
 
@@ -44,8 +44,8 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetValues_ReturnsNonEmptyCollection()
     {
         var values = _element.GetValues().ToList();
-        
-        Assert.That(values, Is.Not.Empty, 
+
+        Assert.That(values, Is.Not.Empty,
             "GetValues() should return at least one element");
     }
 
@@ -55,10 +55,10 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         var ids = _element.GetIds().ToList();
         // Pattern allows for nested components: ClassName_Number.NestedClassName_Number.PropertyName
         var expectedPattern = new Regex(@"^[A-Za-z0-9_]+\.[A-Za-z0-9_\.]*[A-Za-z0-9]+$");
-        
+
         foreach (var id in ids)
         {
-            Assert.That(expectedPattern.IsMatch(id), Is.True, 
+            Assert.That(expectedPattern.IsMatch(id), Is.True,
                 $"ID '{id}' does not follow expected format with proper class prefixes and property names");
         }
     }
@@ -68,8 +68,8 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var ids = _element.GetIds().ToList();
         var uniqueIds = new HashSet<string>(ids);
-        
-        Assert.That(uniqueIds.Count, Is.EqualTo(ids.Count), 
+
+        Assert.That(uniqueIds.Count, Is.EqualTo(ids.Count),
             "All IDs returned by GetIds() should be unique");
     }
 
@@ -78,12 +78,12 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var ids = _element.GetIds().ToList();
         var expectedPrefix = _element.GetType().Name + "_";
-        
+
         // All IDs should start with the main class name prefix
         // Some may also have nested component prefixes after that
         foreach (var id in ids)
         {
-            Assert.That(id.StartsWith(expectedPrefix), Is.True, 
+            Assert.That(id.StartsWith(expectedPrefix), Is.True,
                 $"ID '{id}' should start with class name prefix '{expectedPrefix}'");
         }
     }
@@ -96,10 +96,10 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         var values1 = _element.GetValues().ToList();
         var ids2 = _element.GetIds().ToList();
         var values2 = _element.GetValues().ToList();
-        
-        Assert.That(ids2, Is.EqualTo(ids1), 
+
+        Assert.That(ids2, Is.EqualTo(ids1),
             "GetIds() should return IDs in consistent order across multiple calls");
-        Assert.That(values2, Is.EqualTo(values1), 
+        Assert.That(values2, Is.EqualTo(values1),
             "GetValues() should return values in consistent order across multiple calls");
     }
 
@@ -107,10 +107,10 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetValues_ReturnsOnlyBooleanValues()
     {
         var values = _element.GetValues().ToList();
-        
+
         foreach (var value in values)
         {
-            Assert.That(value, Is.TypeOf<bool>(), 
+            Assert.That(value, Is.TypeOf<bool>(),
                 "GetValues() should only return boolean values");
         }
     }
@@ -124,15 +124,15 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var ids = _element.GetIds().ToList();
         var values = _element.GetValues().ToList();
-        
+
         // Ensure they have the same count (already tested above, but critical for this test)
         Assert.That(ids.Count, Is.EqualTo(values.Count));
-        
+
         // The test passes if we can zip them together - the key requirement
         // is that for each index i, ids[i] corresponds to values[i]
         var correspondences = ids.Zip(values, (id, value) => new { Id = id, Value = value }).ToList();
-        
-        Assert.That(correspondences.Count, Is.EqualTo(ids.Count), 
+
+        Assert.That(correspondences.Count, Is.EqualTo(ids.Count),
             "IDs and values should correspond by position - each ID at index i should correspond to the value at index i");
     }
 }

@@ -37,11 +37,11 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
         _block = CreateWideLatch(8);
         var ids = _block.GetIds().ToList();
         var values = _block.GetValues().ToList();
-        
+
         Assert.That(ids.Count, Is.EqualTo(values.Count));
-        
+
         var correspondences = ids.Zip(values, (id, value) => new { Id = id, Value = value }).ToList();
-        Assert.That(correspondences.Count, Is.EqualTo(ids.Count), 
+        Assert.That(correspondences.Count, Is.EqualTo(ids.Count),
             "IDs and values should correspond by position");
     }
 

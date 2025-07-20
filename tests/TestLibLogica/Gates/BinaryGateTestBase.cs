@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
-public abstract class BinaryGateTestBase<TGate> : LogicElementTestBase<TGate> 
+public abstract class BinaryGateTestBase<TGate> : LogicElementTestBase<TGate>
     where TGate : LogicElement, IBinaryGate, new()
 {
     protected TGate _gate;
