@@ -40,22 +40,13 @@ public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
-    {
-        // Convert BlockArray to array for AddChildren
-        var latchChildren = new LogicElement[_latches.Count];
-        for (Int32 i = 0; i < _latches.Count; i++)
-        {
-            latchChildren[i] = _latches[i];
-        }
-
-        return DebugInfo()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
             .AddArray(nameof(D), D)
             .AddLocal(nameof(Clock), Clock)
             .AddArray(nameof(Q), Q)
-            .AddChildren(latchChildren)
+            .AddChildren(_latches)
             .Build();
-    }
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 

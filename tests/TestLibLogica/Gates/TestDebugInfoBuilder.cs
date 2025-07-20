@@ -18,23 +18,16 @@ public class TestDebugInfoBuilder
 
         public override void Update() { }
 
-        public override IEnumerable<String> GetIds()
-        {
-            return DebugInfo()
+        protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
+            DebugInfo()
                 .AddLocal(nameof(A), A)
                 .AddLocal(nameof(B), B)
                 .AddLocal(nameof(O), O)
-                .BuildIds();
-        }
+                .Build();
 
-        public override IEnumerable<Boolean> GetValues()
-        {
-            return DebugInfo()
-                .AddLocal(nameof(A), A)
-                .AddLocal(nameof(B), B)
-                .AddLocal(nameof(O), O)
-                .BuildValues();
-        }
+        public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+
+        public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
     }
 
     // Test element with child elements
@@ -48,25 +41,17 @@ public class TestDebugInfoBuilder
 
         public override void Update() { }
 
-        public override IEnumerable<String> GetIds()
-        {
-            return DebugInfo()
+        protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
+            DebugInfo()
                 .AddLocal(nameof(A), A)
                 .AddLocal(nameof(O), O)
                 .AddChild(_child1)
                 .AddChild(_child2)
-                .BuildIds();
-        }
+                .Build();
 
-        public override IEnumerable<Boolean> GetValues()
-        {
-            return DebugInfo()
-                .AddLocal(nameof(A), A)
-                .AddLocal(nameof(O), O)
-                .AddChild(_child1)
-                .AddChild(_child2)
-                .BuildValues();
-        }
+        public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+
+        public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
     }
 
     // Test element using the combined Build() approach
@@ -96,21 +81,15 @@ public class TestDebugInfoBuilder
 
         public override void Update() { }
 
-        public override IEnumerable<String> GetIds()
-        {
-            return DebugInfo()
+        protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
+            DebugInfo()
                 .AddArray(nameof(A), A)
                 .AddLocal(nameof(O), O)
-                .BuildIds();
-        }
+                .Build();
 
-        public override IEnumerable<Boolean> GetValues()
-        {
-            return DebugInfo()
-                .AddArray(nameof(A), A)
-                .AddLocal(nameof(O), O)
-                .BuildValues();
-        }
+        public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+
+        public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
     }
 
     [Test]

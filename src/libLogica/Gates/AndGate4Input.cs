@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LibLogica.IO;
 
@@ -14,19 +15,18 @@ public class AndGate4Input : LogicElement
     // Outputs
     public Output O { get; } = new();
 
-    protected new DebugInfoBuilder DebugInfo()
-    {
-        return base.DebugInfo()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
             .AddLocal(nameof(A), A)
             .AddLocal(nameof(B), B)
             .AddLocal(nameof(C), C)
             .AddLocal(nameof(D), D)
-            .AddLocal(nameof(O), O);
-    }
+            .AddLocal(nameof(O), O)
+            .Build();
 
-    public override IEnumerable<System.String> GetIds() => DebugInfo().BuildIds();
+    public override IEnumerable<System.String> GetIds() => BuildDebugInfo().ids;
 
-    public override IEnumerable<System.Boolean> GetValues() => DebugInfo().BuildValues();
+    public override IEnumerable<System.Boolean> GetValues() => BuildDebugInfo().values;
 
     public override void Update()
     {

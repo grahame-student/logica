@@ -11,13 +11,13 @@ internal class TestMemory8Bit : LogicElementTestBase<Memory8Bit>
     [Test]
     public void DataIn_IntialValue_ShouldBeZero()
     {
-        Assert.That(GetArrayValue(_element.DataIn), Is.Zero);
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataIn), Is.Zero);
     }
 
     [Test]
     public void DataOut_InitialValue_ShouldBeZero()
     {
-        Assert.That(GetArrayValue(_element.DataOut), Is.Zero);
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
     }
 
     [Test]
@@ -50,35 +50,14 @@ internal class TestMemory8Bit : LogicElementTestBase<Memory8Bit>
     [TestCaseSource(nameof(WriteTestCases))]
     public void DataOut_SetToDataIn_WhenWriteIsTrue(UInt32 init, UInt32 dataIn, Boolean write, UInt32 dataOut)
     {
-        SetArrayValue(_element.DataIn, init);
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, init);
         _element.Write.Value = true;
         _element.Update();
 
-        SetArrayValue(_element.DataIn, dataIn);
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, dataIn);
         _element.Write.Value = write;
         _element.Update();
 
-        Assert.That(GetArrayValue(_element.DataOut), Is.EqualTo(dataOut));
-    }
-
-    private void SetArrayValue<T>(LogicArray<T> array, UInt32 value) where T : IInputOutput, new()
-    {
-        for (Int32 i = 0; i < array.Count; i++)
-        {
-            array[i].Value = (value & (1u << i)) != 0;
-        }
-    }
-
-    private UInt32 GetArrayValue<T>(LogicArray<T> array) where T : IInputOutput, new()
-    {
-        UInt32 value = 0;
-        for (Int32 i = 0; i < array.Count; i++)
-        {
-            if (array[i].Value)
-            {
-                value |= 1u << i;
-            }
-        }
-        return value;
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(dataOut));
     }
 }

@@ -46,21 +46,12 @@ public class RippleCounter : LogicElement
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
-    {
-        // Convert BlockArray to array for AddChildren
-        var flipflopChildren = new LogicElement[_flipflops.Count];
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            flipflopChildren[i] = _flipflops[i];
-        }
-
-        return DebugInfo()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
             .AddLocal(nameof(Clk), Clk)
             .AddArray(nameof(Q), Q)
-            .AddChildren(flipflopChildren)
+            .AddChildren(_flipflops)
             .Build();
-    }
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 

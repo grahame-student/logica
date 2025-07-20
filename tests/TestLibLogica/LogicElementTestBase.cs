@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LibLogica.Gates;
+using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica;
@@ -246,4 +247,26 @@ public static class LogicElementTestHelper
             }
         }
     }
+
+    public static void SetArrayValue<T>(LogicArray<T> array, UInt32 value) where T : IInputOutput, new()
+    {
+        for (Int32 i = 0; i < array.Count; i++)
+        {
+            array[i].Value = (value & (1u << i)) != 0;
+        }
+    }
+
+    public static UInt32 GetArrayValue<T>(LogicArray<T> array) where T : IInputOutput, new()
+    {
+        UInt32 value = 0;
+        for (Int32 i = 0; i < array.Count; i++)
+        {
+            if (array[i].Value)
+            {
+                value |= 1u << i;
+            }
+        }
+        return value;
+    }
+
 }
