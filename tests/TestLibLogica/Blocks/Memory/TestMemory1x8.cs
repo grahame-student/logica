@@ -23,7 +23,7 @@ internal class TestMemory1x8 : LogicElementTestBase<Memory1x8>
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
     }
 
-    public static Object[] TestCaseData =
+    public static readonly Object[] TestCaseData =
     [
         //            dataIn, write, dataOut
         new Object[] {true, 0b00000001u, 0b00000001u },

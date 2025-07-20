@@ -24,7 +24,7 @@ internal class TestDecoder3to8 : LogicElementTestBase<Decoder3to8>
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.Output), Is.Zero);
     }
 
-    public static Object[] TestCaseData =
+    public static readonly Object[] TestCaseData =
     [
         //            address, write, activeOutput 
         new Object[] {0b000u, true,  0b00000001u },
