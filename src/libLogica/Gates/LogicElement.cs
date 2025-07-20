@@ -118,11 +118,11 @@ public abstract class LogicElement
         }
 
         /// <summary>
-        /// Add children from a BlockArray in order.
+        /// Add children from a BlockArray in MSB->LSB order for multibit consistency.
         /// </summary>
         public DebugInfoBuilder AddChildren<T>(BlockArray<T> blockArray) where T : LogicElement, new()
         {
-            for (Int32 i = 0; i < blockArray.Count; i++)
+            for (Int32 i = blockArray.Count - 1; i >= 0; i--)
             {
                 AddChild(blockArray[i]);
             }
