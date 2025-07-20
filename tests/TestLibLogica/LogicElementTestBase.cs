@@ -17,7 +17,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     /// Regex pattern that validates ID format: ClassName_Number.NestedClassName_Number.PropertyName
     /// Allows for nested components with dot separators and alphanumeric characters with underscores
     /// </summary>
-    private const string ID_FORMAT_PATTERN = @"^[A-Za-z0-9_]+\.[A-Za-z0-9_\.]*[A-Za-z0-9]+$";
+    private const string ID_FORMAT_PATTERN = @"^[A-Za-z0-9_]+\.[A-Za-z0-9_.]*[A-Za-z0-9]+$";
 
     protected T _element;
 
@@ -121,8 +121,8 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     }
 
     /// <summary>
-    /// Test that IDs and values correspond correctly by position.
-    /// This is the critical test ensuring order correspondence.
+    /// Test that IDs and values can be accessed consistently by the same index position.
+    /// This ensures the collections maintain proper index-based correspondence.
     /// </summary>
     [Test]
     public void GetIdsAndGetValues_CorrespondByPosition()
@@ -134,15 +134,22 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         Assert.That(ids.Count, Is.EqualTo(values.Count),
             "IDs and values must have the same count to correspond by position");
 
-        // The key requirement is that for each index i, ids[i] corresponds to values[i]
-        // This test passes if we can successfully access all pairs by index
+        // Verify that for each index i, we can consistently access both ids[i] and values[i]
+        // and that they represent valid data
         for (int i = 0; i < ids.Count; i++)
         {
             Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
                 $"ID at position {i} should be valid");
-            // Values are bool types, so just verify they are accessible
             Assert.That(values[i], Is.TypeOf<bool>(),
                 $"Value at position {i} should be a boolean");
+
+            // Verify consistency: accessing the same index multiple times should yield the same results
+            var idsAgain = _element.GetIds().ToList();
+            var valuesAgain = _element.GetValues().ToList();
+            Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
+                $"ID at position {i} should be consistent across multiple calls");
+            Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
+                $"Value at position {i} should be consistent across multiple calls");
         }
     }
 }
