@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using LibLogica.Blocks.Base;
 using LibLogica.IO;
 
 namespace LibLogica.Gates;
@@ -119,7 +120,7 @@ public abstract class LogicElement
         /// <summary>
         /// Add children from a BlockArray in order.
         /// </summary>
-        public DebugInfoBuilder AddChildren<T>(Blocks.Base.BlockArray<T> blockArray) where T : LogicElement, new()
+        public DebugInfoBuilder AddChildren<T>(BlockArray<T> blockArray) where T : LogicElement, new()
         {
             for (Int32 i = 0; i < blockArray.Count; i++)
             {
