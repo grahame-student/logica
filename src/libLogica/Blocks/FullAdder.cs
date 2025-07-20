@@ -42,10 +42,13 @@ public class FullAdder : LogicElement
         _orGate.Update();
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_ha1.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_ha2.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_orGate.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(B), B), (nameof(CarryIn), CarryIn), (nameof(SumOut), SumOut), (nameof(CarryOut), CarryOut))
+            .AddChildren(_ha1, _ha2, _orGate)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -56,10 +59,7 @@ public class FullAdder : LogicElement
         $"{IdPrefix()}{nameof(CarryOut)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_ha1.GetValues())
-        .Concat(_ha2.GetValues())
-        .Concat(_orGate.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

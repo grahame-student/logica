@@ -21,16 +21,20 @@ public class Oscillator : LogicElement
 
     public override void Update() => _not.Update();
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_not.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(O), O))
+            .AddChildren(_not)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
         $"{IdPrefix()}{nameof(O)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_not.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

@@ -68,11 +68,13 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     */
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_not.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_and1.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_and2.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_rs.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
+            .AddChildren(_not, _and1, _and2, _rs)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -83,11 +85,7 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     ];
 
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_not.GetValues())
-        .Concat(_and1.GetValues())
-        .Concat(_and2.GetValues())
-        .Concat(_rs.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [

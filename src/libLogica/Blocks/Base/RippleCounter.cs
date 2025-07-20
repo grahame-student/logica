@@ -46,15 +46,23 @@ public class RippleCounter : LogicElement
         }
     }
 
-    public override IEnumerable<String> GetIds()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
     {
-        IEnumerable<String> result = GetLocalIds();
-        for (Int32 i = _flipflops.Count - 1; i >= 0; i--)
+        // Convert BlockArray to array for AddChildren
+        var flipflopChildren = new LogicElement[_flipflops.Count];
+        for (int i = 0; i < _flipflops.Count; i++)
         {
-            result = result.Concat(_flipflops[i].GetIds().Select(x => IdPrefix() + x));
+            flipflopChildren[i] = _flipflops[i];
         }
-        return result;
+        
+        return DebugInfo()
+            .AddLocal(nameof(Clk), Clk)
+            .AddArray(nameof(Q), Q)
+            .AddChildren(flipflopChildren)
+            .Build();
     }
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds()
     {
@@ -68,15 +76,7 @@ public class RippleCounter : LogicElement
         return result;
     }
 
-    public override IEnumerable<Boolean> GetValues()
-    {
-        IEnumerable<Boolean> result = GetLocalValues();
-        for (Int32 i = 0; i < _flipflops.Count; i++)
-        {
-            result = result.Concat(_flipflops[i].GetValues());
-        }
-        return result;
-    }
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues()
     {

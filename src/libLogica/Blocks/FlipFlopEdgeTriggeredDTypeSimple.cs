@@ -76,14 +76,13 @@ public class FlipFlopEdgeTriggeredDTypeSimple : LogicElement, IDTypeFlipFlop
         _nor5.Update(); // Unit test cases depend on this order
     }
 
-    public override IEnumerable<String> GetIds() => GetLocalIds()
-        .Concat(_not1.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor1.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor2.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor3.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor4.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor5.GetIds().Select(x => IdPrefix() + x))
-        .Concat(_nor6.GetIds().Select(x => IdPrefix() + x));
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
+            .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Clear), Clear), (nameof(Preset), Preset), (nameof(Q), Q), (nameof(NQ), NQ))
+            .AddChildren(_not1, _nor1, _nor2, _nor3, _nor4, _nor5, _nor6)
+            .Build();
+
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
     protected override IEnumerable<String> GetLocalIds() =>
     [
@@ -95,14 +94,7 @@ public class FlipFlopEdgeTriggeredDTypeSimple : LogicElement, IDTypeFlipFlop
         $"{IdPrefix()}{nameof(NQ)}",
     ];
 
-    public override IEnumerable<Boolean> GetValues() => GetLocalValues()
-        .Concat(_not1.GetValues())
-        .Concat(_nor1.GetValues())
-        .Concat(_nor2.GetValues())
-        .Concat(_nor3.GetValues())
-        .Concat(_nor4.GetValues())
-        .Concat(_nor5.GetValues())
-        .Concat(_nor6.GetValues());
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 
     protected override IEnumerable<Boolean> GetLocalValues() =>
     [
