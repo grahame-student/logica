@@ -53,12 +53,19 @@ public class WideAdder : LogicElement
 
     public override IEnumerable<String> GetIds()
     {
-        IEnumerable<String> result = GetLocalIds();
+        var builder = DebugInfo()
+            .AddArray(nameof(A), A)
+            .AddArray(nameof(B), B)
+            .AddLocal(nameof(CarryIn), CarryIn)
+            .AddArray(nameof(SumOut), SumOut)
+            .AddLocal(nameof(CarryOut), CarryOut);
+            
         for (Int32 i = _adders.Count - 1; i >= 0; i--)
         {
-            result = result.Concat(_adders[i].GetIds().Select(x => IdPrefix() + x));
+            builder.AddChild(_adders[i]);
         }
-        return result;
+        
+        return builder.BuildIds();
     }
 
     protected override IEnumerable<String> GetLocalIds()
@@ -84,12 +91,19 @@ public class WideAdder : LogicElement
 
     public override IEnumerable<Boolean> GetValues()
     {
-        IEnumerable<Boolean> result = GetLocalValues();
+        var builder = DebugInfo()
+            .AddArray(nameof(A), A)
+            .AddArray(nameof(B), B)
+            .AddLocal(nameof(CarryIn), CarryIn)
+            .AddArray(nameof(SumOut), SumOut)
+            .AddLocal(nameof(CarryOut), CarryOut);
+            
         for (Int32 i = 0; i < _adders.Count; i++)
         {
-            result = result.Concat(_adders[i].GetValues());
+            builder.AddChild(_adders[i]);
         }
-        return result;
+        
+        return builder.BuildValues();
     }
 
     protected override IEnumerable<Boolean> GetLocalValues()
