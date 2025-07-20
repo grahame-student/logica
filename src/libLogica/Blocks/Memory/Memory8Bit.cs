@@ -55,13 +55,7 @@ public class Memory8Bit : LogicElement
             .Build();
     }
 
-    public override IEnumerable<String> GetIds()
-    {
-        throw new NotImplementedException();
-    }
+    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-    public override IEnumerable<Boolean> GetValues()
-    {
-        throw new NotImplementedException();
-    }
+    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
 }

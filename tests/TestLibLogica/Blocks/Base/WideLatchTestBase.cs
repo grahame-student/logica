@@ -45,7 +45,7 @@ public abstract class WideLatchTestBase<TWideLatch> where TWideLatch : LogicElem
             "IDs and values should correspond by position");
     }
 
-    protected abstract TWideLatch CreateWideLatch(int width);
+    protected abstract TWideLatch CreateWideLatch(Int32 width);
 
     protected void TestUpdateSetsQToD(Int32 bit, Boolean d, Boolean expectedQ, Action<TWideLatch> clockOperation)
     {

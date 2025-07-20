@@ -18,12 +18,12 @@ public class TestDebugInfoBuilderPerformance
         public Input B { get; } = new();
         public Output O { get; } = new();
 
-        public PerformanceTestElement(int childCount = 0)
+        public PerformanceTestElement(Int32 childCount = 0)
         {
             if (childCount > 0)
             {
                 _children = new PerformanceTestElement[childCount];
-                for (int i = 0; i < childCount; i++)
+                for (Int32 i = 0; i < childCount; i++)
                 {
                     _children[i] = new PerformanceTestElement(childCount - 1);
                 }
@@ -36,7 +36,7 @@ public class TestDebugInfoBuilderPerformance
 
         public override void Update() { }
 
-        protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo()
+        protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
         {
             var builder = DebugInfo()
                 .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O));
@@ -50,17 +50,17 @@ public class TestDebugInfoBuilderPerformance
         }
 
         // Public wrapper for testing performance
-        public (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfoPublic() => BuildDebugInfo();
+        public (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfoPublic() => BuildDebugInfo();
 
-        public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+        public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-        public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
+        public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
     }
 
     [TestCase(2, 3)] // 2 levels deep, 3 children each = ~13 elements
     [TestCase(3, 2)] // 3 levels deep, 2 children each = ~15 elements
     [TestCase(4, 2)] // 4 levels deep, 2 children each = ~31 elements
-    public void DebugInfoBuilder_Performance_HandlesNestedStructuresEfficiently(int depth, int childrenPerLevel)
+    public void DebugInfoBuilder_Performance_HandlesNestedStructuresEfficiently(Int32 depth, Int32 childrenPerLevel)
     {
         var rootElement = new PerformanceTestElement(depth);
 
@@ -89,12 +89,12 @@ public class TestDebugInfoBuilderPerformance
     [Test]
     public void DebugInfoBuilder_Performance_SingleBuilderVsMultipleCalls()
     {
-        const int iterations = 1000;
+        const Int32 iterations = 1000;
         var element = new PerformanceTestElement();
 
         // Method 1: Single builder call (our new approach)
         var sw1 = Stopwatch.StartNew();
-        for (int i = 0; i < iterations; i++)
+        for (Int32 i = 0; i < iterations; i++)
         {
             var (ids, values) = element.BuildDebugInfoPublic();
             _ = ids.ToList();
@@ -104,7 +104,7 @@ public class TestDebugInfoBuilderPerformance
 
         // Method 2: Separate calls (could be misaligned)
         var sw2 = Stopwatch.StartNew();
-        for (int i = 0; i < iterations; i++)
+        for (Int32 i = 0; i < iterations; i++)
         {
             _ = element.GetIds().ToList();
             _ = element.GetValues().ToList();

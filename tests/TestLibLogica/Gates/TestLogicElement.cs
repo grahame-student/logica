@@ -13,22 +13,22 @@ public class TestLogicElement
     private class TestableLogicElement : LogicElement
     {
         public override void Update() { }
-        public override IEnumerable<string> GetIds() => new[] { IdPrefix() + "test" };
-        public override IEnumerable<bool> GetValues() => new[] { true };
+        public override IEnumerable<String> GetIds() => new[] { IdPrefix() + "test" };
+        public override IEnumerable<Boolean> GetValues() => new[] { true };
     }
 
-    private HashSet<string> RunConcurrentIdGenerationTest(int threadCount, int elementsPerThread)
+    private HashSet<String> RunConcurrentIdGenerationTest(Int32 threadCount, Int32 elementsPerThread)
     {
-        var allIds = new HashSet<string>();
-        var lockObject = new object();
+        var allIds = new HashSet<String>();
+        var lockObject = new Object();
         var tasks = new Task[threadCount];
 
-        for (int i = 0; i < threadCount; i++)
+        for (Int32 i = 0; i < threadCount; i++)
         {
             tasks[i] = Task.Run(() =>
             {
-                var localIds = new List<string>();
-                for (int j = 0; j < elementsPerThread; j++)
+                var localIds = new List<String>();
+                for (Int32 j = 0; j < elementsPerThread; j++)
                 {
                     var element = new TestableLogicElement();
                     localIds.AddRange(element.GetIds());
@@ -51,7 +51,7 @@ public class TestLogicElement
     [TestCase(2, 10)]
     [TestCase(5, 20)]
     [TestCase(10, 100)]
-    public void GetNextGateCount_ConcurrentThreads_GeneratesExpectedNumberOfIds(int threadCount, int elementsPerThread)
+    public void GetNextGateCount_ConcurrentThreads_GeneratesExpectedNumberOfIds(Int32 threadCount, Int32 elementsPerThread)
     {
         var allIds = RunConcurrentIdGenerationTest(threadCount, elementsPerThread);
         var expectedCount = threadCount * elementsPerThread;
@@ -61,8 +61,8 @@ public class TestLogicElement
     [Test]
     public void GetNextGateCount_ConcurrentCreation_GeneratesUniqueIds()
     {
-        const int threadCount = 5;
-        const int elementsPerThread = 50;
+        const Int32 threadCount = 5;
+        const Int32 elementsPerThread = 50;
         var allIds = RunConcurrentIdGenerationTest(threadCount, elementsPerThread);
         Assert.That(allIds.Count, Is.EqualTo(threadCount * elementsPerThread));
     }
@@ -70,19 +70,19 @@ public class TestLogicElement
     [Test]
     public void GetNextGateCount_ThreadSafety_CompletesWithoutExceptions()
     {
-        const int threadCount = 10;
-        const int elementsPerThread = 100;
+        const Int32 threadCount = 10;
+        const Int32 elementsPerThread = 100;
         var tasks = new Task[threadCount];
         var exceptions = new List<Exception>();
-        var lockObject = new object();
+        var lockObject = new Object();
 
-        for (int i = 0; i < threadCount; i++)
+        for (Int32 i = 0; i < threadCount; i++)
         {
             tasks[i] = Task.Run(() =>
             {
                 try
                 {
-                    for (int j = 0; j < elementsPerThread; j++)
+                    for (Int32 j = 0; j < elementsPerThread; j++)
                     {
                         var element = new TestableLogicElement();
                         element.GetIds();
@@ -113,9 +113,9 @@ public class TestLogicElement
     [Test]
     public void GetNextGateCount_SequentialCreation_GeneratesUniqueIds()
     {
-        var ids = new HashSet<string>();
+        var ids = new HashSet<String>();
 
-        for (int i = 0; i < 100; i++)
+        for (Int32 i = 0; i < 100; i++)
         {
             var element = new TestableLogicElement();
             var elementIds = element.GetIds();
