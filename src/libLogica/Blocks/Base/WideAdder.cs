@@ -51,22 +51,15 @@ public class WideAdder : LogicElement
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo()
-    {
-        var builder = DebugInfo()
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+        DebugInfo()
             .AddArray(nameof(A), A)
             .AddArray(nameof(B), B)
             .AddLocal(nameof(CarryIn), CarryIn)
             .AddArray(nameof(SumOut), SumOut)
-            .AddLocal(nameof(CarryOut), CarryOut);
-
-        for (Int32 i = _adders.Count - 1; i >= 0; i--)
-        {
-            builder.AddChild(_adders[i]);
-        }
-
-        return builder.Build();
-    }
+            .AddLocal(nameof(CarryOut), CarryOut)
+            .AddChildren(_adders)
+            .Build();
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
