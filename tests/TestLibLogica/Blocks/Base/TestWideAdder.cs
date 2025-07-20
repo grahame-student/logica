@@ -115,8 +115,8 @@ public class TestWideAdder
 
         foreach (var id in ids)
         {
-            Assert.That(id.Contains("WideAdder_"), Is.True,
-                $"ID '{id}' should contain the class name prefix 'WideAdder_'");
+            Assert.That(id.StartsWith("WideAdder_"), Is.True,
+                $"ID '{id}' should start with the class name prefix 'WideAdder_'");
         }
     }
 }

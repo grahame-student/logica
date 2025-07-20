@@ -13,6 +13,12 @@ namespace TestLibLogica;
 /// </summary>
 public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 {
+    /// <summary>
+    /// Regex pattern that validates ID format: ClassName_Number.NestedClassName_Number.PropertyName
+    /// Allows for nested components with dot separators and alphanumeric characters with underscores
+    /// </summary>
+    private const string ID_FORMAT_PATTERN = @"^[A-Za-z0-9_]+\.[A-Za-z0-9_\.]*[A-Za-z0-9]+$";
+
     protected T _element;
 
     [SetUp]
@@ -53,8 +59,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetIds_AllIdsFollowCorrectFormat()
     {
         var ids = _element.GetIds().ToList();
-        // Pattern allows for nested components: ClassName_Number.NestedClassName_Number.PropertyName
-        var expectedPattern = new Regex(@"^[A-Za-z0-9_]+\.[A-Za-z0-9_\.]*[A-Za-z0-9]+$");
+        var expectedPattern = new Regex(ID_FORMAT_PATTERN);
 
         foreach (var id in ids)
         {
@@ -126,13 +131,18 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         var values = _element.GetValues().ToList();
 
         // Ensure they have the same count (already tested above, but critical for this test)
-        Assert.That(ids.Count, Is.EqualTo(values.Count));
+        Assert.That(ids.Count, Is.EqualTo(values.Count),
+            "IDs and values must have the same count to correspond by position");
 
-        // The test passes if we can zip them together - the key requirement
-        // is that for each index i, ids[i] corresponds to values[i]
-        var correspondences = ids.Zip(values, (id, value) => new { Id = id, Value = value }).ToList();
-
-        Assert.That(correspondences.Count, Is.EqualTo(ids.Count),
-            "IDs and values should correspond by position - each ID at index i should correspond to the value at index i");
+        // The key requirement is that for each index i, ids[i] corresponds to values[i]
+        // This test passes if we can successfully access all pairs by index
+        for (int i = 0; i < ids.Count; i++)
+        {
+            Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
+                $"ID at position {i} should be valid");
+            // Values are bool types, so just verify they are accessible
+            Assert.That(values[i], Is.TypeOf<bool>(),
+                $"Value at position {i} should be a boolean");
+        }
     }
 }

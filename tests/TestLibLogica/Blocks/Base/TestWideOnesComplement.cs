@@ -85,8 +85,8 @@ public class TestWideOnesComplement
 
         foreach (var id in ids)
         {
-            Assert.That(id.Contains("WideOnesComplement_"), Is.True,
-                $"ID '{id}' should contain the class name prefix 'WideOnesComplement_'");
+            Assert.That(id.StartsWith("WideOnesComplement_"), Is.True,
+                $"ID '{id}' should start with the class name prefix 'WideOnesComplement_'");
         }
     }
 }
