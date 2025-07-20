@@ -54,7 +54,7 @@ public class RippleCounter : LogicElement
         {
             flipflopChildren[i] = _flipflops[i];
         }
-        
+
         return DebugInfo()
             .AddLocal(nameof(Clk), Clk)
             .AddArray(nameof(Q), Q)

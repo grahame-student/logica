@@ -48,7 +48,7 @@ public abstract class WideLatch<TFlipFlop> : LogicElement, IWideLatch
         {
             latchChildren[i] = _latches[i];
         }
-        
+
         return DebugInfo()
             .AddArray(nameof(D), D)
             .AddLocal(nameof(Clock), Clock)
