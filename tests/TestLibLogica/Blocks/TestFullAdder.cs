@@ -18,13 +18,13 @@ public class TestFullAdder : LogicElementTestBase<FullAdder>
     }
 
     [Test]
-    public void InputAInitiallyFalse()
+    public void InputA_Initially_False()
     {
         Assert.That(_block.A.Value, Is.False);
     }
 
     [Test]
-    public void InputBInitiallyFalse()
+    public void InputB_Initially_False()
     {
         Assert.That(_block.B.Value, Is.False);
     }

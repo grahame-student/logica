@@ -8,7 +8,7 @@ namespace TestLibLogica.Blocks.Base;
 
 public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTriggered>
 {
-    protected override WideLatchEdgeTriggered CreateWideLatch(int width)
+    protected override WideLatchEdgeTriggered CreateWideLatch(Int32 width)
     {
         return new WideLatchEdgeTriggered(width);
     }

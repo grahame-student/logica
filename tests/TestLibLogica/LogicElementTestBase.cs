@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LibLogica.Gates;
+using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica;
@@ -16,11 +17,11 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     /// <summary>
     /// Pattern for validating the main class identifier: ClassName_Number
     /// </summary>
-    private const string CLASS_NAME_PATTERN = @"^[A-Za-z][A-Za-z0-9]*_[0-9]+";
+    private const String CLASS_NAME_PATTERN = @"^[A-Za-z][A-Za-z0-9]*_[0-9]+";
     /// <summary>
     /// Pattern for validating property names (alphanumeric, may have numbers)
     /// </summary>
-    private const string PROPERTY_NAME_PATTERN = @"[A-Za-z][A-Za-z0-9]*$";
+    private const String PROPERTY_NAME_PATTERN = @"[A-Za-z][A-Za-z0-9]*$";
 
     protected T _element;
 
@@ -63,7 +64,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var ids = _element.GetIds().ToList();
 
-        foreach (var id in ids)
+        foreach (String? id in ids)
         {
             ValidateIdFormat(id);
         }
@@ -74,11 +75,11 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     /// Supports both simple IDs (ClassName_Number.PropertyName) and nested IDs
     /// (ClassName_Number.NestedClass_Number.PropertyName) with arbitrary nesting depth.
     /// </summary>
-    private static void ValidateIdFormat(string id)
+    private static void ValidateIdFormat(String id)
     {
         Assert.That(id, Is.Not.Null.And.Not.Empty, $"ID should not be null or empty");
 
-        var parts = id.Split('.');
+        String[] parts = id.Split('.');
         Assert.That(parts.Length, Is.GreaterThanOrEqualTo(2),
             $"ID '{id}' should have at least main class and property (format: ClassName_Number.PropertyName)");
 
@@ -93,7 +94,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
             $"ID '{id}' should end with a valid property name, but got '{parts[^1]}'");
 
         // Middle parts (if any) should be nested class identifiers
-        for (int i = 1; i < parts.Length - 1; i++)
+        for (Int32 i = 1; i < parts.Length - 1; i++)
         {
             var nestedClassMatch = Regex.Match(parts[i], CLASS_NAME_PATTERN);
             Assert.That(nestedClassMatch.Success, Is.True,
@@ -105,7 +106,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetIds_AllIdsAreUnique()
     {
         var ids = _element.GetIds().ToList();
-        var uniqueIds = new HashSet<string>(ids);
+        var uniqueIds = new HashSet<String>(ids);
 
         Assert.That(uniqueIds.Count, Is.EqualTo(ids.Count),
             "All IDs returned by GetIds() should be unique");
@@ -115,7 +116,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     public void GetIds_ContainCorrectClassNamePrefix()
     {
         var ids = _element.GetIds().ToList();
-        var expectedPrefix = _element.GetType().Name + "_";
+        String expectedPrefix = _element.GetType().Name + "_";
 
         // All IDs should start with the main class name prefix
         // Some may also have nested component prefixes after that
@@ -135,10 +136,13 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         var ids2 = _element.GetIds().ToList();
         var values2 = _element.GetValues().ToList();
 
-        Assert.That(ids2, Is.EqualTo(ids1),
-            "GetIds() should return IDs in consistent order across multiple calls");
-        Assert.That(values2, Is.EqualTo(values1),
-            "GetValues() should return values in consistent order across multiple calls");
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(ids2, Is.EqualTo(ids1),
+                    "GetIds() should return IDs in consistent order across multiple calls");
+            Assert.That(values2, Is.EqualTo(values1),
+                "GetValues() should return values in consistent order across multiple calls");
+        }
     }
 
     [Test]
@@ -146,9 +150,9 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
     {
         var values = _element.GetValues().ToList();
 
-        foreach (var value in values)
+        foreach (Boolean value in values)
         {
-            Assert.That(value, Is.TypeOf<bool>(),
+            Assert.That(value, Is.TypeOf<Boolean>(),
                 "GetValues() should only return boolean values");
         }
     }
@@ -177,18 +181,21 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 
         // Verify that for each index i, we can consistently access both ids[i] and values[i]
         // and that they represent valid data
-        for (int i = 0; i < ids.Count; i++)
+        for (Int32 i = 0; i < ids.Count; i++)
         {
-            Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
-                $"ID at position {i} should be valid");
-            Assert.That(values[i], Is.TypeOf<bool>(),
-                $"Value at position {i} should be a boolean");
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
+                            $"ID at position {i} should be valid");
+                Assert.That(values[i], Is.TypeOf<Boolean>(),
+                    $"Value at position {i} should be a boolean");
 
-            // Verify consistency: accessing the same index multiple times should yield the same results
-            Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
-                $"ID at position {i} should be consistent across multiple calls");
-            Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
-                $"Value at position {i} should be consistent across multiple calls");
+                // Verify consistency: accessing the same index multiple times should yield the same results
+                Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
+                    $"ID at position {i} should be consistent across multiple calls");
+                Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
+                    $"Value at position {i} should be consistent across multiple calls");
+            }
         }
     }
 }
@@ -203,35 +210,63 @@ public static class LogicElementTestHelper
     /// This helper can be used by test classes that cannot inherit from LogicElementTestBase
     /// due to constructor constraints.
     /// </summary>
-    public static void ValidateIdsAndValuesCorrespondence(LogicElement element, string? elementName = null)
+    public static void ValidateIdsAndValuesCorrespondence(LogicElement element, String? elementName = null)
     {
         var ids = element.GetIds().ToList();
         var values = element.GetValues().ToList();
-        var name = elementName ?? element.GetType().Name;
+        String name = elementName ?? element.GetType().Name;
 
         Assert.That(ids.Count, Is.EqualTo(values.Count),
             $"{name}: IDs and values must have the same count to correspond by position");
 
         // Verify that for each index i, we can consistently access both ids[i] and values[i]
         // and that they represent valid data
-        for (int i = 0; i < ids.Count; i++)
+        for (Int32 i = 0; i < ids.Count; i++)
         {
-            Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
-                $"{name}: ID at position {i} should be valid");
-            Assert.That(values[i], Is.TypeOf<bool>(),
-                $"{name}: Value at position {i} should be a boolean");
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(ids[i], Is.Not.Null.And.Not.Empty,
+                            $"{name}: ID at position {i} should be valid");
+                Assert.That(values[i], Is.TypeOf<Boolean>(),
+                    $"{name}: Value at position {i} should be a boolean");
+            }
         }
 
         // Test consistency across multiple calls
         var idsAgain = element.GetIds().ToList();
         var valuesAgain = element.GetValues().ToList();
 
-        for (int i = 0; i < ids.Count; i++)
+        for (Int32 i = 0; i < ids.Count; i++)
         {
-            Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
-                $"{name}: ID at position {i} should be consistent across multiple calls");
-            Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
-                $"{name}: Value at position {i} should be consistent across multiple calls");
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(idsAgain[i], Is.EqualTo(ids[i]),
+                            $"{name}: ID at position {i} should be consistent across multiple calls");
+                Assert.That(valuesAgain[i], Is.EqualTo(values[i]),
+                    $"{name}: Value at position {i} should be consistent across multiple calls");
+            }
         }
     }
+
+    public static void SetArrayValue<T>(LogicArray<T> array, UInt32 value) where T : IInputOutput, new()
+    {
+        for (Int32 i = 0; i < array.Count; i++)
+        {
+            array[i].Value = (value & (1u << i)) != 0;
+        }
+    }
+
+    public static UInt32 GetArrayValue<T>(LogicArray<T> array) where T : IInputOutput, new()
+    {
+        UInt32 value = 0;
+        for (Int32 i = 0; i < array.Count; i++)
+        {
+            if (array[i].Value)
+            {
+                value |= 1u << i;
+            }
+        }
+        return value;
+    }
+
 }

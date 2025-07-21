@@ -16,7 +16,9 @@ public class AndGate : LogicElement, IBinaryGate
     public override void Update() => O.Value = A.Value && B.Value;
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
-        DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build();
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
+            .Build();
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 

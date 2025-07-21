@@ -63,16 +63,16 @@ public class TestDebugInfoBuilder
 
         public override void Update() { }
 
-        protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
+        protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
             DebugInfo()
                 .AddLocal(nameof(A), A)
                 .AddLocal(nameof(B), B)
                 .AddLocal(nameof(O), O)
                 .Build();
 
-        public override IEnumerable<string> GetIds() => BuildDebugInfo().ids;
+        public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
-        public override IEnumerable<bool> GetValues() => BuildDebugInfo().values;
+        public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
     }
     private class ArrayTestElement : LogicElement
     {
