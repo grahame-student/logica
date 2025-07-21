@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using LibLogica.Gates;
 
 namespace LibLogica.Blocks.Base;
@@ -20,9 +19,4 @@ public class BlockArray<T> where T : LogicElement, new()
     }
 
     public Int32 Count => _blocks.Length;
-
-    internal IEnumerable<String> SelectMany(Func<Object, Object> value)
-    {
-        throw new NotImplementedException();
-    }
 }
