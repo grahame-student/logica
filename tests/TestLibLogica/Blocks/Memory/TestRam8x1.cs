@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Memory;
 
-internal class TestRam1x8 : LogicElementTestBase<Ram1x8>
+internal class TestRam8x1 : LogicElementTestBase<Ram8x1>
 {
     [Test]
     public void Address_Initially_Zero()

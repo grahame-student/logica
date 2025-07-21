@@ -5,10 +5,10 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Memory;
 
-public class Ram1x8 : LogicElement
+public class Ram8x1 : LogicElement
 {
     private readonly Decoder3to8 _decoder;
-    private readonly Memory1x8 _memory;
+    private readonly Memory8x1 _memory;
     private readonly Selector8to1 _selector;
 
     // Inputs
@@ -19,10 +19,10 @@ public class Ram1x8 : LogicElement
     // Outputs
     public Output DataOut { get; } = new();
 
-    public Ram1x8()
+    public Ram8x1()
     {
         _decoder = new Decoder3to8();
-        _memory = new Memory1x8();
+        _memory = new Memory8x1();
         _selector = new Selector8to1();
         Address = new LogicArray<Input>(3);
 
