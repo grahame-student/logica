@@ -6,11 +6,11 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Base;
 
-public class TestWideLatchEdgeTriggered : WideLatchTestBase<WideLatchEdgeTriggered>
+public class TestWideLatchEdgeTriggered : WideLatchTestBase<LatchEdgeTriggeredWide>
 {
-    protected override WideLatchEdgeTriggered CreateWideLatch(Int32 width)
+    protected override LatchEdgeTriggeredWide CreateWideLatch(Int32 width)
     {
-        return new WideLatchEdgeTriggered(width);
+        return new LatchEdgeTriggeredWide(width);
     }
 
     public static Object[] UpdateQTestCases =

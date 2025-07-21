@@ -23,9 +23,9 @@ namespace LibLogica.Blocks.Base;
 /// QN outputs unused
 /// D -> Q   when   clk == 1
 /// </summary>
-public class WideLatchLevelTriggered : WideLatch<FlipFlopLevelTriggeredDType>
+public class LatchLevelTriggeredWide : LatchWide<FlipFlopLevelTriggeredDType>
 {
-    public WideLatchLevelTriggered(Int32 width) : base(width)
+    public LatchLevelTriggeredWide(Int32 width) : base(width)
     {
     }
 }

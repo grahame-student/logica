@@ -1,5 +1,4 @@
 using System;
-using LibLogica.Blocks;
 
 namespace LibLogica.Blocks.Base;
 
@@ -23,9 +22,9 @@ namespace LibLogica.Blocks.Base;
 /// QN outputs unused
 /// D -> Q   on the rising edge of clk
 /// </summary>
-public class WideLatchEdgeTriggered : WideLatch<FlipFlopEdgeTriggeredDType>
+public class LatchEdgeTriggeredWide : LatchWide<FlipFlopEdgeTriggeredDType>
 {
-    public WideLatchEdgeTriggered(Int32 width) : base(width)
+    public LatchEdgeTriggeredWide(Int32 width) : base(width)
     {
     }
 }

@@ -5,26 +5,18 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Base;
 
-public class TestWideOnesComplement
+public class TestWideOnesComplement : LogicElementTestBase<OnesComplementWide>
 {
-    private WideOnesComplement _block;
-
-    [SetUp]
-    public void Setup()
-    {
-        _block = new WideOnesComplement(8);
-    }
-
     [Test]
     public void Constructor_SetsInputA_ToPassedWidth()
     {
-        Assert.That(_block.A.Count, Is.EqualTo(8));
+        Assert.That(_element.A.Count, Is.EqualTo(8));
     }
 
     [Test]
     public void Constructor_SetsSumOut_ToPassedWidth()
     {
-        Assert.That(_block.O.Count, Is.EqualTo(8));
+        Assert.That(_element.O.Count, Is.EqualTo(8));
     }
 
     public static Object[] InvertTestCases =
@@ -51,35 +43,11 @@ public class TestWideOnesComplement
     [TestCaseSource(nameof(InvertTestCases))]
     public void Update_SetsO_ToNotAWhenInvertSet(Int32 bit, Boolean invert, Boolean output)
     {
-        _block.A[bit].Value = true;
-        _block.Invert.Value = invert;
+        _element.A[bit].Value = true;
+        _element.Invert.Value = invert;
 
-        _block.Update();
+        _element.Update();
 
-        Assert.That(_block.O[bit].Value, Is.EqualTo(output));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_ContainSameNumberOfElements()
-    {
-        Assert.That(_block.GetIds().Count(), Is.EqualTo(_block.GetValues().Count()));
-    }
-
-    [Test]
-    public void GetIdsAndGetValues_CorrespondByPosition()
-    {
-        LogicElementTestHelper.ValidateIdsAndValuesCorrespondence(_block, "WideOnesComplement");
-    }
-
-    [Test]
-    public void GetIds_AllIdsFollowCorrectFormat()
-    {
-        var ids = _block.GetIds().ToList();
-
-        foreach (var id in ids)
-        {
-            Assert.That(id.StartsWith("WideOnesComplement_"), Is.True,
-                $"ID '{id}' should start with the class name prefix 'WideOnesComplement_'");
-        }
+        Assert.That(_element.O[bit].Value, Is.EqualTo(output));
     }
 }

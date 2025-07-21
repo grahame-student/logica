@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Base;
 
-public class WideOnesComplement : LogicElement
+public class OnesComplementWide : LogicElement
 {
     private readonly XorGate[] _gate;
 
@@ -17,7 +17,9 @@ public class WideOnesComplement : LogicElement
     // Outputs
     public LogicArray<Output> O { get; }
 
-    public WideOnesComplement(Int32 width)
+    public OnesComplementWide() : this(8) { }
+
+    public OnesComplementWide(Int32 width)
     {
         A = new LogicArray<Input>(width);
         O = new LogicArray<Output>(width);

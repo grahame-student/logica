@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace TestLibLogica.Gates;
 
-internal class TestBufferGate : LogicElementTestBase<BufferGate>
+internal class TestTristateBufferGate : LogicElementTestBase<TristateBufferGate>
 {
     //
     // A --|>-- O
@@ -18,7 +18,7 @@ internal class TestBufferGate : LogicElementTestBase<BufferGate>
     // | 1 | 1      | 1    |
     // | x | 0      | null |
 
-    private BufferGate _gate;
+    private TristateBufferGate _gate;
 
     [SetUp]
     public override void Setup()

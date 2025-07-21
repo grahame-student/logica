@@ -4,14 +4,14 @@ using LibLogica.IO;
 
 namespace LibLogica.Gates;
 
-public class BufferGate : LogicElement
+public class TristateBufferGate : LogicElement
 {
     public Input A { get; } = new();
     public Input Enable { get; } = new();
 
     public Output O { get; } = new();
 
-    public BufferGate()
+    public TristateBufferGate()
     {
         // Buffer gate starts in high impedance state
         O.IsHighImpedance = true;

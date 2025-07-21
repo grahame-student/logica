@@ -1,5 +1,4 @@
 using LibLogica.Blocks.Base;
 
 namespace LibLogica.Blocks.Width8Bit;
-
-public class Adder8Bit() : AdderWide(8);
+public class TristateBuffer8Bit() : TristateBufferWide(8);
