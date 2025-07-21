@@ -45,9 +45,9 @@ public class Output : IInputOutput
         Value = source.Value;
         
         // Copy high impedance state if source is also an Output
-        if (source is Output sourceOutput)
+        if (source is Output sourceOutputInitial)
         {
-            IsHighImpedance = sourceOutput.IsHighImpedance;
+            IsHighImpedance = sourceOutputInitial.IsHighImpedance;
         }
 
         // Monitor for any future changes
@@ -55,9 +55,9 @@ public class Output : IInputOutput
         {
             Value = e.Value;
             // Also update impedance state if source is an Output
-            if (source is Output sourceOutput)
+            if (source is Output sourceOutputChanged)
             {
-                IsHighImpedance = sourceOutput.IsHighImpedance;
+                IsHighImpedance = sourceOutputChanged.IsHighImpedance;
             }
         };
     }
