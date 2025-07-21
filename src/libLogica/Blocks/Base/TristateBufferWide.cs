@@ -33,7 +33,10 @@ public class TristateBufferWide : LogicElement
 
     public override void Update()
     {
-        throw new NotImplementedException();
+        for (Int32 i = 0; i < _buffers.Count; i++)
+        {
+            _buffers[i].Update();
+        }
     }
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
