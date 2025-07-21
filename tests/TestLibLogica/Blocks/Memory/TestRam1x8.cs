@@ -49,7 +49,7 @@ internal class TestRam1x8 : LogicElementTestBase<Ram1x8>
         new Object[] {0b101u, true, 0b00000000u, false },
         new Object[] {0b110u, true, 0b00000000u, false },
         new Object[] {0b111u, true, 0b00000000u, false }, // Write zero to address 7
-        ];
+    ];
 
     public static readonly Object[] ReadTestCaseData =
     [
@@ -107,7 +107,7 @@ internal class TestRam1x8 : LogicElementTestBase<Ram1x8>
     private void InitMemory(UInt32 address, Boolean initValue)
     {
         // No need to initialize if we're not writing a 1
-        if (!initValue) return; 
+        if (!initValue) return;
 
         LogicElementTestHelper.SetArrayValue(_element.Address, address);
         _element.DataIn.Value = true;
