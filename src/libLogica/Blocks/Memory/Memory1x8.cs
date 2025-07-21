@@ -10,7 +10,7 @@ public class Memory1x8 : LogicElement
     private readonly BlockArray<Memory1Bit> _memory;
 
     // Inputs
-    public Input DataIn { get; } = new ();
+    public Input DataIn { get; } = new();
     public LogicArray<Input> Write { get; }
 
     // Outputs
