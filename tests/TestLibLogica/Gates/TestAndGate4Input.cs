@@ -37,7 +37,7 @@ internal class TestAndGate4Input : LogicElementTestBase<AndGate4Input>
         Assert.That(_element.O.Value, Is.False);
     }
 
-    public static readonly Object[] AndGate4InputTruethTable =
+    public static readonly Object[] AndGate4InputTruthTable =
         [
             new Object[] { false, false, false, false, false },
             new Object[] { false, false, false, true, false },
@@ -57,7 +57,7 @@ internal class TestAndGate4Input : LogicElementTestBase<AndGate4Input>
             new Object[] { true, true, true, true, true }
         ];
 
-    [TestCaseSource(nameof(AndGate4InputTruethTable))]
+    [TestCaseSource(nameof(AndGate4InputTruthTable))]
     public void AndGate4Input_TruthTable(Boolean a, Boolean b, Boolean c, Boolean d, Boolean o)
     {
         _element.A.Value = a;

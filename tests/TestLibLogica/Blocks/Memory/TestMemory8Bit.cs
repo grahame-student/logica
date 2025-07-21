@@ -9,7 +9,7 @@ namespace TestLibLogica.Blocks.Memory;
 internal class TestMemory8Bit : LogicElementTestBase<Memory8Bit>
 {
     [Test]
-    public void DataIn_IntialValue_ShouldBeZero()
+    public void DataIn_InitialValue_ShouldBeZero()
     {
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataIn), Is.Zero);
     }

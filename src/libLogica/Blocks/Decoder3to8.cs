@@ -27,8 +27,8 @@ public class Decoder3to8 : LogicElement
         {
             _notGates[i].A.Connect(Address[i]);
         }
-        // Connect the Outputs to the AND gates' Outputs
-        // Conect the Write input to the AND gates
+        // Connect the outputs to the AND gates' Outputs
+        // Connect the Write input to the AND gates
         for (Int32 i = 0; i < 8; i++)
         {
             Output[i].Connect(_andGates[i].O);
