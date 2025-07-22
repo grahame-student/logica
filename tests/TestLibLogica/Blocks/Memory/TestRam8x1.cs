@@ -72,7 +72,7 @@ internal class TestRam8x1 : LogicElementTestBase<Ram8x1>
     ];
 
     [TestCaseSource(nameof(WriteTestCaseData))]
-    public void Address_Write(UInt32 address, Boolean write, UInt32 dataIn, Boolean dataOut)
+    public void Write_UpdatesDataOut_ForAddress(UInt32 address, Boolean write, UInt32 dataIn, Boolean dataOut)
     {
         Boolean init = dataIn == 0;
         InitMemory(address, init);
