@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LibLogica.IO;
 
-public class Output : IInputOutput
+public class Output : SourceManagerBase
 {
     private Boolean _value;
     private Boolean _isHighImpedance;
-    private readonly List<IInputOutput> _sources = new();
 
-    public event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
+    public override event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
 
-    public Boolean Value
+    public override Boolean Value
     {
         get => _value;
         set
@@ -42,23 +40,8 @@ public class Output : IInputOutput
         }
     }
 
-    public void Connect(IInputOutput source)
+    protected override void HandleSourcesUpdate(List<IInputOutput> activeSources)
     {
-        // Add source to our list
-        _sources.Add(source);
-
-        // Monitor for any future changes from this source
-        source.SignalChanged += (o, e) => UpdateStateFromSources();
-
-        // Update current state based on all sources
-        UpdateStateFromSources();
-    }
-
-    private void UpdateStateFromSources()
-    {
-        // Get all sources that are not in high impedance
-        var activeSources = _sources.Where(s => !IsSourceHighImpedance(s)).ToList();
-
         // Update high impedance state based on active sources
         IsHighImpedance = activeSources.Count == 0;
 
@@ -92,17 +75,5 @@ public class Output : IInputOutput
             // Update value from the active source(s)
             Value = activeSources[0].Value;
         }
-    }
-
-    private static Boolean IsSourceHighImpedance(IInputOutput source)
-    {
-        // Check if the source is an Output with high impedance
-        if (source is Output output)
-        {
-            return output.IsHighImpedance;
-        }
-
-        // For other types (like InputOutput), assume they're always active
-        return false;
     }
 }
