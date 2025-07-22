@@ -5,6 +5,9 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Memory;
 
+/// <summary>
+/// 8 x 1-bit RAM
+/// </summary>
 public class Ram8x1 : LogicElement
 {
     private readonly Decoder3to8 _decoder;
