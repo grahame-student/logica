@@ -39,7 +39,7 @@ internal class TestDecoder4to16 : LogicElementTestBase<Decoder4to16>
     ];
 
     [TestCaseSource(nameof(TestCaseData))]
-    public void Address_PassesWriteValue_ToActiveOutput(UInt32 address, UInt32 activeOutput)
+    public void Address_SetsActiveOutput_ToOne(UInt32 address, UInt32 activeOutput)
     {
         LogicElementTestHelper.SetArrayValue(_element.Address, address);
 
