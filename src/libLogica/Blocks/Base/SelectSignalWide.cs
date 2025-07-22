@@ -10,15 +10,17 @@ public class SelectSignalWide : LogicElement
     private readonly BlockArray<AndGate> _andGate;
 
     // Inputs
-    public LogicArray<Input> Inputs { get; } = new(16);
+    public LogicArray<Input> Inputs { get; }
     public Input Signal { get; } = new();
 
     // Outputs
-    public LogicArray<Output> Outputs { get; } = new(16);
+    public LogicArray<Output> Outputs { get; }
 
     public SelectSignalWide(Int32 width)
     {
         _andGate = new BlockArray<AndGate>(width);
+        Inputs = new LogicArray<Input>(width);
+        Outputs = new LogicArray<Output>(width);
         for (Int32 i = 0; i < _andGate.Count; i++)
         {
             _andGate[i].A.Connect(Inputs[i]);
