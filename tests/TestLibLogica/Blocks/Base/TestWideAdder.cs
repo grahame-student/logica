@@ -7,35 +7,32 @@ namespace TestLibLogica.Blocks.Base;
 
 public class TestAdderWide : LogicElementTestBase<AdderWide>
 {
-    // Only nullable because of the way NUnit works with fields.
-    private AdderWide? _block;
-
     [Test]
     public void Constructor_SetsInputA_ToPassedWidth()
     {
-        _block = new AdderWide(8);
-        foreach (String id in _block.GetIds())
+        _element = new AdderWide(8);
+        foreach (String id in _element.GetIds())
         {
             Console.WriteLine(id);
         }
 
-        Assert.That(_block.A.Count, Is.EqualTo(8));
+        Assert.That(_element.A.Count, Is.EqualTo(8));
     }
 
     [Test]
     public void Constructor_SetsInputB_ToPassedWidth()
     {
-        _block = new AdderWide(8);
+        _element = new AdderWide(8);
 
-        Assert.That(_block.B.Count, Is.EqualTo(8));
+        Assert.That(_element.B.Count, Is.EqualTo(8));
     }
 
     [Test]
     public void Constructor_SetsSumOut_ToPassedWidth()
     {
-        _block = new AdderWide(8);
+        _element = new AdderWide(8);
 
-        Assert.That(_block.SumOut.Count, Is.EqualTo(8));
+        Assert.That(_element.SumOut.Count, Is.EqualTo(8));
     }
 
     public static Object[] UpdateSumOutTestCases =
@@ -52,36 +49,36 @@ public class TestAdderWide : LogicElementTestBase<AdderWide>
     [TestCaseSource(nameof(UpdateSumOutTestCases))]
     public void Update_SetsSumOut_ToSumOfAAndB(Int32 ax, Int32 bx, Int32 sx)
     {
-        _block = new AdderWide(8);
-        _block.A[ax].Value = true;
-        _block.B[bx].Value = true;
+        _element = new AdderWide(8);
+        _element.A[ax].Value = true;
+        _element.B[bx].Value = true;
 
-        _block.Update();
+        _element.Update();
 
-        Assert.That(_block.SumOut[sx].Value, Is.True);
+        Assert.That(_element.SumOut[sx].Value, Is.True);
     }
 
     [Test]
     public void Update_SetsCarryOut_ToCarryOfSumOfAAndB()
     {
-        _block = new AdderWide(8);
-        _block.A[7].Value = true;
-        _block.B[7].Value = true;
+        _element = new AdderWide(8);
+        _element.A[7].Value = true;
+        _element.B[7].Value = true;
 
-        _block.Update();
+        _element.Update();
 
-        Assert.That(_block.CarryOut.Value, Is.True);
+        Assert.That(_element.CarryOut.Value, Is.True);
     }
 
     [Test]
     public void Update_AddsCarryIn_ToBit0()
     {
-        _block = new AdderWide(8);
-        _block.CarryIn.Value = true;
+        _element = new AdderWide(8);
+        _element.CarryIn.Value = true;
 
-        _block.Update();
+        _element.Update();
 
-        Assert.That(_block.SumOut[0].Value, Is.True);
+        Assert.That(_element.SumOut[0].Value, Is.True);
 
     }
 }
