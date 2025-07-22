@@ -54,10 +54,10 @@ internal class TestSignalSelector
         // Arrange: Enable buffer1, keep buffer2 disabled
         _selector.Enable1.Value = true;
         _selector.Enable2.Value = false;
-        
+
         // Act
         _selector.Update();
-        
+
         // Assert: Output should not be high impedance since buffer1 is active
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Output should not be high impedance when buffer1 is enabled");
     }
@@ -68,10 +68,10 @@ internal class TestSignalSelector
         // Arrange: Enable buffer2, keep buffer1 disabled
         _selector.Enable1.Value = false;
         _selector.Enable2.Value = true;
-        
+
         // Act
         _selector.Update();
-        
+
         // Assert: Output should not be high impedance since buffer2 is active
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Output should not be high impedance when buffer2 is enabled");
         Assert.That(_selector.Op.Value, Is.True, "Output should be true when buffer2 is enabled (buffer2.A = true)");
@@ -83,10 +83,10 @@ internal class TestSignalSelector
         // Arrange: Disable both buffers
         _selector.Enable1.Value = false;
         _selector.Enable2.Value = false;
-        
+
         // Act
         _selector.Update();
-        
+
         // Assert: Output should be high impedance since no buffers are active
         Assert.That(_selector.Op.IsHighImpedance, Is.True, "Output should be high impedance when both buffers are disabled");
     }
@@ -98,14 +98,14 @@ internal class TestSignalSelector
         _selector.Enable1.Value = true;
         _selector.Enable2.Value = false;
         _selector.Update();
-        
+
         // Verify initial state
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Initial state should not be high impedance");
-        
+
         // Act: Change buffer2's enable state (but keep it disabled)
         _selector.Enable2.Value = false; // This should be a no-op, but might trigger the bug
         _selector.Update();
-        
+
         // Assert: Output should still not be high impedance since buffer1 is still active
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Output should remain not high impedance when disabled buffer state changes");
     }
@@ -114,21 +114,21 @@ internal class TestSignalSelector
     public void Output_ShouldHandleEnableOrderChanges()
     {
         // Test the scenario described in the issue where order of enable changes matters
-        
+
         // Scenario 1: Enable buffer1 first, then buffer2
         _selector.Enable1.Value = true;
         _selector.Update();
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Should not be high impedance with buffer1 enabled");
-        
+
         _selector.Enable2.Value = true;
         _selector.Update();
         // Both enabled - this might be a bus conflict in real hardware, but for now we test current behavior
-        
+
         // Scenario 2: Disable buffer1, keep buffer2 enabled
         _selector.Enable1.Value = false;
         _selector.Update();
         Assert.That(_selector.Op.IsHighImpedance, Is.False, "Should not be high impedance with buffer2 still enabled");
-        
+
         // Scenario 3: Disable buffer2 as well
         _selector.Enable2.Value = false;
         _selector.Update();
