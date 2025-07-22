@@ -1,15 +1,16 @@
 using System;
+using System.Collections.Generic;
 
 namespace LibLogica.IO;
 
-public class Output : IInputOutput
+public class Output : SourceManagerBase
 {
     private Boolean _value;
     private Boolean _isHighImpedance;
 
-    public event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
+    public override event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
 
-    public Boolean Value
+    public override Boolean Value
     {
         get => _value;
         set
@@ -39,26 +40,40 @@ public class Output : IInputOutput
         }
     }
 
-    public void Connect(IInputOutput source)
+    protected override void HandleSourcesUpdate(List<IInputOutput> activeSources)
     {
-        // Set to current source value
-        Value = source.Value;
+        // Update high impedance state based on active sources
+        IsHighImpedance = activeSources.Count == 0;
 
-        // Copy high impedance state if source is also an Output
-        if (source is Output sourceOutputInitial)
+        if (activeSources.Count == 0)
         {
-            IsHighImpedance = sourceOutputInitial.IsHighImpedance;
+            // All sources are high impedance - keep current value
+            return;
         }
 
-        // Monitor for any future changes
-        source.SignalChanged += (o, e) =>
+        if (activeSources.Count > 1)
         {
-            Value = e.Value;
-            // Also update impedance state if source is an Output
-            if (source is Output sourceOutputChanged)
-            {
-                IsHighImpedance = sourceOutputChanged.IsHighImpedance;
-            }
-        };
+            // Multiple active sources - this represents a bus conflict scenario
+            // In real hardware, this would typically result in undefined behavior,
+            // potentially damaging the circuit or producing unpredictable voltage levels.
+            //
+            // Current implementation: Use the first active source's value to maintain
+            // compatibility with existing behavior. This is a simplification that allows
+            // the simulation to continue running.
+            //
+            // Future improvements could include:
+            // - Logging warnings about bus conflicts
+            // - Implementing proper bus conflict resolution (e.g., wired-OR, wired-AND)
+            // - Allowing configurable conflict resolution strategies
+            // - Modeling actual hardware behavior (indeterminate states, damage simulation)
+        }
+
+        // Defensive check: Ensure we have at least one active source before accessing
+        // This should always be true due to the early return above, but adding safety
+        if (activeSources.Count > 0)
+        {
+            // Update value from the active source(s)
+            Value = activeSources[0].Value;
+        }
     }
 }
