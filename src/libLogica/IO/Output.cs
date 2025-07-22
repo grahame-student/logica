@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LibLogica.IO;
 
@@ -6,6 +8,7 @@ public class Output : IInputOutput
 {
     private Boolean _value;
     private Boolean _isHighImpedance;
+    private readonly List<IInputOutput> _sources = new();
 
     public event EventHandler<SignalChangedArgs> SignalChanged = delegate { };
 
@@ -41,24 +44,50 @@ public class Output : IInputOutput
 
     public void Connect(IInputOutput source)
     {
-        // Set to current source value
-        Value = source.Value;
+        // Add source to our list
+        _sources.Add(source);
 
-        // Copy high impedance state if source is also an Output
-        if (source is Output sourceOutputInitial)
+        // Monitor for any future changes from this source
+        source.SignalChanged += (o, e) => UpdateStateFromSources();
+
+        // Update current state based on all sources
+        UpdateStateFromSources();
+    }
+
+    private void UpdateStateFromSources()
+    {
+        // Get all sources that are not in high impedance
+        var activeSources = _sources.Where(s => !IsSourceHighImpedance(s)).ToList();
+
+        // Update high impedance state based on active sources
+        IsHighImpedance = activeSources.Count == 0;
+
+        if (activeSources.Count == 0)
         {
-            IsHighImpedance = sourceOutputInitial.IsHighImpedance;
+            // All sources are high impedance - keep current value
+            return;
         }
 
-        // Monitor for any future changes
-        source.SignalChanged += (o, e) =>
+        if (activeSources.Count > 1)
         {
-            Value = e.Value;
-            // Also update impedance state if source is an Output
-            if (source is Output sourceOutputChanged)
-            {
-                IsHighImpedance = sourceOutputChanged.IsHighImpedance;
-            }
-        };
+            // Multiple active sources - in real hardware this would be a bus conflict
+            // For now, use the first active source's value
+            // Note: This maintains compatibility with existing behavior
+        }
+
+        // Update value from the active source(s)
+        Value = activeSources[0].Value;
+    }
+
+    private static Boolean IsSourceHighImpedance(IInputOutput source)
+    {
+        // Check if the source is an Output with high impedance
+        if (source is Output output)
+        {
+            return output.IsHighImpedance;
+        }
+
+        // For other types (like InputOutput), assume they're always active
+        return false;
     }
 }
