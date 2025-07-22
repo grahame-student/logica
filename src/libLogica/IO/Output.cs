@@ -43,7 +43,7 @@ public class Output : IInputOutput
     {
         // Set to current source value
         Value = source.Value;
-        
+
         // Copy high impedance state if source is also an Output
         if (source is Output sourceOutputInitial)
         {
@@ -51,7 +51,7 @@ public class Output : IInputOutput
         }
 
         // Monitor for any future changes
-        source.SignalChanged += (o, e) => 
+        source.SignalChanged += (o, e) =>
         {
             Value = e.Value;
             // Also update impedance state if source is an Output
