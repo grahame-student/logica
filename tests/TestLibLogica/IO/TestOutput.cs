@@ -112,29 +112,25 @@ internal class TestOutput
         Assert.That(setup.Output.IsHighImpedance, Is.False, "Output should remain not high impedance when disabled buffer state changes");
     }
 
-    [Test]
-    public void Output_HighImpedanceState_HandlesEnableOrderChanges()
+    public static readonly Object[] EnableOrderTestCases =
+    [
+        new Object[] { true, false, false, "Buffer1 enabled, buffer2 disabled" },
+        new Object[] { true, true, false, "Both buffers enabled" },
+        new Object[] { false, true, false, "Buffer1 disabled, buffer2 enabled" },
+        new Object[] { false, false, true, "Both buffers disabled" }
+    ];
+
+    [TestCaseSource(nameof(EnableOrderTestCases))]
+    public void Output_HighImpedanceState_HandlesEnableOrderChanges(Boolean enable1, Boolean enable2, Boolean expectedHighImpedance, String scenario)
     {
         var setup = new TristateBufferTestSetup();
 
-        // Enable buffer1 first
-        setup.Enable1.Value = true;
-        setup.Update();
-        Assert.That(setup.Output.IsHighImpedance, Is.False, "Should not be high impedance with buffer1 enabled");
-
-        // Enable buffer2 as well (both enabled)
-        setup.Enable2.Value = true;
+        // Set the enable states in sequence to test order independence
+        setup.Enable1.Value = enable1;
+        setup.Enable2.Value = enable2;
         setup.Update();
 
-        // Disable buffer1, keep buffer2 enabled
-        setup.Enable1.Value = false;
-        setup.Update();
-        Assert.That(setup.Output.IsHighImpedance, Is.False, "Should not be high impedance with buffer2 still enabled");
-
-        // Disable buffer2 as well
-        setup.Enable2.Value = false;
-        setup.Update();
-        Assert.That(setup.Output.IsHighImpedance, Is.True, "Should be high impedance when both buffers disabled");
+        Assert.That(setup.Output.IsHighImpedance, Is.EqualTo(expectedHighImpedance), $"High impedance state incorrect for scenario: {scenario}");
     }
 
     #endregion
