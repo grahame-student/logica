@@ -2,4 +2,4 @@ using LibLogica.Blocks.Base;
 
 namespace LibLogica.Blocks.Width8Bit;
 
-public class OnesComplement8Bit() : WideOnesComplement(8);
+public class OnesComplement8Bit() : OnesComplementWide(8);

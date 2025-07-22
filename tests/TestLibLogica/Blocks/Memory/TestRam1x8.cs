@@ -1,5 +1,6 @@
 using System;
 using LibLogica.Blocks.Memory;
+using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Memory;
@@ -7,15 +8,9 @@ namespace TestLibLogica.Blocks.Memory;
 internal class TestRam1x8 : LogicElementTestBase<Ram1x8>
 {
     [Test]
-    public void Address_Initially_Zero()
+    public void DataIn_Initially_Zero()
     {
-        Assert.That(LogicElementTestHelper.GetArrayValue(_element.Address), Is.Zero);
-    }
-
-    [Test]
-    public void DataIn_Initially_False()
-    {
-        Assert.That(_element.DataIn.Value, Is.False);
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataIn), Is.Zero);
     }
 
     [Test]
@@ -25,93 +20,54 @@ internal class TestRam1x8 : LogicElementTestBase<Ram1x8>
     }
 
     [Test]
-    public void DataOut_Initially_False()
+    public void Enable_Initially_False()
     {
-        Assert.That(_element.DataOut.Value, Is.False);
+        Assert.That(_element.Enable.Value, Is.False);
     }
 
-    public static readonly Object[] WriteTestCaseData =
-    [
-        //            address, write, dataIn, dataOut
-        new Object[] {0b000u, true, 0b00000001u, true }, // Write to address 0
-        new Object[] {0b001u, true, 0b00000010u, true },
-        new Object[] {0b010u, true, 0b00000100u, true },
-        new Object[] {0b011u, true, 0b00001000u, true },
-        new Object[] {0b100u, true, 0b00010000u, true },
-        new Object[] {0b101u, true, 0b00100000u, true },
-        new Object[] {0b110u, true, 0b01000000u, true },
-        new Object[] {0b111u, true, 0b10000000u, true }, // Write to address 7
-        new Object[] {0b000u, true, 0b00000000u, false }, // Write zero to address 0
-        new Object[] {0b001u, true, 0b00000000u, false },
-        new Object[] {0b010u, true, 0b00000000u, false },
-        new Object[] {0b011u, true, 0b00000000u, false },
-        new Object[] {0b100u, true, 0b00000000u, false },
-        new Object[] {0b101u, true, 0b00000000u, false },
-        new Object[] {0b110u, true, 0b00000000u, false },
-        new Object[] {0b111u, true, 0b00000000u, false }, // Write zero to address 7
-    ];
-
-    public static readonly Object[] ReadTestCaseData =
-    [
-        new Object[] {0b000u, false, 0b00000001u, true }, // Read from address 0
-        new Object[] {0b001u, false, 0b00000010u, true },
-        new Object[] {0b010u, false, 0b00000100u, true },
-        new Object[] {0b011u, false, 0b00001000u, true },
-        new Object[] {0b100u, false, 0b00010000u, true },
-        new Object[] {0b101u, false, 0b00100000u, true },
-        new Object[] {0b110u, false, 0b01000000u, true },
-        new Object[] {0b111u, false, 0b10000000u, true }, // Read from address 7
-        new Object[] {0b000u, false, 0b00000000u, false }, // Read zero from address 0
-        new Object[] {0b001u, false, 0b00000000u, false },
-        new Object[] {0b010u, false, 0b00000000u, false },
-        new Object[] {0b011u, false, 0b00000000u, false },
-        new Object[] {0b100u, false, 0b00000000u, false },
-        new Object[] {0b101u, false, 0b00000000u, false },
-        new Object[] {0b110u, false, 0b00000000u, false },
-        new Object[] {0b111u, false, 0b00000000u, false }, // Read zero from address 7
-    ];
-
-    [TestCaseSource(nameof(WriteTestCaseData))]
-    public void Address_Write(UInt32 address, Boolean write, UInt32 dataIn, Boolean dataOut)
+    [Test]
+    public void DataOut_Initially_Zero()
     {
-        Boolean init = dataIn == 0;
-        InitMemory(address, init);
-
-        LogicElementTestHelper.SetArrayValue(_element.Address, address);
-        _element.Write.Value = write;
-        _element.DataIn.Value = dataIn != 0;
-
-        _element.Update();
-
-        Assert.That(_element.DataOut.Value, Is.EqualTo(dataOut));
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
     }
 
-    [TestCaseSource(nameof(ReadTestCaseData))]
-    public void Address_Read(UInt32 address, Boolean write, UInt32 dataIn, Boolean dataOut)
+    [Test]
+    public void Update_StoresDataIn_WhenWriteSet()
     {
-        Boolean init = dataIn != 0;
-        InitMemory(address, init);
-
-        LogicElementTestHelper.SetArrayValue(_element.Address, address);
-        _element.DataIn.Value = false;
-        _element.Write.Value = false;
-
-        _element.Update();
-
-        Assert.That(_element.DataOut.Value, Is.EqualTo(dataOut));
-    }
-
-    /// <summary>Set memory precondition</summary>
-    /// If we're testing writing a 1 to memory, then memory should be initialized to 0.
-    /// If we're testing writing a 0 to memory, then memory should be initialized to 1.
-    private void InitMemory(UInt32 address, Boolean initValue)
-    {
-        // No need to initialize if we're not writing a 1
-        if (!initValue) return;
-
-        LogicElementTestHelper.SetArrayValue(_element.Address, address);
-        _element.DataIn.Value = true;
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 255u);
         _element.Write.Value = true;
-        _element.Update(); // Perform the write operation
+        _element.Enable.Value = true;
+
+        _element.Update();
+
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(255));
+    }
+
+    [Test]
+    public void Update_DoesNotStoreDataIn_WhenWriteClear()
+    {
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 255u);
+        _element.Write.Value = false;
+        _element.Enable.Value = true;
+
+        _element.Update();
+
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
+    }
+
+    [Test]
+    public void DataOut_IsHighImpedance_WhenEnableFalse()
+    {
+        _element.Enable.Value = false;
+
+        _element.Update();
+
+        Boolean isHighImpedance = true;
+        for (Int32 i = 0; i < _element.DataOut.Count; i++)
+        {
+            isHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
+        }
+
+        Assert.That(isHighImpedance, Is.True);
     }
 }

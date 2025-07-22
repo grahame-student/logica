@@ -1,59 +1,63 @@
 using System;
 using System.Collections.Generic;
+using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Width8Bit;
 using LibLogica.Gates;
 using LibLogica.IO;
 
 namespace LibLogica.Blocks.Memory;
 
+/// <summary>
+/// 1 x 8-bit RAM
+/// </summary>
 public class Ram1x8 : LogicElement
 {
-    private readonly Decoder3to8 _decoder;
-    private readonly Memory1x8 _memory;
-    private readonly Selector8to1 _selector;
+    private readonly BlockArray<Memory1Bit> _memory;
+    private readonly TristateBuffer8Bit _tristateBuffer;
 
     // Inputs
-    public LogicArray<Input> Address { get; }
+    public LogicArray<Input> DataIn { get; }
     public Input Write { get; } = new();
-    public Input DataIn { get; } = new();
+    public Input Enable { get; } = new();
 
     // Outputs
-    public Output DataOut { get; } = new();
+    public LogicArray<Output> DataOut { get; }
 
     public Ram1x8()
     {
-        _decoder = new Decoder3to8();
-        _memory = new Memory1x8();
-        _selector = new Selector8to1();
-        Address = new LogicArray<Input>(3);
+        DataIn = new LogicArray<Input>(8);
+        DataOut = new LogicArray<Output>(8);
 
-        for (Int32 i = 0; i < 3; i++)
+        _memory = new BlockArray<Memory1Bit>(8);
+        _tristateBuffer = new TristateBuffer8Bit();
+
+        for (Int32 i = 0; i < _memory.Count; i++)
         {
-            _decoder.Address[i].Connect(Address[i]);
-            _selector.Address[i].Connect(Address[i]);
+            _memory[i].Write.Connect(Write);
+            _memory[i].DataIn.Connect(DataIn[i]);
+            _tristateBuffer.Inputs[i].Connect(_memory[i].DataOut);
+            DataOut[i].Connect(_tristateBuffer.Outputs[i]);
         }
-        _decoder.Write.Connect(Write);
-        _memory.DataIn.Connect(DataIn);
-        _memory.Write.Connect(_decoder.Output);
-        _selector.Input.Connect(_memory.DataOut);
-        DataOut.Connect(_selector.Output);
+        _tristateBuffer.Enable.Connect(Enable);
     }
 
     public override void Update()
     {
-        _decoder.Update();
-        _memory.Update();
-        _selector.Update();
+        for (Int32 i = 0; i < _memory.Count; i++)
+        {
+            _memory[i].Update();
+        }
+        _tristateBuffer.Update();
     }
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
         DebugInfo()
-            .AddLocal(nameof(DataIn), DataIn)
+            .AddArray(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)
-            .AddArray(nameof(Address), Address)
-            .AddLocal(nameof(DataOut), DataOut)
-            .AddChildren(_decoder)
+            .AddLocal(nameof(Enable), Enable)
+            .AddArray(nameof(DataOut), DataOut)
             .AddChildren(_memory)
-            .AddChildren(_selector)
+            .AddChild(_tristateBuffer)
             .Build();
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;

@@ -6,7 +6,7 @@ using LibLogica.IO;
 
 namespace LibLogica.Blocks.Base;
 
-public class WideAdder : LogicElement
+public class AdderWide : LogicElement
 {
     private readonly BlockArray<FullAdder> _adders;
 
@@ -19,7 +19,11 @@ public class WideAdder : LogicElement
     public LogicArray<Output> SumOut { get; }
     public Output CarryOut { get; } = new();
 
-    public WideAdder(Int32 width)
+    public AdderWide() : this(8)
+    {
+    }
+
+    public AdderWide(Int32 width)
     {
         _adders = new BlockArray<FullAdder>(width);
         A = new LogicArray<Input>(width);

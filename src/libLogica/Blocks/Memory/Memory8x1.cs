@@ -5,7 +5,7 @@ using LibLogica.Gates;
 using LibLogica.IO;
 
 namespace LibLogica.Blocks.Memory;
-public class Memory1x8 : LogicElement
+public class Memory8x1 : LogicElement
 {
     private readonly BlockArray<Memory1Bit> _memory;
 
@@ -16,7 +16,7 @@ public class Memory1x8 : LogicElement
     // Outputs
     public LogicArray<Output> DataOut { get; }
 
-    public Memory1x8()
+    public Memory8x1()
     {
         _memory = new BlockArray<Memory1Bit>(8);
         Write = new LogicArray<Input>(8);

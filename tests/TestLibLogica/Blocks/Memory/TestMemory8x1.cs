@@ -3,7 +3,7 @@ using LibLogica.Blocks.Memory;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Memory;
-internal class TestMemory1x8 : LogicElementTestBase<Memory1x8>
+internal class TestMemory8x1 : LogicElementTestBase<Memory8x1>
 {
     [Test]
     public void DataIn_Initially_False()

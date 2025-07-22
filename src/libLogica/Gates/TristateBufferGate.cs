@@ -4,14 +4,14 @@ using LibLogica.IO;
 
 namespace LibLogica.Gates;
 
-public class BufferGate : LogicElement
+public class TristateBufferGate : LogicElement
 {
     public Input A { get; } = new();
     public Input Enable { get; } = new();
 
     public Output O { get; } = new();
 
-    public BufferGate()
+    public TristateBufferGate()
     {
         // Buffer gate starts in high impedance state
         O.IsHighImpedance = true;
@@ -31,7 +31,9 @@ public class BufferGate : LogicElement
     }
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
-        DebugInfo().AddLocals((nameof(A), A), (nameof(Enable), Enable), (nameof(O), O)).Build();
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(Enable), Enable), (nameof(O), O))
+            .Build();
 
     public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
 
