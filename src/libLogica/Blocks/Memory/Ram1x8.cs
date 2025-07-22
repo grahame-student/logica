@@ -43,7 +43,7 @@ public class Ram1x8 : LogicElement
 
     public override void Update()
     {
-        for(Int32 i = 0; i < _memory.Count; i++)
+        for (Int32 i = 0; i < _memory.Count; i++)
         {
             _memory[i].Update();
         }
