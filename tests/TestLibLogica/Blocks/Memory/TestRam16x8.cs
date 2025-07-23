@@ -1,5 +1,6 @@
 using System;
 using LibLogica.Blocks.Memory;
+using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Memory;
@@ -71,5 +72,74 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
 
         // Assert
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(data));
+    }
+
+    [Test]
+    public void Write_DisablesDataOut_WhenWriteIsFalse()
+    {
+        // Arrange
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0b11111111u);
+        LogicElementTestHelper.SetArrayValue(_element.Address, 0b0000u);
+        _element.Write.Value = false;
+        _element.Enable.Value = true;
+
+        // Act
+        _element.Update();
+
+        // Assert
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
+    }
+
+    [Test]
+    public void Enable_DisablesDataOut_WhenFalse()
+    {
+        // Arrange
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0b11111111u);
+        LogicElementTestHelper.SetArrayValue(_element.Address, 0b0000u);
+        _element.Write.Value = true;
+        _element.Enable.Value = false;
+
+        // Act
+        _element.Update();
+
+        // Assert
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.Zero);
+    }
+
+    [Test]
+    public void Enable_SetsDataOutToHighImpedance_WhenFalse()
+    {
+        // Arrange
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0b11111111u);
+        LogicElementTestHelper.SetArrayValue(_element.Address, 0b0000u);
+        _element.Write.Value = true;
+        _element.Enable.Value = false;
+
+        // Act
+        _element.Update();
+
+        // Assert
+        Boolean isHighImpedance = true;
+        for (Int32 i = 0; i < _element.DataOut.Count; i++)
+        {
+            isHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
+        }
+        Assert.That(isHighImpedance, Is.True);
+    }
+
+    [Test]
+    public void Enable_EnablesDataOut_WhenTrue()
+    {
+        // Arrange
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0b11111111u);
+        LogicElementTestHelper.SetArrayValue(_element.Address, 0b0000u);
+        _element.Write.Value = true;
+        _element.Enable.Value = true;
+
+        // Act
+        _element.Update();
+
+        // Assert
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(0b11111111u));
     }
 }
