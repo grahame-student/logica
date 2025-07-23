@@ -119,11 +119,7 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
         _element.Update();
 
         // Assert
-        Boolean isHighImpedance = true;
-        for (Int32 i = 0; i < _element.DataOut.Count; i++)
-        {
-            isHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
-        }
+        Boolean allPinsHighImpedance = _element.DataOut.All(pin => ((Output)pin).IsHighImpedance);
         Assert.That(isHighImpedance, Is.True);
     }
 
