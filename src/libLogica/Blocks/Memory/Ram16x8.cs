@@ -57,6 +57,7 @@ public class Ram16x8 : LogicElement
 
     public override void Update()
     {
+        ClearDebugInfoCache(); // Clear cache to ensure dynamic observability
         _decoder.Update();
         _selectSignal.Update();
         for (Int32 i = 0; i < _ramBlock.Count; i++)

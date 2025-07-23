@@ -43,6 +43,7 @@ public class Ram1x8 : LogicElement
 
     public override void Update()
     {
+        ClearDebugInfoCache(); // Clear cache to ensure dynamic observability
         for (Int32 i = 0; i < _memory.Count; i++)
         {
             _memory[i].Update();
