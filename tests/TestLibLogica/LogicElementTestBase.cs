@@ -108,7 +108,7 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
         var ids = _element.GetIds().ToList();
         var uniqueIds = new HashSet<String>(ids);
 
-        Assert.That(uniqueIds.Count, Is.EqualTo(ids.Count),
+        Assert.That(uniqueIds, Has.Count.EqualTo(ids.Count),
             "All IDs returned by GetIds() should be unique");
     }
 
@@ -120,9 +120,9 @@ public abstract class LogicElementTestBase<T> where T : LogicElement, new()
 
         // All IDs should start with the main class name prefix
         // Some may also have nested component prefixes after that
-        foreach (var id in ids)
+        foreach (String? id in ids)
         {
-            Assert.That(id.StartsWith(expectedPrefix), Is.True,
+            Assert.That(id, Does.StartWith(expectedPrefix),
                 $"ID '{id}' should start with class name prefix '{expectedPrefix}'");
         }
     }
