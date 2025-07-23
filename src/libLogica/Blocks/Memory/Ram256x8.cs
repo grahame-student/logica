@@ -74,7 +74,7 @@ public class Ram256x8 : LogicElement
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddArray(nameof(Address), Address)
             .AddArray(nameof(DataIn), DataIn)
@@ -87,7 +87,7 @@ public class Ram256x8 : LogicElement
             .AddChildren(_ramBlocks)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }

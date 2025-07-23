@@ -12,6 +12,11 @@ public abstract class LogicElement
     private static Int64 _gateCount;
     private readonly UInt64 _instanceCount;
 
+    // Caching for debug info - Option 1 optimization
+    private IEnumerable<String>? _cachedIds;
+    private IEnumerable<Boolean>? _cachedValues;
+    private Boolean _debugInfoCached = false;
+
     protected LogicElement()
     {
         _instanceCount = GetNextGateCount();
@@ -29,6 +34,57 @@ public abstract class LogicElement
     protected String IdPrefix()
     {
         return $"{GetType().Name}_{_instanceCount}.";
+    }
+
+    /// <summary>
+    /// Cached version of GetIds() - Option 1 optimization.
+    /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// </summary>
+    public IEnumerable<String> GetIdsCached()
+    {
+        if (!_debugInfoCached)
+        {
+            var (ids, values) = GetDebugInfoInternal();
+            _cachedIds = ids.ToList(); // Materialize to avoid re-enumeration
+            _cachedValues = values.ToList();
+            _debugInfoCached = true;
+        }
+        return _cachedIds!;
+    }
+
+    /// <summary>
+    /// Cached version of GetValues() - Option 1 optimization.
+    /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// </summary>
+    public IEnumerable<Boolean> GetValuesCached()
+    {
+        if (!_debugInfoCached)
+        {
+            var (ids, values) = GetDebugInfoInternal();
+            _cachedIds = ids.ToList(); // Materialize to avoid re-enumeration
+            _cachedValues = values.ToList();
+            _debugInfoCached = true;
+        }
+        return _cachedValues!;
+    }
+
+    /// <summary>
+    /// Internal method to get debug info tuple. Override this instead of GetIds/GetValues when using caching.
+    /// </summary>
+    protected virtual (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal()
+    {
+        // Default implementation calls the abstract methods for backward compatibility
+        return (GetIds(), GetValues());
+    }
+
+    /// <summary>
+    /// Clear the debug info cache. Call this if the element's state changes and debug info needs to be recalculated.
+    /// </summary>
+    protected void ClearDebugInfoCache()
+    {
+        _debugInfoCached = false;
+        _cachedIds = null;
+        _cachedValues = null;
     }
 
     /// <summary>
@@ -94,11 +150,12 @@ public abstract class LogicElement
 
         /// <summary>
         /// Add a child LogicElement's debug information with proper prefixing.
+        /// Uses cached debug info to avoid redundant calculations - Option 1 optimization.
         /// </summary>
         public DebugInfoBuilder AddChild(LogicElement child)
         {
-            var childIds = child.GetIds().Select(x => _parent.IdPrefix() + x);
-            var childValues = child.GetValues();
+            var childIds = child.GetIdsCached().Select(x => _parent.IdPrefix() + x);
+            var childValues = child.GetValuesCached();
 
             _ids.AddRange(childIds);
             _values.AddRange(childValues);

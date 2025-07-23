@@ -50,7 +50,7 @@ public class Ram1x8 : LogicElement
         _tristateBuffer.Update();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddArray(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)
@@ -60,7 +60,7 @@ public class Ram1x8 : LogicElement
             .AddChild(_tristateBuffer)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }
