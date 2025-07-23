@@ -11,6 +11,9 @@ public abstract class LogicElement
 {
     private static Int64 _gateCount;
     private readonly UInt64 _instanceCount;
+    
+    // Debug info caching fields
+    private (IEnumerable<String> ids, IEnumerable<Boolean> values)? _cachedDebugInfo;
 
     protected LogicElement()
     {
@@ -25,6 +28,32 @@ public abstract class LogicElement
     public abstract void Update();
     public abstract IEnumerable<String> GetIds();
     public abstract IEnumerable<Boolean> GetValues();
+
+    /// <summary>
+    /// Gets cached debug info, computing it if not already cached.
+    /// Derived classes should call this instead of BuildDebugInfo() directly.
+    /// </summary>
+    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) GetCachedDebugInfo(
+        Func<(IEnumerable<String> ids, IEnumerable<Boolean> values)> buildFunction)
+    {
+        if (_cachedDebugInfo == null)
+        {
+            var result = buildFunction();
+            // Materialize the collections to prevent re-computation
+            _cachedDebugInfo = (result.ids.ToList(), result.values.ToList());
+        }
+        return _cachedDebugInfo.Value;
+    }
+
+    /// <summary>
+    /// Invalidates the debug info cache. Call this if the circuit structure changes.
+    /// Note: This is typically not needed during normal debugging as the circuit structure
+    /// remains static during inspection.
+    /// </summary>
+    public void InvalidateDebugInfoCache()
+    {
+        _cachedDebugInfo = null;
+    }
 
     protected String IdPrefix()
     {

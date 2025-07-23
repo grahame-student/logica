@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
 using LibLogica.Blocks.Base;
+using LibLogica.Blocks.Width8Bit;
 using LibLogica.Gates;
 using LibLogica.IO;
 
 namespace LibLogica.Blocks.Memory;
 
 /// <summary>
-/// 8 x 8-bit RAM
+/// 256 x 8-bit RAM with optimized debug info caching
+/// Constructed from 16 instances of Ram16x8Optimized blocks
 /// </summary>
-public class Ram8x8 : LogicElement
+public class Ram256x8Optimized : LogicElement
 {
-    private readonly BlockArray<Ram8x1> _memory;
+    private readonly BlockArray<Ram16x8Optimized> _memory;
 
     // Inputs
     public LogicArray<Input> Address { get; }
@@ -21,21 +23,29 @@ public class Ram8x8 : LogicElement
     // Outputs
     public LogicArray<Output> DataOut { get; }
 
-    public Ram8x8()
+    public Ram256x8Optimized()
     {
-        _memory = new BlockArray<Ram8x1>(8);
-        Address = new LogicArray<Input>(3);
+        _memory = new BlockArray<Ram16x8Optimized>(16);
+        Address = new LogicArray<Input>(8); // 8 bits to address 256 blocks
         DataIn = new LogicArray<Input>(8);
         DataOut = new LogicArray<Output>(8);
 
         for (Int32 i = 0; i < _memory.Count; i++)
         {
-            _memory[i].DataIn.Connect(DataIn[i]);
+            for (Int32 j = 0; j < DataIn.Count; j++)
+            {
+                _memory[i].DataIn[j].Connect(DataIn[j]);
+            }
             _memory[i].Write.Connect(Write);
-            DataOut[i].Connect(_memory[i].DataOut);
-            for (Int32 j = 0; j < Address.Count; j++)
+            
+            for (Int32 j = 0; j < 4; j++) // Connect lower 4 address bits
             {
                 _memory[i].Address[j].Connect(Address[j]);
+            }
+            
+            for (Int32 j = 0; j < DataOut.Count; j++)
+            {
+                DataOut[j].Connect(_memory[i].DataOut[j]);
             }
         }
     }

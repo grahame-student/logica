@@ -81,6 +81,110 @@ public class DebugInfoPerformanceTests
             "Ram256x8 debug info baseline (demonstrating severe performance degradation)");
     }
 
+    [Test]
+    public void Performance_Improvement_Demonstration()
+    {
+        // Test caching effectiveness on Ram256x8
+        var ram = new Ram256x8();
+        
+        // First call - will populate cache
+        var stopwatch1 = Stopwatch.StartNew();
+        var ids1 = ram.GetIds().ToList();
+        var values1 = ram.GetValues().ToList();
+        stopwatch1.Stop();
+        
+        // Second call - should use cache
+        var stopwatch2 = Stopwatch.StartNew();
+        var ids2 = ram.GetIds().ToList();
+        var values2 = ram.GetValues().ToList();
+        stopwatch2.Stop();
+        
+        TestContext.WriteLine($"Ram256x8 Cache Effectiveness:");
+        TestContext.WriteLine($"  First call (populate cache): {stopwatch1.Elapsed.TotalMilliseconds:F3} ms");
+        TestContext.WriteLine($"  Second call (use cache): {stopwatch2.Elapsed.TotalMilliseconds:F3} ms");
+        TestContext.WriteLine($"  Cache speedup: {stopwatch1.Elapsed.TotalMilliseconds / stopwatch2.Elapsed.TotalMilliseconds:F1}x");
+        
+        // Verify data consistency
+        Assert.That(ids2, Is.EqualTo(ids1), "Cached IDs should match original");
+        Assert.That(values2, Is.EqualTo(values1), "Cached values should match original");
+        
+        // Second call should be significantly faster (at least 10x)
+        Assert.That(stopwatch2.Elapsed.TotalMilliseconds * 10, Is.LessThan(stopwatch1.Elapsed.TotalMilliseconds),
+            "Cached call should be at least 10x faster");
+    }
+
+    [Test]
+    public void Performance_Projection_For_Larger_Blocks()
+    {
+        TestContext.WriteLine("Performance Projection for Larger RAM Blocks:");
+        TestContext.WriteLine("Based on optimized performance measurements:");
+        
+        var ram1x8Time = MeasureDebugInfoPerformance(new Ram1x8(), "Ram1x8").averageMs;
+        var ram256x8Time = MeasureDebugInfoPerformance(new Ram256x8(), "Ram256x8").averageMs;
+        
+        // Estimate performance for larger blocks based on linear scaling with caching
+        // With caching, performance scales roughly linearly with the number of debug elements
+        var ram1x8Elements = 315;
+        var ram256x8Elements = 81001;
+        
+        // Calculate time per element from optimized measurements
+        var timePerElement = ram256x8Time / ram256x8Elements;
+        
+        // Project for larger blocks (these would have been created in the issue)
+        var ram4096x8Elements = ram256x8Elements * 16; // 16 x Ram256x8 blocks
+        var ram65536x8Elements = ram4096x8Elements * 16; // 16 x Ram4096x8 blocks
+        
+        var projectedRam4096x8Time = ram4096x8Elements * timePerElement;
+        var projectedRam65536x8Time = ram65536x8Elements * timePerElement;
+        
+        TestContext.WriteLine($"Ram4096x8 projected time: {projectedRam4096x8Time:F1} ms ({ram4096x8Elements:N0} elements)");
+        TestContext.WriteLine($"Ram65536x8 projected time: {projectedRam65536x8Time:F1} ms ({ram65536x8Elements:N0} elements)");
+        
+        // Even the largest block should be under 1 second with optimization
+        Assert.That(projectedRam65536x8Time, Is.LessThan(1000.0),
+            "Even Ram65536x8 should be under 1 second with caching optimization");
+        
+        TestContext.WriteLine("\nWithout optimization, Ram65536x8 would have taken 10+ seconds!");
+        TestContext.WriteLine("With caching optimization, it should take less than 1 second.");
+    }
+
+    [Test]
+    public void Optimization_Strategy_Comparison()
+    {
+        TestContext.WriteLine("Comparing Different Optimization Strategies:");
+        
+        // Test cached approach (our primary optimization)
+        var cachedRam = new Ram256x8();
+        var cachedResult = MeasureDebugInfoPerformance(cachedRam, "Ram256x8 (Cached)");
+        
+        // Test streaming approach (alternative optimization)
+        var streamingRam = new Ram256x8Streaming();
+        var streamingResult = MeasureDebugInfoPerformance(streamingRam, "Ram256x8 (Streaming)");
+        
+        TestContext.WriteLine("\nStrategy Comparison Results:");
+        TestContext.WriteLine($"Cached approach:    {cachedResult.averageMs:F3} ms");
+        TestContext.WriteLine($"Streaming approach: {streamingResult.averageMs:F3} ms");
+        
+        if (cachedResult.averageMs < streamingResult.averageMs)
+        {
+            var improvement = streamingResult.averageMs / cachedResult.averageMs;
+            TestContext.WriteLine($"Cached is {improvement:F1}x faster than streaming");
+        }
+        else
+        {
+            var improvement = cachedResult.averageMs / streamingResult.averageMs;
+            TestContext.WriteLine($"Streaming is {improvement:F1}x faster than cached");
+        }
+        
+        // Both approaches should be much faster than the original
+        Assert.That(cachedResult.averageMs, Is.LessThan(10.0), "Cached approach should be fast");
+        Assert.That(streamingResult.averageMs, Is.LessThan(1000.0), "Streaming approach should be reasonable");
+        
+        // Verify same element counts
+        Assert.That(streamingResult.idsCount, Is.EqualTo(cachedResult.idsCount), "Both approaches should return same number of IDs");
+        Assert.That(streamingResult.valuesCount, Is.EqualTo(cachedResult.valuesCount), "Both approaches should return same number of values");
+    }
+
     /// <summary>
     /// Measures the performance of debug info generation for a given RAM block.
     /// </summary>

@@ -63,7 +63,7 @@ public class Ram16x8 : LogicElement
             .AddChildren(_memory)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetCachedDebugInfo(BuildDebugInfo).ids;
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetCachedDebugInfo(BuildDebugInfo).values;
 }

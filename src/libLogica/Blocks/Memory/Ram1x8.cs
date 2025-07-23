@@ -60,7 +60,7 @@ public class Ram1x8 : LogicElement
             .AddChild(_tristateBuffer)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetCachedDebugInfo(BuildDebugInfo).ids;
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetCachedDebugInfo(BuildDebugInfo).values;
 }

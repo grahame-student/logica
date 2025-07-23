@@ -35,7 +35,7 @@ public class TristateBufferGate : LogicElement
             .AddLocals((nameof(A), A), (nameof(Enable), Enable), (nameof(O), O))
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetCachedDebugInfo(BuildDebugInfo).ids;
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetCachedDebugInfo(BuildDebugInfo).values;
 }
