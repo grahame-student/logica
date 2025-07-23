@@ -77,7 +77,7 @@ public class Ram16x8 : LogicElement
             .AddLocal(nameof(Write), Write)
             .AddLocal(nameof(Enable), Enable)
             .AddArray(nameof(DataOut), DataOut)
-            .AddChildren(_decoder)
+            .AddChild(_decoder)
             .AddChildren(_ramBlock)
             .Build();
 
