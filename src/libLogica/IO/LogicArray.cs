@@ -40,4 +40,9 @@ public class LogicArray<T> where T : IInputOutput, new()
         result.AddRange(_bits.Select(bit => bit.Value));
         return result;
     }
+
+    public override String ToString()
+    {
+        return "0b" + String.Join("", _bits.Reverse().Select(bit => bit.Value ? "1" : "0"));
+    }
 }
