@@ -2,6 +2,40 @@
 
 This repository uses Super-Linter for automated code quality checks. Make sure your changes pass all linter rules before submitting.
 
+`script/lint` has been provided to allow you to run `super-linter` locally, with the same configuration as the workflow. You must
+use this script to ensure that all of your changes are correctly linted / formatted **before** committing your changes, this step
+is not optional.
+
+## **CRITICAL: autofix First Policy**
+
+**Before manually addressing any linting issues, you MUST first run the autofix mode:**
+
+```bash
+./script/lint --fix
+```
+
+**This is mandatory and non-negotiable.** The autofix mode will automatically resolve most formatting and many linting issues, including:
+
+- Shell script formatting (shfmt)
+- C# formatting (dotnet format)
+- CSS/SCSS formatting and linting
+- JavaScript/TypeScript formatting and linting
+- JSON formatting
+- Markdown formatting
+- YAML formatting
+- Python formatting (black, isort, ruff)
+
+**Only after running autofix should you manually address any remaining issues.** Manual fixes should be surgical and minimal - focusing only on issues that cannot be automatically resolved.
+
+**Workflow:**
+
+1. **First**: Run `./script/lint --fix` to autofix all possible issues
+2. **Second**: Review and commit the auto-fixed changes
+3. **Third**: Run `./script/lint` to identify remaining issues
+4. **Finally**: Manually fix only the remaining issues that cannot be auto-fixed
+
+**Note**: EditorConfig violations cannot be auto-fixed and must be addressed manually by ensuring proper file endings, whitespace, and indentation.
+
 ## Code Formatting Guidelines
 
 This repository uses an `.editorconfig` file to define coding standards. When making code changes, ensure compliance with the following formatting rules:
