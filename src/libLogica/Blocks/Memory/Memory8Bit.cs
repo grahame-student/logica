@@ -31,6 +31,8 @@ public class Memory8Bit : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         for (Int32 i = 0; i < _memoryBits.Count; i++)
         {
             _memoryBits[i].Update();

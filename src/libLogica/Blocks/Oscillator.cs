@@ -19,7 +19,12 @@ public class Oscillator : LogicElement
         _not.A.Connect(_not.O);
     }
 
-    public override void Update() => _not.Update();
+    public override void Update()
+    {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
+        _not.Update();
+    }
 
     protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
         DebugInfo()

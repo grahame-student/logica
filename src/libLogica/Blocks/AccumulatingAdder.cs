@@ -31,6 +31,8 @@ public abstract class AccumulatingAdder<TLatch> : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         _adder8.Update();
         _latch8.Update();
     }
