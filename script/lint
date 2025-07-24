@@ -13,14 +13,32 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to get the current git branch or default to main
-get_current_branch() {
-    local branch
+# Function to get the default branch (mimics workflow logic: github.base_ref || 'main')
+get_default_branch() {
+    # The workflow uses github.base_ref || 'main'
+    # For local usage, we should default to 'main' to match the workflow behavior
+    # This ensures we compare against the same target branch as the CI
+    echo "main"
+}
+
+# Function to ensure the default branch exists locally
+ensure_default_branch_exists() {
+    local default_branch="$1"
+
     if command_exists git && [ -d ".git" ]; then
-        branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "main")
-        echo "$branch"
-    else
-        echo "main"
+        # Check if the default branch exists locally
+        if ! git show-ref --verify --quiet "refs/heads/$default_branch" && ! git show-ref --verify --quiet "refs/remotes/origin/$default_branch"; then
+            echo "==> Default branch '$default_branch' not found locally"
+            echo "    Attempting to fetch from origin..."
+
+            # Try to fetch the default branch
+            if git fetch origin "$default_branch:$default_branch" 2>/dev/null; then
+                echo "    ✅ Fetched '$default_branch' branch from origin"
+            else
+                echo "    ⚠️  Could not fetch '$default_branch' branch"
+                echo "    Super-linter will attempt to use available branches"
+            fi
+        fi
     fi
 }
 
@@ -39,8 +57,11 @@ if ! docker info >/dev/null 2>&1; then
     exit 1
 fi
 
-# Get current branch for DEFAULT_BRANCH setting
-CURRENT_BRANCH=$(get_current_branch)
+# Get default branch for DEFAULT_BRANCH setting (matches workflow: github.base_ref || 'main')
+DEFAULT_BRANCH=$(get_default_branch)
+
+# Ensure the default branch exists locally for comparison
+ensure_default_branch_exists "$DEFAULT_BRANCH"
 
 # Parse command line arguments
 VALIDATE_ALL_CODEBASE=false
@@ -98,7 +119,7 @@ WORKSPACE_PATH="$(pwd)"
 echo "==> Configuration:"
 echo "    Super-linter version: $SUPER_LINTER_VERSION"
 echo "    Workspace: $WORKSPACE_PATH"
-echo "    Default branch: $CURRENT_BRANCH"
+echo "    Default branch: $DEFAULT_BRANCH"
 echo "    Validate all codebase: $VALIDATE_ALL_CODEBASE"
 echo "    Log level: $LOG_LEVEL"
 
@@ -108,7 +129,7 @@ DOCKER_CMD=(
     -e "LOG_LEVEL=$LOG_LEVEL"
     -e "RUN_LOCAL=true"
     -e "VALIDATE_ALL_CODEBASE=$VALIDATE_ALL_CODEBASE"
-    -e "DEFAULT_BRANCH=$CURRENT_BRANCH"
+    -e "DEFAULT_BRANCH=$DEFAULT_BRANCH"
     -e "LINTER_RULES_PATH=.github/linters"
     -v "$WORKSPACE_PATH:/tmp/lint"
     "ghcr.io/super-linter/super-linter:$SUPER_LINTER_VERSION"
