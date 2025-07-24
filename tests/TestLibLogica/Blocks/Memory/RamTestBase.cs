@@ -46,18 +46,12 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
 
         for (Int32 i = 0; i < partitionCount; i++)
         {
-            // Use checked arithmetic to detect overflow and safer calculation approach
-            // Rearrange calculation to avoid potential intermediate overflow
-            UInt32 address;
-            if (maxAddress == UInt32.MaxValue)
-            {
-                // Special handling for maximum UInt32 to avoid overflow
-                address = (UInt32)((UInt64)i * UInt32.MaxValue / (UInt64)partitionCount);
-            }
-            else
-            {
-                address = (UInt32)(i * (maxAddress + 1L) / partitionCount);
-            }
+            // Use ternary operator to prevent CodeQL warning about both branches writing to same variable
+            // Special handling for UInt32.MaxValue to avoid overflow in intermediate calculations
+            UInt32 address = (maxAddress == UInt32.MaxValue)
+                ? (UInt32)((UInt64)i * UInt32.MaxValue / (UInt64)partitionCount)
+                : (UInt32)(i * (maxAddress + 1L) / partitionCount);
+
             yield return Math.Min(address, maxAddress);
         }
     }
@@ -65,19 +59,22 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// <summary>
     /// Generate power-of-2 and power-of-2 adjacent addresses for testing address decoding logic.
     /// These addresses are prone to errors in binary address decoding implementations.
+    /// Starts from power=1 to test true powers of 2 (2, 4, 8, 16, etc.).
     /// </summary>
     protected static IEnumerable<UInt32> GeneratePowerOfTwoAddresses(UInt32 maxAddress)
     {
-        for (Int32 power = 0; power < 32; power++)
+        // Start from power=1 to test actual powers of 2 (2, 4, 8, 16, etc.)
+        // Skip power=0 (which gives 1) as address 1 is already covered by boundary testing
+        for (Int32 power = 1; power < 32; power++)
         {
             UInt32 powerOfTwo = 1u << power;
             if (powerOfTwo > maxAddress) break;
 
+            // Only yield powerOfTwo if it's <= maxAddress and not 0 (which can't happen here since power >= 1)
             yield return powerOfTwo;
 
             // Test adjacent values if they're within range
-            // Skip powerOfTwo - 1 when powerOfTwo = 1 to avoid yielding address 0 twice
-            if (powerOfTwo > 1) yield return powerOfTwo - 1;
+            if (powerOfTwo > 1 && powerOfTwo - 1 <= maxAddress) yield return powerOfTwo - 1;
             if (powerOfTwo < maxAddress) yield return powerOfTwo + 1;
         }
     }
