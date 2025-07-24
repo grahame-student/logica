@@ -42,8 +42,7 @@ ensure_default_branch_exists() {
             echo "    Attempting to fetch from origin..."
 
             # Try to fetch the default branch and capture error details
-            fetch_error=$(git fetch origin "$default_branch:$default_branch" 2>&1)
-            if [ $? -eq 0 ]; then
+            if fetch_error=$(git fetch origin "$default_branch:$default_branch" 2>&1); then
                 echo "    ✅ Fetched '$default_branch' branch from origin"
             else
                 echo "    ⚠️  Could not fetch '$default_branch' branch"
@@ -73,7 +72,7 @@ fi
 display_results() {
     local exit_status=$1
     local fix_mode=$2
-    
+
     echo ""
     if [ "$exit_status" -eq 0 ]; then
         if [ "$fix_mode" = true ]; then
