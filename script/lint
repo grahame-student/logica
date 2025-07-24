@@ -27,14 +27,8 @@ ensure_default_branch_exists() {
     local default_branch="$1"
 
     if command_exists git && [ -d ".git" ]; then
-        # Check if the default branch exists as a local branch
-        local_branch_exists=$(git show-ref --verify --quiet "refs/heads/$default_branch" && echo "true" || echo "false")
-
-        # Check if the default branch exists as a remote branch
-        remote_branch_exists=$(git show-ref --verify --quiet "refs/remotes/origin/$default_branch" && echo "true" || echo "false")
-
         # If neither local nor remote branch exists, try to fetch it
-        if [ "$local_branch_exists" = "false" ] && [ "$remote_branch_exists" = "false" ]; then
+        if ! git show-ref --verify --quiet "refs/heads/$default_branch" && ! git show-ref --verify --quiet "refs/remotes/origin/$default_branch"; then
             echo "==> Default branch '$default_branch' not found locally"
             echo "    Attempting to fetch from origin..."
 
