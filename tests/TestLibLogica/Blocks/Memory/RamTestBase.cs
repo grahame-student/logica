@@ -46,7 +46,9 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
 
         for (Int32 i = 0; i < partitionCount; i++)
         {
-            // Cast to long to prevent integer overflow when maxAddress is large (e.g., UInt32.MaxValue)
+            // Cast to long to prevent integer overflow during calculation
+            // Note: This works correctly even when maxAddress = UInt32.MaxValue
+            // since (UInt32.MaxValue + 1L) = 4294967296L which fits in long
             UInt32 address = (UInt32)(i * (maxAddress + 1L) / partitionCount);
             yield return Math.Min(address, maxAddress);
         }
@@ -66,7 +68,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
             yield return powerOfTwo;
 
             // Test adjacent values if they're within range
-            if (powerOfTwo > 0) yield return powerOfTwo - 1;
+            // Skip powerOfTwo - 1 when powerOfTwo = 1 to avoid yielding address 0 twice
+            if (powerOfTwo > 1) yield return powerOfTwo - 1;
             if (powerOfTwo < maxAddress) yield return powerOfTwo + 1;
         }
     }
