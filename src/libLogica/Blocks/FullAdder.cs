@@ -38,7 +38,7 @@ public class FullAdder : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _ha1.Update();
         _ha2.Update();
         _orGate.Update();

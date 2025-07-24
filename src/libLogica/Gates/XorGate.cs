@@ -35,19 +35,19 @@ public class XorGate : LogicElement, IBinaryGate
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _orGate.Update();
         _nandGate.Update();
         _andGate.Update();
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
             .AddChildren(_orGate, _nandGate, _andGate)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
             .AddChildren(_orGate, _nandGate, _andGate)

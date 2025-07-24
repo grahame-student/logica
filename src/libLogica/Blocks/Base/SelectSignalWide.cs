@@ -32,21 +32,21 @@ public class SelectSignalWide : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         for (Int32 i = 0; i < _andGate.Count; i++)
         {
             _andGate[i].Update();
         }
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddArray(nameof(Inputs), Inputs)
             .AddLocal(nameof(Signal), Signal)
             .AddArray(nameof(Outputs), Outputs)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddArray(nameof(Inputs), Inputs)
             .AddLocal(nameof(Signal), Signal)

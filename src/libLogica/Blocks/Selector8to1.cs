@@ -74,7 +74,7 @@ public class Selector8to1 : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         for (Int32 i = 0; i < _notgates.Count; i++)
         {
             _notgates[i].Update();

@@ -44,7 +44,7 @@ public class Ram8x1 : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _decoder.Update();
         _memory.Update();
         _selector.Update();

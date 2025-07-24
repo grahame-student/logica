@@ -22,7 +22,7 @@ public class Oscillator : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _not.Update();
     }
 

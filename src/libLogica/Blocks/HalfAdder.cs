@@ -31,7 +31,7 @@ public class HalfAdder : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _xorGate.Update();
         _andGate.Update();
     }

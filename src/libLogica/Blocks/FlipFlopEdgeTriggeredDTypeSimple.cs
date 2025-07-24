@@ -58,7 +58,7 @@ public class FlipFlopEdgeTriggeredDTypeSimple : LogicElement, IDTypeFlipFlop
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         PerformUpdate();
     }
 

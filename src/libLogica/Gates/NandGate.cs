@@ -28,18 +28,18 @@ public class NandGate : LogicElement, IBinaryGate
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _andGate.Update();
         _notGate.Update();
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
             .AddChildren(_andGate, _notGate)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
             .AddChildren(_andGate, _notGate)

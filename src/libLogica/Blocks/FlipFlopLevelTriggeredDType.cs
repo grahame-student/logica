@@ -40,7 +40,7 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         PerformUpdate();
     }
 
@@ -70,13 +70,13 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     */
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_not, _and1, _and2, _rs)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_not, _and1, _and2, _rs)

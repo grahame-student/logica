@@ -37,7 +37,7 @@ public class OnesComplementWide : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         foreach (XorGate gate in _gate)
         {
             gate.Update();

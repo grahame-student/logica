@@ -26,11 +26,11 @@ public class Memory1Bit : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         _flipFlop.Update();
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocal(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)
@@ -38,7 +38,7 @@ public class Memory1Bit : LogicElement
             .AddChild(_flipFlop)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddLocal(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)

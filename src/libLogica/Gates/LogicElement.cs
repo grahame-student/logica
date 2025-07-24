@@ -16,9 +16,9 @@ public abstract class LogicElement
     // IDs never change during simulation, so they can be cached permanently
     private IEnumerable<String>? _cachedIds;
     private Boolean _idsCached = false;
-    
+
     // Values change during simulation, so they need to be cleared on each Update()
-    private IEnumerable<Boolean>? _cachedValues;  
+    private IEnumerable<Boolean>? _cachedValues;
     private Boolean _valuesCached = false;
 
     protected LogicElement()
@@ -71,7 +71,7 @@ public abstract class LogicElement
     }
 
 
-    /// <summary>  
+    /// <summary>
     /// Clear the values cache. Call this at the beginning of Update() methods to ensure
     /// fresh values are calculated for educational observability, even when outputs don't change.
     /// IDs are never cleared since they don't change during simulation.

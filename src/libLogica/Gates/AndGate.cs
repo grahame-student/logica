@@ -16,14 +16,14 @@ public class AndGate : LogicElement, IBinaryGate
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         var newValue = A.Value && B.Value;
         O.Value = newValue;
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build().values;
 }

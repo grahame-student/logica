@@ -93,7 +93,7 @@ public class Decoder4to16 : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         for (Int32 i = 0; i < _notGates.Count; i++)
         {
             _notGates[i].Update();
@@ -104,7 +104,7 @@ public class Decoder4to16 : LogicElement
         }
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddArray(nameof(Address), Address)
             .AddArray(nameof(Output), Output)
@@ -112,7 +112,7 @@ public class Decoder4to16 : LogicElement
             .AddChildren(_andGates)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddArray(nameof(Address), Address)
             .AddArray(nameof(Output), Output)

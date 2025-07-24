@@ -16,13 +16,13 @@ public class NorGate3Input : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         O.Value = !(A.Value || B.Value || C.Value);
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(C), C), (nameof(O), O)).Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(C), C), (nameof(O), O)).Build().values;
 }

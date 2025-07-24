@@ -18,12 +18,12 @@ public class AndGate4Input : LogicElement
     public override void Update()
     {
         ClearValuesCache(); // Always clear values cache for educational observability
-        
+
         var newValue = A.Value && B.Value && C.Value && D.Value;
         O.Value = newValue;
     }
 
-    public override IEnumerable<String> GetIds() => 
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocal(nameof(A), A)
             .AddLocal(nameof(B), B)
@@ -32,7 +32,7 @@ public class AndGate4Input : LogicElement
             .AddLocal(nameof(O), O)
             .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => 
+    public override IEnumerable<Boolean> GetValues() =>
         DebugInfo()
             .AddLocal(nameof(A), A)
             .AddLocal(nameof(B), B)

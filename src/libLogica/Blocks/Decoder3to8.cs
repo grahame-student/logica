@@ -78,9 +78,7 @@ public class Decoder3to8 : LogicElement
 
     public override void Update()
     {
-        ClearValuesCache(); // Always clear values cache for educational observability
-        
-        // Update the NOT gates
+        ClearValuesCache(); // Always clear values cache for educational observability// Update the NOT gates
         for (Int32 i = 0; i < _notGates.Count; i++)
         {
             _notGates[i].Update();
