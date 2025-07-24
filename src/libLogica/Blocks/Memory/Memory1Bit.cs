@@ -23,17 +23,23 @@ public class Memory1Bit : LogicElement
         DataOut.Connect(_flipFlop.Q);
     }
 
-    public override void Update() => _flipFlop.Update();
+    public override void Update()
+    {
+        _flipFlop.Update();
+        // For composite gates, we conservatively mark state as changed since child state might have changed
+        MarkStateChanged();
+        ClearDebugInfoCacheIfChanged();
+    }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
-    DebugInfo()
-        .AddLocal(nameof(DataIn), DataIn)
-        .AddLocal(nameof(Write), Write)
-        .AddLocal(nameof(DataOut), DataOut)
-        .AddChild(_flipFlop)
-        .Build();
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
+        DebugInfo()
+            .AddLocal(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(DataOut), DataOut)
+            .AddChild(_flipFlop)
+            .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }

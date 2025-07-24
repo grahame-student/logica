@@ -65,7 +65,7 @@ public class Ram256x8 : LogicElement
 
     public override void Update()
     {
-        ClearDebugInfoCache(); // Clear cache to ensure dynamic observability
+        ClearDebugInfoCache(); // Clear cache to ensure dynamic observability for educational use
         _decoder.Update();
         _selectEnable.Update();
         _selectWrite.Update();

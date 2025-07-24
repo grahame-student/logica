@@ -37,16 +37,19 @@ public class TristateBufferWide : LogicElement
         {
             _buffers[i].Update();
         }
+        // For composite gates, we conservatively mark state as changed since child state might have changed
+        MarkStateChanged();
+        ClearDebugInfoCacheIfChanged();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddArray(nameof(Inputs), Inputs)
             .AddLocal(nameof(Enable), Enable)
             .AddArray(nameof(Outputs), Outputs)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }

@@ -40,6 +40,9 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     public override void Update()
     {
         PerformUpdate();
+        // For composite gates, we conservatively mark state as changed since child state might have changed
+        MarkStateChanged();
+        ClearDebugInfoCacheIfChanged();
     }
 
     private void PerformUpdate()
@@ -68,13 +71,13 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     */
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_not, _and1, _and2, _rs)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }

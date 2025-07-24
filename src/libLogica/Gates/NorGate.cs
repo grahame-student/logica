@@ -29,15 +29,18 @@ public class NorGate : LogicElement, IBinaryGate
     {
         _orGate.Update();
         _notGate.Update();
+        // For composite gates, we conservatively mark state as changed since child state might have changed
+        MarkStateChanged();
+        ClearDebugInfoCacheIfChanged();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O))
             .AddChildren(_orGate, _notGate)
             .Build();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }

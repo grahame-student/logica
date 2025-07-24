@@ -16,6 +16,9 @@ public abstract class LogicElement
     private IEnumerable<String>? _cachedIds;
     private IEnumerable<Boolean>? _cachedValues;
     private Boolean _debugInfoCached = false;
+    
+    // Change detection to avoid unnecessary cache clearing
+    private Boolean _stateChanged = true; // Initially true to ensure first cache is cleared
 
     protected LogicElement()
     {
@@ -75,6 +78,28 @@ public abstract class LogicElement
     {
         // Default implementation calls the abstract methods for backward compatibility
         return (GetIds(), GetValues());
+    }
+
+    /// <summary>
+    /// Mark that the element's state has changed and cache should be cleared on next access.
+    /// Call this from Update() methods when the element's state actually changes.
+    /// </summary>
+    protected void MarkStateChanged()
+    {
+        _stateChanged = true;
+    }
+
+    /// <summary>
+    /// Clear the debug info cache if state has changed. Call this at the beginning of Update() methods.
+    /// This provides better performance by avoiding false cache misses when nothing actually changed.
+    /// </summary>
+    protected void ClearDebugInfoCacheIfChanged()
+    {
+        if (_stateChanged)
+        {
+            ClearDebugInfoCache();
+            _stateChanged = false;
+        }
     }
 
     /// <summary>

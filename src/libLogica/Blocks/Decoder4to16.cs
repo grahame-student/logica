@@ -100,9 +100,12 @@ public class Decoder4to16 : LogicElement
         {
             _andGates[i].Update();
         }
+        // For composite gates, we conservatively mark state as changed since child state might have changed
+        MarkStateChanged();
+        ClearDebugInfoCacheIfChanged();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
         DebugInfo()
             .AddArray(nameof(Address), Address)
             .AddArray(nameof(Output), Output)
@@ -110,8 +113,7 @@ public class Decoder4to16 : LogicElement
             .AddChildren(_andGates)
             .Build();
 
+    public override IEnumerable<String> GetIds() => GetIdsCached();
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
 }
