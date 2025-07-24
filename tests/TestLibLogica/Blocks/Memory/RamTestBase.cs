@@ -46,10 +46,18 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
 
         for (Int32 i = 0; i < partitionCount; i++)
         {
-            // Cast to long to prevent integer overflow during calculation
-            // Note: This works correctly even when maxAddress = UInt32.MaxValue
-            // since (UInt32.MaxValue + 1L) = 4294967296L which fits in long
-            UInt32 address = (UInt32)(i * (maxAddress + 1L) / partitionCount);
+            // Use checked arithmetic to detect overflow and safer calculation approach
+            // Rearrange calculation to avoid potential intermediate overflow
+            UInt32 address;
+            if (maxAddress == UInt32.MaxValue)
+            {
+                // Special handling for maximum UInt32 to avoid overflow
+                address = (UInt32)((UInt64)i * UInt32.MaxValue / (UInt64)partitionCount);
+            }
+            else
+            {
+                address = (UInt32)(i * (maxAddress + 1L) / partitionCount);
+            }
             yield return Math.Min(address, maxAddress);
         }
     }
@@ -209,9 +217,34 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
         Random random = new Random(42); // Fixed seed for reproducible tests
         for (Int32 i = 0; i < cycles; i++)
         {
-            UInt32 testAddress = (UInt32)random.Next(0, (Int32)maxAddress + 1);
+            // Generate random address safely for full UInt32 range
+            UInt32 testAddress = GenerateRandomAddress(random, maxAddress);
             UInt32 testData = (UInt32)random.Next(0, 256);
             VerifyWriteReadInvariant(testAddress, testData, maxAddress, address, write, dataIn, dataOut, updateAction);
+        }
+    }
+
+    /// <summary>
+    /// Generate a random address within the valid range [0, maxAddress].
+    /// Handles the full UInt32 range without overflow issues.
+    /// </summary>
+    private static UInt32 GenerateRandomAddress(Random random, UInt32 maxAddress)
+    {
+        if (maxAddress <= Int32.MaxValue)
+        {
+            // Safe to use Random.Next for smaller ranges
+            return (UInt32)random.Next(0, (Int32)maxAddress + 1);
+        }
+        else
+        {
+            // For larger ranges, use NextBytes to generate a UInt32 and then constrain it
+            Byte[] bytes = new Byte[4];
+            random.NextBytes(bytes);
+            UInt32 randomValue = BitConverter.ToUInt32(bytes, 0);
+
+            // Scale the random value to fit within [0, maxAddress]
+            // Use UInt64 arithmetic to avoid overflow in the intermediate calculation
+            return (UInt32)((UInt64)randomValue * (maxAddress + 1UL) / ((UInt64)UInt32.MaxValue + 1UL));
         }
     }
 }
