@@ -219,24 +219,24 @@ public class TestLogicElementCaching
     public void EducationalObservability_PreservesInputChanges(Boolean inputA, Boolean inputB)
     {
         var element = new TestElement();
-        
+
         // Set initial values
         element.A.Value = inputA;
         element.B.Value = inputB;
-        
+
         // Get initial values
         var values1 = element.GetValuesCached().ToList();
-        
+
         // Change inputs (but output might remain the same)
         element.A.Value = !inputA;
         element.B.Value = !inputB;
-        
+
         // Update to clear values cache
         element.Update();
-        
+
         // Get new values
         var values2 = element.GetValuesCached().ToList();
-        
+
         // Values should reflect the input changes
         Assert.That(values2[0], Is.EqualTo(!inputA));
         Assert.That(values2[1], Is.EqualTo(!inputB));
