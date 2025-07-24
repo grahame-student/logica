@@ -67,6 +67,7 @@ ensure_default_branch_exists "$DEFAULT_BRANCH"
 VALIDATE_ALL_CODEBASE=false
 LOG_LEVEL="NOTICE"
 DRY_RUN=false
+FIX_MODE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -86,6 +87,10 @@ while [[ $# -gt 0 ]]; do
         DRY_RUN=true
         shift
         ;;
+    --fix | --auto-fix)
+        FIX_MODE=true
+        shift
+        ;;
     --help)
         echo "Usage: $0 [options]"
         echo ""
@@ -96,12 +101,28 @@ while [[ $# -gt 0 ]]; do
         echo "  --verbose              Enable verbose debug logging"
         echo "  --info                 Enable info level logging"
         echo "  --dry-run              Show the Docker command that would be run"
+        echo "  --fix, --auto-fix      Enable auto-fix mode for supported linters"
         echo "  --help                 Show this help message"
         echo ""
         echo "Examples:"
         echo "  $0                     # Lint only changed files"
         echo "  $0 --all               # Lint entire codebase"
         echo "  $0 --verbose           # Lint with detailed output"
+        echo "  $0 --fix               # Auto-fix issues where possible"
+        echo ""
+        echo "Auto-fix mode enables automatic fixing for the following linters:"
+        echo "  - Shell scripts (shfmt)"
+        echo "  - C# code (dotnet format)"
+        echo "  - CSS/SCSS (prettier, stylelint)"
+        echo "  - JavaScript/TypeScript (prettier, eslint)"
+        echo "  - JSON (prettier)"
+        echo "  - Markdown (prettier)"
+        echo "  - YAML (prettier)"
+        echo "  - Python (black, isort, ruff)"
+        echo "  - Natural language (textlint)"
+        echo "  - And more..."
+        echo ""
+        echo "Note: EditorConfig issues cannot be auto-fixed and must be addressed manually."
         exit 0
         ;;
     *)
@@ -122,6 +143,7 @@ echo "    Workspace: $WORKSPACE_PATH"
 echo "    Default branch: $DEFAULT_BRANCH"
 echo "    Validate all codebase: $VALIDATE_ALL_CODEBASE"
 echo "    Log level: $LOG_LEVEL"
+echo "    Fix mode: $FIX_MODE"
 
 # Build Docker command
 DOCKER_CMD=(
@@ -132,8 +154,35 @@ DOCKER_CMD=(
     -e "DEFAULT_BRANCH=$DEFAULT_BRANCH"
     -e "LINTER_RULES_PATH=.github/linters"
     -v "$WORKSPACE_PATH:/tmp/lint"
-    "ghcr.io/super-linter/super-linter:$SUPER_LINTER_VERSION"
 )
+
+# Add fix mode environment variables if enabled
+if [ "$FIX_MODE" = true ]; then
+    # Enable auto-fix for commonly used linters
+    DOCKER_CMD+=(
+        -e "FIX_SHELL_SHFMT=true"                  # Shell script formatting
+        -e "FIX_CSHARP=true"                       # C# formatting
+        -e "FIX_DOTNET_SLN_FORMAT_WHITESPACE=true" # .NET whitespace formatting
+        -e "FIX_DOTNET_SLN_FORMAT_STYLE=true"      # .NET style formatting
+        -e "FIX_CSS=true"                          # CSS/SCSS linting fixes
+        -e "FIX_CSS_PRETTIER=true"                 # CSS/SCSS formatting with Prettier
+        -e "FIX_JAVASCRIPT_ES=true"                # JavaScript ESLint fixes
+        -e "FIX_JAVASCRIPT_PRETTIER=true"          # JavaScript formatting with Prettier
+        -e "FIX_TYPESCRIPT_ES=true"                # TypeScript ESLint fixes
+        -e "FIX_TYPESCRIPT_PRETTIER=true"          # TypeScript formatting with Prettier
+        -e "FIX_JSON=true"                         # JSON linting fixes
+        -e "FIX_JSON_PRETTIER=true"                # JSON formatting with Prettier
+        -e "FIX_MARKDOWN=true"                     # Markdown linting fixes
+        -e "FIX_MARKDOWN_PRETTIER=true"            # Markdown formatting with Prettier
+        -e "FIX_YAML_PRETTIER=true"                # YAML formatting with Prettier
+        -e "FIX_PYTHON_BLACK=true"                 # Python formatting with Black
+        -e "FIX_PYTHON_ISORT=true"                 # Python import sorting
+        -e "FIX_PYTHON_RUFF=true"                  # Python linting fixes with Ruff
+        -e "FIX_NATURAL_LANGUAGE=true"             # Natural language fixes with textlint
+    )
+fi
+
+DOCKER_CMD+=("ghcr.io/super-linter/super-linter:$SUPER_LINTER_VERSION")
 
 if [ "$DRY_RUN" = true ]; then
     echo ""
@@ -155,11 +204,25 @@ echo ""
 # Run super-linter
 if "${DOCKER_CMD[@]}"; then
     echo ""
-    echo "✅ Linting completed successfully!"
-    echo "==> All checks passed"
+    if [ "$FIX_MODE" = true ]; then
+        echo "✅ Linting and auto-fixing completed successfully!"
+        echo "==> All fixable issues have been automatically resolved"
+        echo "==> Please review the changes and commit them"
+    else
+        echo "✅ Linting completed successfully!"
+        echo "==> All checks passed"
+    fi
 else
     echo ""
-    echo "❌ Linting found issues that need to be addressed"
-    echo "==> Please review the output above and fix the reported issues"
+    if [ "$FIX_MODE" = true ]; then
+        echo "❌ Linting found issues that need attention"
+        echo "==> Some issues were automatically fixed, but others require manual intervention"
+        echo "==> Please review the output above and address any remaining issues"
+        echo "==> Note: EditorConfig issues cannot be auto-fixed"
+    else
+        echo "❌ Linting found issues that need to be addressed"
+        echo "==> Please review the output above and fix the reported issues"
+        echo "==> Consider using --fix to automatically fix supported issues"
+    fi
     exit 1
 fi
