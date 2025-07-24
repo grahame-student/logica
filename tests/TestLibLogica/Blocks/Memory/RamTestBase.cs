@@ -46,6 +46,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
 
         for (Int32 i = 0; i < partitionCount; i++)
         {
+            // Cast to long to prevent integer overflow when maxAddress is large (e.g., UInt32.MaxValue)
             UInt32 address = (UInt32)(i * (maxAddress + 1L) / partitionCount);
             yield return Math.Min(address, maxAddress);
         }

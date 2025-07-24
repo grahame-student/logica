@@ -84,7 +84,7 @@ internal class TestRam16x8 : RamTestBase<Ram16x8>
     public static readonly Object[] OptimizedReadTestCaseData = GenerateReadTestCases(MAX_ADDRESS).ToArray();
 
     [TestCaseSource(nameof(OptimizedWriteTestCaseData))]
-    public void Address_WriteOptimized(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
+    public void WriteOptimized_StoresDataCorrectly(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
     {
         LogicElementTestHelper.SetArrayValue(_element.Address, address);
         _element.Write.Value = write;
@@ -97,7 +97,7 @@ internal class TestRam16x8 : RamTestBase<Ram16x8>
     }
 
     [TestCaseSource(nameof(OptimizedReadTestCaseData))]
-    public void Address_ReadOptimized(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
+    public void ReadOptimized_ReturnsStoredData(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
     {
         InitializeMemoryForReading(MAX_ADDRESS, _element.Address, _element.Write, _element.DataIn, () => _element.Update());
 
