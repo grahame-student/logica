@@ -184,10 +184,10 @@ internal class TestRam16x8 : RamTestBase<Ram16x8>
     public void WriteReadInvariant_PropertyBasedTest()
     {
         _element.Enable.Value = true;
-        VerifyWriteReadInvariant(0u, 0x42u, MAX_ADDRESS,
+        VerifyWriteReadInvariant(0u, 0b01000010u, MAX_ADDRESS,
             _element.Address, _element.Write, _element.DataIn, _element.DataOut,
             () => _element.Update());
-        VerifyWriteReadInvariant(15u, 0xAAu, MAX_ADDRESS,
+        VerifyWriteReadInvariant(15u, 0b10101010u, MAX_ADDRESS,
             _element.Address, _element.Write, _element.DataIn, _element.DataOut,
             () => _element.Update());
     }

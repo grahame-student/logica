@@ -77,11 +77,11 @@ internal class TestRam256x8 : RamTestBase<Ram256x8>
         // Property-based test: writing and then reading should return the same value
         var testCases = new[]
         {
-            new { Address = 0u, Data = 0x42u },
-            new { Address = 255u, Data = 0xAAu },
-            new { Address = 128u, Data = 0x55u },
-            new { Address = 64u, Data = 0xCCu },
-            new { Address = 192u, Data = 0x33u }
+            new { Address = 0u, Data = 0b01000010u },
+            new { Address = 255u, Data = 0b10101010u },
+            new { Address = 128u, Data = 0b01010101u },
+            new { Address = 64u, Data = 0b11001100u },
+            new { Address = 192u, Data = 0b00110011u }
         };
 
         foreach (var testCase in testCases)
@@ -106,7 +106,7 @@ internal class TestRam256x8 : RamTestBase<Ram256x8>
     {
         // Write some data first
         LogicElementTestHelper.SetArrayValue(_element.Address, 0u);
-        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0xFFu);
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, 0b11111111u);
         _element.Write.Value = true;
         _element.Enable.Value = true;
         _element.Update();

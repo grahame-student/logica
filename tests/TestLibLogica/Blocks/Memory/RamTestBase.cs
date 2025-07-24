@@ -105,14 +105,14 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<UInt32> GenerateTestDataPatterns()
     {
-        yield return 0x00;  // All zeros
-        yield return 0xFF;  // All ones
-        yield return 0xAA;  // Alternating 10101010
-        yield return 0x55;  // Alternating 01010101
-        yield return 0xCC;  // 11001100
-        yield return 0x33;  // 00110011
-        yield return 0xF0;  // 11110000
-        yield return 0x0F;  // 00001111
+        yield return 0b00000000u;  // All zeros
+        yield return 0b11111111u;  // All ones
+        yield return 0b10101010u;  // Alternating 10101010
+        yield return 0b01010101u;  // Alternating 01010101
+        yield return 0b11001100u;  // 11001100
+        yield return 0b00110011u;  // 00110011
+        yield return 0b11110000u;  // 11110000
+        yield return 0b00001111u;  // 00001111
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
         {
             UInt32 address = addresses[i];
             UInt32 dataPattern = dataPatterns[i % dataPatterns.Count];
-            yield return new Object[] { address, false, 0x00u, dataPattern };
+            yield return new Object[] { address, false, 0b00000000u, dataPattern };
         }
     }
 
