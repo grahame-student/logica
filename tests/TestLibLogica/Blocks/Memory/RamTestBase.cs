@@ -47,7 +47,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
         for (Int32 i = 0; i < partitionCount; i++)
         {
             // Use ternary operator to prevent CodeQL warning about both branches writing to same variable
-            // Special handling for UInt32.MaxValue to avoid overflow in intermediate calculations
+            // Special handling when maxAddress equals UInt32.MaxValue to prevent overflow in intermediate calculations
             UInt32 address = (maxAddress == UInt32.MaxValue)
                 ? (UInt32)((UInt64)i * UInt32.MaxValue / (UInt64)partitionCount)
                 : (UInt32)(i * (maxAddress + 1L) / partitionCount);
@@ -85,7 +85,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<UInt32> GenerateOptimizedAddresses(UInt32 maxAddress)
     {
-        HashSet<UInt32> addresses = new HashSet<UInt32>();
+        var addresses = new HashSet<UInt32>();
 
         // Boundary value testing
         foreach (UInt32 addr in GenerateBoundaryAddresses(maxAddress))
@@ -130,8 +130,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<Object[]> GenerateWriteTestCases(UInt32 maxAddress)
     {
-        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
+        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        var dataPatterns = GenerateTestDataPatterns().ToList();
 
         // Test each optimized address with a representative data pattern
         for (Int32 i = 0; i < addresses.Count; i++)
@@ -148,8 +148,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<Object[]> GenerateReadTestCases(UInt32 maxAddress)
     {
-        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
+        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        var dataPatterns = GenerateTestDataPatterns().ToList();
 
         // Test reading from each optimized address with expected data pattern
         for (Int32 i = 0; i < addresses.Count; i++)
@@ -166,8 +166,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected void InitializeMemoryForReading(UInt32 maxAddress, LogicArray<Input> address, Input write, LogicArray<Input> dataIn, Action updateAction)
     {
-        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
+        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        var dataPatterns = GenerateTestDataPatterns().ToList();
 
         for (Int32 i = 0; i < addresses.Count; i++)
         {
@@ -211,7 +211,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     protected void PerformStressTest(UInt32 maxAddress, LogicArray<Input> address, Input write,
         LogicArray<Input> dataIn, LogicArray<Output> dataOut, Action updateAction, Int32 cycles = 100)
     {
-        Random random = new Random(42); // Fixed seed for reproducible tests
+        var random = new Random(42); // Fixed seed for reproducible tests
         for (Int32 i = 0; i < cycles; i++)
         {
             // Generate random address safely for full UInt32 range
@@ -235,13 +235,17 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
         else
         {
             // For larger ranges, use NextBytes to generate a UInt32 and then constrain it
-            Byte[] bytes = new Byte[4];
+            var bytes = new Byte[4];
             random.NextBytes(bytes);
             UInt32 randomValue = BitConverter.ToUInt32(bytes, 0);
 
             // Scale the random value to fit within [0, maxAddress]
-            // Use UInt64 arithmetic to avoid overflow in the intermediate calculation
-            return (UInt32)((UInt64)randomValue * (maxAddress + 1UL) / ((UInt64)UInt32.MaxValue + 1UL));
+            // Mathematical approach: maps uniform random UInt32 to uniform distribution over [0, maxAddress]
+            // Uses UInt64 arithmetic to prevent overflow during intermediate calculations
+            UInt64 scaledRange = (UInt64)maxAddress + 1UL;
+            UInt64 maxRandomValue = (UInt64)UInt32.MaxValue + 1UL;
+            UInt64 scaledResult = (UInt64)randomValue * scaledRange / maxRandomValue;
+            return (UInt32)scaledResult;
         }
     }
 }

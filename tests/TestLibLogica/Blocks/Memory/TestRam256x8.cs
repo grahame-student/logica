@@ -113,12 +113,12 @@ internal class TestRam256x8 : RamTestBase<Ram256x8>
         _element.Update();
 
         // Output should be in high impedance state
-        Boolean outputInHighImpedance = true;
+        Boolean allOutputsInHighImpedance = true;
         for (Int32 i = 0; i < _element.DataOut.Count; i++)
         {
-            outputInHighImpedance &= ((LibLogica.IO.Output)_element.DataOut[i]).IsHighImpedance;
+            allOutputsInHighImpedance &= ((LibLogica.IO.Output)_element.DataOut[i]).IsHighImpedance;
         }
 
-        Assert.That(outputInHighImpedance, Is.True);
+        Assert.That(allOutputsInHighImpedance, Is.True);
     }
 }

@@ -156,12 +156,12 @@ internal class TestRam16x8 : RamTestBase<Ram16x8>
         _element.Update();
 
         // Assert
-        Boolean isHighImpedance = true;
+        Boolean allOutputsInHighImpedance = true;
         for (Int32 i = 0; i < _element.DataOut.Count; i++)
         {
-            isHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
+            allOutputsInHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
         }
-        Assert.That(isHighImpedance, Is.True);
+        Assert.That(allOutputsInHighImpedance, Is.True);
     }
 
     [Test]
