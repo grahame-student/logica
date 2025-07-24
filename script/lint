@@ -13,14 +13,11 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to get the hardcoded default branch
-# Intentionally simplified: always returns 'main' for consistent behavior
+# Default branch constant - keeping it simple and consistent
 # The workflow uses github.base_ref || 'main', but for local development
 # we keep it simple and always target 'main' as the default branch
 # This ensures predictable behavior and matches the common case in CI
-get_hardcoded_default_branch() {
-    echo "main"
-}
+DEFAULT_BRANCH="main"
 
 # Function to ensure the default branch exists locally
 ensure_default_branch_exists() {
@@ -28,13 +25,13 @@ ensure_default_branch_exists() {
 
     if command_exists git && [ -d ".git" ]; then
         # Check if local branch exists
-        local_branch_exists=false
+        local local_branch_exists=false
         if git show-ref --verify --quiet "refs/heads/$default_branch"; then
             local_branch_exists=true
         fi
 
         # Check if remote branch exists
-        remote_branch_exists=false
+        local remote_branch_exists=false
         if git show-ref --verify --quiet "refs/remotes/origin/$default_branch"; then
             remote_branch_exists=true
         fi
@@ -110,8 +107,6 @@ setup_fix_mode_env_vars() {
 }
 
 # Get default branch for DEFAULT_BRANCH setting (matches workflow: github.base_ref || 'main')
-DEFAULT_BRANCH=$(get_hardcoded_default_branch)
-
 # Ensure the default branch exists locally for comparison
 ensure_default_branch_exists "$DEFAULT_BRANCH"
 VALIDATE_ALL_CODEBASE=false
