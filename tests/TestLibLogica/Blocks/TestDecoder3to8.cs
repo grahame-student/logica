@@ -27,22 +27,22 @@ internal class TestDecoder3to8 : LogicElementTestBase<Decoder3to8>
     public static readonly Object[] TestCaseData =
     [
         //            address, write, activeOutput
-        new Object[] {0b000u, true,  0b00000001u },
-        new Object[] {0b001u, true, 0b00000010u },
-        new Object[] {0b010u, true, 0b00000100u },
-        new Object[] {0b011u, true, 0b00001000u },
-        new Object[] {0b100u, true, 0b00010000u },
-        new Object[] {0b101u, true, 0b00100000u },
-        new Object[] {0b110u, true, 0b01000000u },
-        new Object[] {0b111u, true, 0b10000000u },
-        new Object[] {0b000u, false, 0b00000000u },
-        new Object[] {0b001u, false, 0b00000000u },
-        new Object[] {0b010u, false, 0b00000000u },
-        new Object[] {0b011u, false, 0b00000000u },
-        new Object[] {0b100u, false, 0b00000000u },
-        new Object[] {0b101u, false, 0b00000000u },
-        new Object[] {0b110u, false, 0b00000000u },
-        new Object[] {0b111u, false, 0b00000000u },
+        new Object[] { 0b000u, true, 0b00000001u },
+        new Object[] { 0b001u, true, 0b00000010u },
+        new Object[] { 0b010u, true, 0b00000100u },
+        new Object[] { 0b011u, true, 0b00001000u },
+        new Object[] { 0b100u, true, 0b00010000u },
+        new Object[] { 0b101u, true, 0b00100000u },
+        new Object[] { 0b110u, true, 0b01000000u },
+        new Object[] { 0b111u, true, 0b10000000u },
+        new Object[] { 0b000u, false, 0b00000000u },
+        new Object[] { 0b001u, false, 0b00000000u },
+        new Object[] { 0b010u, false, 0b00000000u },
+        new Object[] { 0b011u, false, 0b00000000u },
+        new Object[] { 0b100u, false, 0b00000000u },
+        new Object[] { 0b101u, false, 0b00000000u },
+        new Object[] { 0b110u, false, 0b00000000u },
+        new Object[] { 0b111u, false, 0b00000000u },
     ];
 
     [TestCaseSource(nameof(TestCaseData))]

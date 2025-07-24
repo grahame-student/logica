@@ -26,22 +26,22 @@ internal class TestMemory8x1 : LogicElementTestBase<Memory8x1>
     public static readonly Object[] TestCaseData =
     [
         //            dataIn, write, dataOut
-        new Object[] {true, 0b00000001u, 0b00000001u },
-        new Object[] {true, 0b00000010u, 0b00000010u },
-        new Object[] {true, 0b00000100u, 0b00000100u },
-        new Object[] {true, 0b00001000u, 0b00001000u },
-        new Object[] {true, 0b00010000u, 0b00010000u },
-        new Object[] {true, 0b00100000u, 0b00100000u },
-        new Object[] {true, 0b01000000u, 0b01000000u },
-        new Object[] {true, 0b10000000u, 0b10000000u },
-        new Object[] {false, 0b00000001u, 0b11111110u },
-        new Object[] {false, 0b00000010u, 0b11111101u },
-        new Object[] {false, 0b00000100u, 0b11111011u },
-        new Object[] {false, 0b00001000u, 0b11110111u },
-        new Object[] {false, 0b00010000u, 0b11101111u },
-        new Object[] {false, 0b00100000u, 0b11011111u },
-        new Object[] {false, 0b01000000u, 0b10111111u },
-        new Object[] {false, 0b10000000u, 0b01111111u },
+        new Object[] { true, 0b00000001u, 0b00000001u },
+        new Object[] { true, 0b00000010u, 0b00000010u },
+        new Object[] { true, 0b00000100u, 0b00000100u },
+        new Object[] { true, 0b00001000u, 0b00001000u },
+        new Object[] { true, 0b00010000u, 0b00010000u },
+        new Object[] { true, 0b00100000u, 0b00100000u },
+        new Object[] { true, 0b01000000u, 0b01000000u },
+        new Object[] { true, 0b10000000u, 0b10000000u },
+        new Object[] { false, 0b00000001u, 0b11111110u },
+        new Object[] { false, 0b00000010u, 0b11111101u },
+        new Object[] { false, 0b00000100u, 0b11111011u },
+        new Object[] { false, 0b00001000u, 0b11110111u },
+        new Object[] { false, 0b00010000u, 0b11101111u },
+        new Object[] { false, 0b00100000u, 0b11011111u },
+        new Object[] { false, 0b01000000u, 0b10111111u },
+        new Object[] { false, 0b10000000u, 0b01111111u },
     ];
 
     [TestCaseSource(nameof(TestCaseData))]

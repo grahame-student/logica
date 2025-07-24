@@ -1,12 +1,15 @@
 using System;
+using System.Linq;
 using LibLogica.Blocks.Memory;
 using LibLogica.IO;
 using NUnit.Framework;
 
 namespace TestLibLogica.Blocks.Memory;
 
-internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
+internal class TestRam16x8 : RamTestBase<Ram16x8>
 {
+    private const UInt32 MAX_ADDRESS = 15;
+
     [Test]
     public void DataIn_Initially_Zero()
     {
@@ -37,6 +40,7 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
         Assert.That(_element.Enable.Value, Is.False);
     }
 
+    // TRADITIONAL APPROACH: Exhaustive testing (still feasible for 16 addresses)
     public static readonly Object[] WriteToAddressTestCases =
     [
         //             address, data
@@ -72,6 +76,39 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
 
         // Assert
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(data));
+    }
+
+    // OPTIMIZED APPROACH: Professional testing techniques (scales to larger RAM)
+    public static readonly Object[] OptimizedWriteTestCaseData = GenerateWriteTestCases(MAX_ADDRESS).ToArray();
+
+    public static readonly Object[] OptimizedReadTestCaseData = GenerateReadTestCases(MAX_ADDRESS).ToArray();
+
+    [TestCaseSource(nameof(OptimizedWriteTestCaseData))]
+    public void WriteOptimized_StoresDataCorrectly(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
+    {
+        LogicElementTestHelper.SetArrayValue(_element.Address, address);
+        _element.Write.Value = write;
+        _element.Enable.Value = true;
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, dataIn);
+
+        _element.Update();
+
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(dataOut));
+    }
+
+    [TestCaseSource(nameof(OptimizedReadTestCaseData))]
+    public void ReadOptimized_ReturnsStoredData(UInt32 address, Boolean write, UInt32 dataIn, UInt32 dataOut)
+    {
+        InitializeMemoryForReading(MAX_ADDRESS, _element.Address, _element.Write, _element.DataIn, () => _element.Update());
+
+        LogicElementTestHelper.SetArrayValue(_element.Address, address);
+        LogicElementTestHelper.SetArrayValue(_element.DataIn, dataIn);
+        _element.Write.Value = false;
+        _element.Enable.Value = true;
+
+        _element.Update();
+
+        Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(dataOut));
     }
 
     [Test]
@@ -119,12 +156,12 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
         _element.Update();
 
         // Assert
-        Boolean isHighImpedance = true;
+        Boolean allOutputsInHighImpedance = true;
         for (Int32 i = 0; i < _element.DataOut.Count; i++)
         {
-            isHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
+            allOutputsInHighImpedance &= ((Output)_element.DataOut[i]).IsHighImpedance;
         }
-        Assert.That(isHighImpedance, Is.True);
+        Assert.That(allOutputsInHighImpedance, Is.True);
     }
 
     [Test]
@@ -141,5 +178,20 @@ internal class TestRam16x8 : LogicElementTestBase<Ram16x8>
 
         // Assert
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(0b11111111u));
+    }
+
+    public static readonly Object[] WriteReadInvariantTestCases =
+    [
+        new Object[] { 0u, 0b01000010u },
+        new Object[] { 15u, 0b10101010u }
+    ];
+
+    [TestCaseSource(nameof(WriteReadInvariantTestCases))]
+    public void WriteReadInvariant_PropertyBasedTest(UInt32 address, UInt32 data)
+    {
+        _element.Enable.Value = true;
+        VerifyWriteReadInvariant(address, data, MAX_ADDRESS,
+            _element.Address, _element.Write, _element.DataIn, _element.DataOut,
+            () => _element.Update());
     }
 }
