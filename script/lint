@@ -13,10 +13,10 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Default branch constant - keeping it simple and consistent
+# Default branch constant for super-linter comparison baseline
 # The workflow uses github.base_ref || 'main', but for local development
-# we keep it simple and always target 'main' as the default branch
-# This ensures predictable behavior and matches the common case in CI
+# we use a hardcoded 'main' value for consistency and predictability
+# Note: The ensure_default_branch_exists() function handles complex git scenarios
 DEFAULT_BRANCH="main"
 
 # Function to ensure the default branch exists locally
@@ -41,11 +41,13 @@ ensure_default_branch_exists() {
             echo "==> Default branch '$default_branch' not found locally"
             echo "    Attempting to fetch from origin..."
 
-            # Try to fetch the default branch
-            if git fetch origin "$default_branch:$default_branch" 2>/dev/null; then
+            # Try to fetch the default branch and capture error details
+            fetch_error=$(git fetch origin "$default_branch:$default_branch" 2>&1)
+            if [ $? -eq 0 ]; then
                 echo "    ✅ Fetched '$default_branch' branch from origin"
             else
                 echo "    ⚠️  Could not fetch '$default_branch' branch"
+                echo "    Error details: $fetch_error"
                 echo "    Super-linter will attempt to use available branches"
             fi
         fi
@@ -66,6 +68,35 @@ if ! docker info >/dev/null 2>&1; then
     echo "   Please start Docker and try again."
     exit 1
 fi
+
+# Function to display results based on exit status and mode
+display_results() {
+    local exit_status=$1
+    local fix_mode=$2
+    
+    echo ""
+    if [ "$exit_status" -eq 0 ]; then
+        if [ "$fix_mode" = true ]; then
+            echo "✅ Linting and auto-fixing completed successfully!"
+            echo "==> All fixable issues have been automatically resolved"
+            echo "==> Please review the changes and commit them"
+        else
+            echo "✅ Linting completed successfully!"
+            echo "==> All checks passed"
+        fi
+    else
+        if [ "$fix_mode" = true ]; then
+            echo "❌ Linting found issues that need attention"
+            echo "==> Some issues were automatically fixed, but others require manual intervention"
+            echo "==> Please review the output above and address any remaining issues"
+            echo "==> Note: EditorConfig issues cannot be auto-fixed"
+        else
+            echo "❌ Linting found issues that need to be addressed"
+            echo "==> Please review the output above and fix the reported issues"
+            echo "==> Consider using --fix to automatically fix supported issues"
+        fi
+    fi
+}
 
 # Function to setup environment variables for fix mode
 setup_fix_mode_env_vars() {
@@ -227,28 +258,14 @@ echo "==> Running super-linter..."
 echo "    This may take a few minutes on first run..."
 echo ""
 
-# Run super-linter
-if "${DOCKER_CMD[@]}"; then
-    echo ""
-    if [ "$FIX_MODE" = true ]; then
-        echo "✅ Linting and auto-fixing completed successfully!"
-        echo "==> All fixable issues have been automatically resolved"
-        echo "==> Please review the changes and commit them"
-    else
-        echo "✅ Linting completed successfully!"
-        echo "==> All checks passed"
-    fi
-else
-    echo ""
-    if [ "$FIX_MODE" = true ]; then
-        echo "❌ Linting found issues that need attention"
-        echo "==> Some issues were automatically fixed, but others require manual intervention"
-        echo "==> Please review the output above and address any remaining issues"
-        echo "==> Note: EditorConfig issues cannot be auto-fixed"
-    else
-        echo "❌ Linting found issues that need to be addressed"
-        echo "==> Please review the output above and fix the reported issues"
-        echo "==> Consider using --fix to automatically fix supported issues"
-    fi
+# Run super-linter and capture exit status
+"${DOCKER_CMD[@]}"
+exit_status=$?
+
+# Display results based on exit status and mode
+display_results "$exit_status" "$FIX_MODE"
+
+# Exit with same status as super-linter
+if [ "$exit_status" -ne 0 ]; then
     exit 1
 fi
