@@ -57,9 +57,9 @@ This repository uses an `.editorconfig` file to define coding standards. When ma
   - Use PascalCase for public members and types
   - Use camelCase with underscore prefix for private fields
   - Follow the naming conventions defined in `.editorconfig`
-- **Type usage**: Prefer explicit types over var when type is not obvious
+- **Type usage**: Prefer to use var unless the resulting type is not obvious, e.g. `var foo = new Bar();` is acceptable
 - **Global usings**: Never enable global usings
-- **Dynamic typing**: Never us the `dynamic` keyword
+- **Dynamic typing**: Never use the `dynamic` keyword
 - **Null safety**: Never use null forgiving operator without having first tried other, more robust, methods
 - **Structure**: Each source file must only ever define one type, e.g. class, interface, enum, etc.
 

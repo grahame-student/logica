@@ -33,42 +33,42 @@ internal class TestRam8x1 : LogicElementTestBase<Ram8x1>
     public static readonly Object[] WriteTestCaseData =
     [
         //            address, write, dataIn, dataOut
-        new Object[] {0b000u, true, 0b00000001u, true }, // Write to address 0
-        new Object[] {0b001u, true, 0b00000010u, true },
-        new Object[] {0b010u, true, 0b00000100u, true },
-        new Object[] {0b011u, true, 0b00001000u, true },
-        new Object[] {0b100u, true, 0b00010000u, true },
-        new Object[] {0b101u, true, 0b00100000u, true },
-        new Object[] {0b110u, true, 0b01000000u, true },
-        new Object[] {0b111u, true, 0b10000000u, true }, // Write to address 7
-        new Object[] {0b000u, true, 0b00000000u, false }, // Write zero to address 0
-        new Object[] {0b001u, true, 0b00000000u, false },
-        new Object[] {0b010u, true, 0b00000000u, false },
-        new Object[] {0b011u, true, 0b00000000u, false },
-        new Object[] {0b100u, true, 0b00000000u, false },
-        new Object[] {0b101u, true, 0b00000000u, false },
-        new Object[] {0b110u, true, 0b00000000u, false },
-        new Object[] {0b111u, true, 0b00000000u, false }, // Write zero to address 7
+        new Object[] { 0b000u, true, 0b00000001u, true }, // Write to address 0
+        new Object[] { 0b001u, true, 0b00000010u, true },
+        new Object[] { 0b010u, true, 0b00000100u, true },
+        new Object[] { 0b011u, true, 0b00001000u, true },
+        new Object[] { 0b100u, true, 0b00010000u, true },
+        new Object[] { 0b101u, true, 0b00100000u, true },
+        new Object[] { 0b110u, true, 0b01000000u, true },
+        new Object[] { 0b111u, true, 0b10000000u, true }, // Write to address 7
+        new Object[] { 0b000u, true, 0b00000000u, false }, // Write zero to address 0
+        new Object[] { 0b001u, true, 0b00000000u, false },
+        new Object[] { 0b010u, true, 0b00000000u, false },
+        new Object[] { 0b011u, true, 0b00000000u, false },
+        new Object[] { 0b100u, true, 0b00000000u, false },
+        new Object[] { 0b101u, true, 0b00000000u, false },
+        new Object[] { 0b110u, true, 0b00000000u, false },
+        new Object[] { 0b111u, true, 0b00000000u, false }, // Write zero to address 7
     ];
 
     public static readonly Object[] ReadTestCaseData =
     [
-        new Object[] {0b000u, false, 0b00000001u, true }, // Read from address 0
-        new Object[] {0b001u, false, 0b00000010u, true },
-        new Object[] {0b010u, false, 0b00000100u, true },
-        new Object[] {0b011u, false, 0b00001000u, true },
-        new Object[] {0b100u, false, 0b00010000u, true },
-        new Object[] {0b101u, false, 0b00100000u, true },
-        new Object[] {0b110u, false, 0b01000000u, true },
-        new Object[] {0b111u, false, 0b10000000u, true }, // Read from address 7
-        new Object[] {0b000u, false, 0b00000000u, false }, // Read zero from address 0
-        new Object[] {0b001u, false, 0b00000000u, false },
-        new Object[] {0b010u, false, 0b00000000u, false },
-        new Object[] {0b011u, false, 0b00000000u, false },
-        new Object[] {0b100u, false, 0b00000000u, false },
-        new Object[] {0b101u, false, 0b00000000u, false },
-        new Object[] {0b110u, false, 0b00000000u, false },
-        new Object[] {0b111u, false, 0b00000000u, false }, // Read zero from address 7
+        new Object[] { 0b000u, false, 0b00000001u, true }, // Read from address 0
+        new Object[] { 0b001u, false, 0b00000010u, true },
+        new Object[] { 0b010u, false, 0b00000100u, true },
+        new Object[] { 0b011u, false, 0b00001000u, true },
+        new Object[] { 0b100u, false, 0b00010000u, true },
+        new Object[] { 0b101u, false, 0b00100000u, true },
+        new Object[] { 0b110u, false, 0b01000000u, true },
+        new Object[] { 0b111u, false, 0b10000000u, true }, // Read from address 7
+        new Object[] { 0b000u, false, 0b00000000u, false }, // Read zero from address 0
+        new Object[] { 0b001u, false, 0b00000000u, false },
+        new Object[] { 0b010u, false, 0b00000000u, false },
+        new Object[] { 0b011u, false, 0b00000000u, false },
+        new Object[] { 0b100u, false, 0b00000000u, false },
+        new Object[] { 0b101u, false, 0b00000000u, false },
+        new Object[] { 0b110u, false, 0b00000000u, false },
+        new Object[] { 0b111u, false, 0b00000000u, false }, // Read zero from address 7
     ];
 
     [TestCaseSource(nameof(WriteTestCaseData))]
