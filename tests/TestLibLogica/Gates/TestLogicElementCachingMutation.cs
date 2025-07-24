@@ -22,11 +22,11 @@ public class TestLogicElementCachingMutation
     {
         private readonly List<String> _ids;
         private readonly List<Boolean> _values;
-        
+
         public Boolean CachingEnabled { get; set; } = true;
         public Int32 GetIdsCallCount { get; private set; }
         public Int32 GetValuesCallCount { get; private set; }
-        
+
         public MutationTestElement()
         {
             _ids = new List<String> { $"{IdPrefix()}Input", $"{IdPrefix()}Output" };
@@ -93,8 +93,8 @@ public class TestLogicElementCachingMutation
         // Perform multiple operations
         for (Int32 i = 0; i < operations; i++)
         {
-            var ids = element.GetIdsCached().ToList();
-            var values = element.GetValuesCached().ToList();
+            element.GetIdsCached().ToList();
+            element.GetValuesCached().ToList();
         }
 
         // With caching, underlying methods should be called only once each
@@ -114,8 +114,8 @@ public class TestLogicElementCachingMutation
         // Perform multiple operations
         for (Int32 i = 0; i < operations; i++)
         {
-            var ids = element.GetIdsCached().ToList();
-            var values = element.GetValuesCached().ToList();
+            element.GetIdsCached().ToList();
+            element.GetValuesCached().ToList();
         }
 
         // Without caching, underlying methods should be called every time
@@ -129,7 +129,7 @@ public class TestLogicElementCachingMutation
     public void MutationTest_PerformanceImpactOfCaching_MeasurableDifference()
     {
         const Int32 iterations = 1000;
-        
+
         // Test with caching enabled
         var elementCached = new MutationTestElement { CachingEnabled = true };
         var swCached = Stopwatch.StartNew();
@@ -200,7 +200,7 @@ public class TestLogicElementCachingMutation
     public void DataIntegrity_StateChange_ValuesUpdateCorrectly()
     {
         var element = new MutationTestElement();
-        
+
         // Initial state
         element.SetValues(false, false);
         var initialValues = element.GetValuesCached().ToArray();
@@ -210,7 +210,7 @@ public class TestLogicElementCachingMutation
         element.SetValues(true, true);
         element.Update(); // Should clear values cache
         var updatedValues = element.GetValuesCached().ToArray();
-        
+
         Assert.That(updatedValues, Is.EqualTo(new[] { true, true }));
         Assert.That(updatedValues, Is.Not.EqualTo(initialValues),
             "Values should reflect state changes after update");
@@ -220,16 +220,16 @@ public class TestLogicElementCachingMutation
     public void DataIntegrity_IdsNeverChange_ConsistentAcrossUpdates()
     {
         var element = new MutationTestElement();
-        
+
         // Get initial IDs
         var initialIds = element.GetIdsCached().ToArray();
-        
+
         // Perform multiple updates and state changes
         for (Int32 i = 0; i < 10; i++)
         {
             element.SetValues(i % 2 == 0, i % 3 == 0);
             element.Update();
-            
+
             var currentIds = element.GetIdsCached().ToArray();
             Assert.That(currentIds, Is.EqualTo(initialIds),
                 $"IDs should never change, iteration {i}");
@@ -240,7 +240,7 @@ public class TestLogicElementCachingMutation
     public void DataIntegrity_CacheInvalidation_PreservesCorrectnessUnderComplexUpdates()
     {
         var element = new MutationTestElement();
-        
+
         // Complex update pattern that might confuse caching logic
         var expectedStates = new[]
         {
@@ -255,7 +255,7 @@ public class TestLogicElementCachingMutation
         {
             element.SetValues(input, output);
             element.Update();
-            
+
             // Access cache multiple times to ensure consistency
             for (Int32 i = 0; i < 3; i++)
             {
@@ -276,18 +276,18 @@ public class TestLogicElementCachingMutation
     public void Integration_ActualRamBlock_CachingBehaviorIsCorrect()
     {
         var ram = new Ram1x8();
-        
+
         // Track initial method call counts using the testing method
         ram.ClearDebugInfoCacheForTesting(); // Ensure clean state
-        
+
         // First access should populate cache
         var ids1 = ram.GetIdsCached().ToList();
         var values1 = ram.GetValuesCached().ToList();
-        
+
         // Subsequent accesses should use cache
         var ids2 = ram.GetIdsCached().ToList();
         var values2 = ram.GetValuesCached().ToList();
-        
+
         // Results should be identical
         Assert.That(ids2, Is.EqualTo(ids1));
         Assert.That(values2, Is.EqualTo(values1));
@@ -300,30 +300,30 @@ public class TestLogicElementCachingMutation
     {
         var ram = new Ram16x8();
         var sw = Stopwatch.StartNew();
-        
+
         // First call - establishes cache hierarchy
         var ids1 = ram.GetIdsCached().ToList();
         var values1 = ram.GetValuesCached().ToList();
         var firstCallTime = sw.ElapsedMilliseconds;
         sw.Restart();
-        
+
         // Second call - should use cached results
         var ids2 = ram.GetIdsCached().ToList();
         var values2 = ram.GetValuesCached().ToList();
         var secondCallTime = sw.ElapsedMilliseconds;
-        
+
         TestContext.Out.WriteLine($"Ram16x8 caching: First={firstCallTime}ms, Second={secondCallTime}ms, " +
                             $"Entries={ids1.Count}");
-        
+
         // Verify correctness
         Assert.That(ids2, Is.EqualTo(ids1));
         Assert.That(values2, Is.EqualTo(values1));
         Assert.That(ids1.Count, Is.EqualTo(values1.Count));
-        
+
         // Verify performance benefit
         Assert.That(secondCallTime, Is.LessThanOrEqualTo(firstCallTime),
             "Cached call should not be slower than initial call");
-        
+
         // For educational use, this should complete quickly
         Assert.That(firstCallTime, Is.LessThan(1000),
             "Even first call should complete within reasonable time for educational use");
@@ -335,31 +335,31 @@ public class TestLogicElementCachingMutation
     public void Integration_EducationalUsageSimulation_PerformanceIsAcceptable(Int32 studentInteractions)
     {
         var ram = new Ram16x8();
-        
+
         // Simulate educational scenario
         var sw = Stopwatch.StartNew();
-        
+
         // Student changes input
         ram.Address[0].Value = true;
         ram.Update();
-        
+
         // Student examines state multiple times (typical in educational tools)
         for (Int32 i = 0; i < studentInteractions; i++)
         {
             var ids = ram.GetIdsCached();
             var values = ram.GetValuesCached();
-            
+
             // Consume results to simulate actual usage
             var idCount = ids.Count();
             var valueCount = values.Count();
-            
+
             Assert.That(idCount, Is.EqualTo(valueCount));
         }
-        
+
         sw.Stop();
-        
+
         TestContext.Out.WriteLine($"{studentInteractions} educational interactions: {sw.ElapsedMilliseconds}ms");
-        
+
         // Educational tools need responsive performance
         Assert.That(sw.ElapsedMilliseconds, Is.LessThan(100),
             $"Educational interactions should be responsive: {sw.ElapsedMilliseconds}ms for {studentInteractions} interactions");
@@ -387,26 +387,26 @@ public class TestLogicElementCachingMutation
         foreach (var element in elements)
         {
             var elementType = element.GetType().Name;
-            
+
             // Clear cache to ensure clean test
             element.ClearDebugInfoCacheForTesting();
-            
+
             // Test basic caching functionality
             var ids1 = element.GetIdsCached().ToList();
             var values1 = element.GetValuesCached().ToList();
             var ids2 = element.GetIdsCached().ToList();
             var values2 = element.GetValuesCached().ToList();
-            
+
             Assert.That(ids2, Is.EqualTo(ids1), $"{elementType}: IDs should be cached");
             Assert.That(values2, Is.EqualTo(values1), $"{elementType}: Values should be cached");
             Assert.That(ids1.Count, Is.EqualTo(values1.Count), $"{elementType}: IDs and values must be aligned");
             Assert.That(ids1.Count, Is.GreaterThan(0), $"{elementType}: Should have some debug entries");
-            
+
             // Test update behavior
             element.Update();
             var valuesAfterUpdate = element.GetValuesCached().ToList();
             var idsAfterUpdate = element.GetIdsCached().ToList();
-            
+
             Assert.That(idsAfterUpdate, Is.EqualTo(ids1), $"{elementType}: IDs should remain cached after update");
             Assert.That(valuesAfterUpdate.Count, Is.EqualTo(values1.Count), $"{elementType}: Values count should be consistent");
         }

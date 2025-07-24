@@ -10,6 +10,8 @@ namespace TestLibLogica.Gates;
 
 public class TestLogicElementCaching
 {
+    private const Int32 PerformanceTestIterations = 10000; // Standard iteration count for performance testing
+
     // Simple test element to verify caching behavior
     private class TestElement : LogicElement
     {
@@ -170,7 +172,7 @@ public class TestLogicElementCaching
     public void CachingPerformance_DemonstratesSpeedImprovement()
     {
         var element = new TestElement();
-        const Int32 iterations = 10000; // Increased iterations for measurable timing
+        const Int32 iterations = PerformanceTestIterations; // Increased iterations for measurable timing
 
         // Measure uncached performance (clearing cache each time)
         var swUncached = Stopwatch.StartNew();

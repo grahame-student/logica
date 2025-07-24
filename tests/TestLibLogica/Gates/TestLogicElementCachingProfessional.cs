@@ -17,6 +17,9 @@ namespace TestLibLogica.Gates;
 /// </summary>
 public class TestLogicElementCachingProfessional
 {
+    private const Int32 StressTestIterations = 10000; // Standard iteration count for stress testing
+    private const Int32 MemoryLeakThresholdBytes = 1024 * 1024; // Maximum allowed memory increase (1MB)
+
     /// <summary>
     /// Test element with controllable behavior for advanced testing scenarios.
     /// </summary>
@@ -139,10 +142,10 @@ public class TestLogicElementCachingProfessional
     public void CachingBehavior_EmptyElement_HandlesGracefully()
     {
         var element = new EmptyTestElement();
-        
+
         var ids = element.GetIdsCached();
         var values = element.GetValuesCached();
-        
+
         Assert.That(ids.Count(), Is.EqualTo(0));
         Assert.That(values.Count(), Is.EqualTo(0));
     }
@@ -151,10 +154,10 @@ public class TestLogicElementCachingProfessional
     public void CachingBehavior_SingleElement_HandlesCorrectly()
     {
         var element = new SingleElementTest();
-        
+
         var ids = element.GetIdsCached().ToList();
         var values = element.GetValuesCached().ToList();
-        
+
         Assert.That(ids, Has.Count.EqualTo(1));
         Assert.That(values, Has.Count.EqualTo(1));
         Assert.That(ids[0], Does.EndWith("A"));
@@ -210,7 +213,7 @@ public class TestLogicElementCachingProfessional
         element.A.Value = finalA;
         element.Update();
         var values3 = element.GetValuesCached().ToList();
-        
+
         Assert.That(values3[0], Is.EqualTo(finalA));
         Assert.That(values3[2], Is.EqualTo(finalA && initialB)); // Output should reflect new state
     }
@@ -230,7 +233,7 @@ public class TestLogicElementCachingProfessional
         // First access should still work correctly
         var ids = element.GetIdsCached().ToList();
         var values = element.GetValuesCached().ToList();
-        
+
         Assert.That(element.GetIdsCallCount, Is.EqualTo(1));
         Assert.That(element.GetValuesCallCount, Is.EqualTo(1));
         Assert.That(ids, Has.Count.EqualTo(3));
@@ -261,19 +264,19 @@ public class TestLogicElementCachingProfessional
                     {
                         var ids = element.GetIdsCached();
                         var values = element.GetValuesCached();
-                        
+
                         // Ensure ids and values are not null before accessing
                         if (ids != null && values != null)
                         {
                             var idsList = ids.ToList();
                             var valuesList = values.ToList();
-                            
+
                             lock (results)
                             {
                                 results.Add((idsList.Count, valuesList.Count));
                             }
                         }
-                        
+
                         // Randomly trigger updates to test cache invalidation
                         if (j % 10 == 0)
                         {
@@ -292,7 +295,7 @@ public class TestLogicElementCachingProfessional
         }
 
         Task.WaitAll(tasks);
-        
+
         Assert.That(exceptions, Is.Empty, $"Exceptions occurred: {String.Join(", ", exceptions.Select(e => e.Message))}");
         Assert.That(results, Has.Count.EqualTo(threadCount * operationsPerThread));
         Assert.That(results.All(r => r.idsCount == 3 && r.valuesCount == 3), Is.True);
@@ -304,7 +307,7 @@ public class TestLogicElementCachingProfessional
         var element = new ControllableTestElement();
         var barrier = new Barrier(2);
         var exceptions = new List<Exception>();
-        
+
         var updateTask = Task.Run(() =>
         {
             try
@@ -383,8 +386,8 @@ public class TestLogicElementCachingProfessional
     public void StressTest_HighFrequencyOperations_MaintainsPerformance()
     {
         var element = new ControllableTestElement();
-        const Int32 iterations = 10000;
-        
+        const Int32 iterations = StressTestIterations;
+
         // Prime the cache
         element.GetIdsCached();
         element.GetValuesCached();
@@ -402,7 +405,7 @@ public class TestLogicElementCachingProfessional
         sw.Stop();
 
         TestContext.Out.WriteLine($"{iterations} high-frequency operations: {sw.ElapsedMilliseconds}ms");
-        
+
         // Should use cache for all operations
         Assert.That(element.GetIdsCallCount, Is.EqualTo(0));
         Assert.That(element.GetValuesCallCount, Is.EqualTo(0));
@@ -425,7 +428,7 @@ public class TestLogicElementCachingProfessional
         // Cache should not be corrupted
         element.ThrowOnGetIds = false;
         var ids = element.GetIdsCached().ToList();
-        
+
         Assert.That(ids, Has.Count.EqualTo(3));
         Assert.That(element.GetIdsCallCount, Is.EqualTo(2)); // One failed, one successful
     }
@@ -442,7 +445,7 @@ public class TestLogicElementCachingProfessional
         // Cache should not be corrupted
         element.ThrowOnGetValues = false;
         var values = element.GetValuesCached().ToList();
-        
+
         Assert.That(values, Has.Count.EqualTo(3));
         Assert.That(element.GetValuesCallCount, Is.EqualTo(2)); // One failed, one successful
     }
@@ -451,7 +454,7 @@ public class TestLogicElementCachingProfessional
     public void ErrorHandling_CacheStateAfterException_RecoversProperly()
     {
         var element = new ControllableTestElement();
-        
+
         // Prime IDs cache successfully
         var ids1 = element.GetIdsCached().ToList();
         Assert.That(element.GetIdsCallCount, Is.EqualTo(1));
@@ -494,7 +497,7 @@ public class TestLogicElementCachingProfessional
             element.GetValuesCached().ToList();
             element.Update();
             element.GetValuesCached().ToList(); // Should recalculate
-            
+
             // Occasional cache clear
             if (i % 100 == 0)
             {
@@ -510,9 +513,9 @@ public class TestLogicElementCachingProfessional
         var memoryIncrease = finalMemory - initialMemory;
 
         TestContext.Out.WriteLine($"Memory increase after {iterations} operations: {memoryIncrease} bytes");
-        
+
         // Allow some reasonable memory increase but detect major leaks
-        Assert.That(memoryIncrease, Is.LessThan(1024 * 1024), // Less than 1MB increase
+        Assert.That(memoryIncrease, Is.LessThan(MemoryLeakThresholdBytes), // Less than 1MB increase
             $"Potential memory leak detected: {memoryIncrease} bytes increase");
     }
 
@@ -553,7 +556,7 @@ public class TestLogicElementCachingProfessional
         if (swUncached.ElapsedMilliseconds > 10) // Only if measurable
         {
             Double speedupRatio = (Double)swUncached.ElapsedMilliseconds / Math.Max(1, swCached.ElapsedMilliseconds);
-            Assert.That(speedupRatio, Is.GreaterThan(2.0), 
+            Assert.That(speedupRatio, Is.GreaterThan(2.0),
                 $"Caching should provide at least 2x speedup, got {speedupRatio:F2}x");
         }
     }
@@ -566,38 +569,38 @@ public class TestLogicElementCachingProfessional
     public void Integration_RealWorldUsagePattern_EducationalTool()
     {
         var element = new ControllableTestElement();
-        
+
         // Simulate educational tool usage pattern:
         // 1. Student sets inputs
         element.A.Value = true;
         element.B.Value = false;
-        
+
         // 2. System updates circuit
         element.Update();
-        
+
         // 3. Student examines debug info multiple times (common in educational tools)
         for (Int32 i = 0; i < 5; i++)
         {
-            var ids = element.GetIdsCached().ToList();
+            element.GetIdsCached().ToList(); // Trigger caching behavior
             var values = element.GetValuesCached().ToList();
-            
+
             // Verify educational observability - inputs are visible even if output doesn't change
             Assert.That(values[0], Is.True); // A
             Assert.That(values[1], Is.False); // B
             Assert.That(values[2], Is.False); // O = A && B
         }
-        
+
         // 4. Student changes inputs
         element.A.Value = false;
         element.B.Value = true;
         element.Update();
-        
+
         // 5. Student examines again - should see changes
         var newValues = element.GetValuesCached().ToList();
         Assert.That(newValues[0], Is.False); // A changed
         Assert.That(newValues[1], Is.True);  // B changed
         Assert.That(newValues[2], Is.False); // O still false, but for different reason
-        
+
         // Verify performance characteristic
         element.ResetCounters();
         for (Int32 i = 0; i < 10; i++)
@@ -605,7 +608,7 @@ public class TestLogicElementCachingProfessional
             element.GetIdsCached().ToList();
             element.GetValuesCached().ToList();
         }
-        
+
         // Should use cache for all these calls
         Assert.That(element.GetIdsCallCount, Is.EqualTo(0));
         Assert.That(element.GetValuesCallCount, Is.EqualTo(0));
