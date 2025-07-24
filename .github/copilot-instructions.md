@@ -24,6 +24,7 @@ This repository uses an `.editorconfig` file to define coding standards. When ma
   - Use camelCase with underscore prefix for private fields
   - Follow the naming conventions defined in `.editorconfig`
 - **Type usage**: Prefer explicit types over var when type is not obvious
+- **auto typing**: Prefer to use var unless the resulting type is not obvious, e.g. `var foo = new Bar();` is acceptable
 - **Global usings**: Never enable global usings
 - **Dynamic typing**: Never us the `dynamic` keyword
 - **Null safety**: Never use null forgiving operator without having first tried other, more robust, methods
