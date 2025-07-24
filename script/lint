@@ -13,11 +13,12 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to get the default branch (mimics workflow logic: github.base_ref || 'main')
+# Function to get the default branch
 get_default_branch() {
-    # The workflow uses github.base_ref || 'main'
-    # For local usage, we should default to 'main' to match the workflow behavior
-    # This ensures we compare against the same target branch as the CI
+    # Intentionally simplified: always returns 'main' for consistent behavior
+    # The workflow uses github.base_ref || 'main', but for local development
+    # we keep it simple and always target 'main' as the default branch
+    # This ensures predictable behavior and matches the common case in CI
     echo "main"
 }
 
@@ -26,8 +27,14 @@ ensure_default_branch_exists() {
     local default_branch="$1"
 
     if command_exists git && [ -d ".git" ]; then
-        # Check if the default branch exists locally
-        if ! git show-ref --verify --quiet "refs/heads/$default_branch" && ! git show-ref --verify --quiet "refs/remotes/origin/$default_branch"; then
+        # Check if the default branch exists as a local branch
+        local_branch_exists=$(git show-ref --verify --quiet "refs/heads/$default_branch" && echo "true" || echo "false")
+
+        # Check if the default branch exists as a remote branch
+        remote_branch_exists=$(git show-ref --verify --quiet "refs/remotes/origin/$default_branch" && echo "true" || echo "false")
+
+        # If neither local nor remote branch exists, try to fetch it
+        if [ "$local_branch_exists" = "false" ] && [ "$remote_branch_exists" = "false" ]; then
             echo "==> Default branch '$default_branch' not found locally"
             echo "    Attempting to fetch from origin..."
 
@@ -145,14 +152,16 @@ echo "    Validate all codebase: $VALIDATE_ALL_CODEBASE"
 echo "    Log level: $LOG_LEVEL"
 echo "    Fix mode: $FIX_MODE"
 
-# Build Docker command
+# Build Docker command with organized environment variables
 DOCKER_CMD=(
     docker run --rm
+    # Core super-linter configuration
     -e "LOG_LEVEL=$LOG_LEVEL"
     -e "RUN_LOCAL=true"
     -e "VALIDATE_ALL_CODEBASE=$VALIDATE_ALL_CODEBASE"
     -e "DEFAULT_BRANCH=$DEFAULT_BRANCH"
     -e "LINTER_RULES_PATH=.github/linters"
+    # Volume mount for workspace
     -v "$WORKSPACE_PATH:/tmp/lint"
 )
 
@@ -160,25 +169,36 @@ DOCKER_CMD=(
 if [ "$FIX_MODE" = true ]; then
     # Enable auto-fix for commonly used linters
     DOCKER_CMD+=(
-        -e "FIX_SHELL_SHFMT=true"                  # Shell script formatting
+        # Shell and scripting
+        -e "FIX_SHELL_SHFMT=true" # Shell script formatting
+
+        # .NET and C#
         -e "FIX_CSHARP=true"                       # C# formatting
         -e "FIX_DOTNET_SLN_FORMAT_WHITESPACE=true" # .NET whitespace formatting
         -e "FIX_DOTNET_SLN_FORMAT_STYLE=true"      # .NET style formatting
-        -e "FIX_CSS=true"                          # CSS/SCSS linting fixes
-        -e "FIX_CSS_PRETTIER=true"                 # CSS/SCSS formatting with Prettier
-        -e "FIX_JAVASCRIPT_ES=true"                # JavaScript ESLint fixes
-        -e "FIX_JAVASCRIPT_PRETTIER=true"          # JavaScript formatting with Prettier
-        -e "FIX_TYPESCRIPT_ES=true"                # TypeScript ESLint fixes
-        -e "FIX_TYPESCRIPT_PRETTIER=true"          # TypeScript formatting with Prettier
-        -e "FIX_JSON=true"                         # JSON linting fixes
-        -e "FIX_JSON_PRETTIER=true"                # JSON formatting with Prettier
-        -e "FIX_MARKDOWN=true"                     # Markdown linting fixes
-        -e "FIX_MARKDOWN_PRETTIER=true"            # Markdown formatting with Prettier
-        -e "FIX_YAML_PRETTIER=true"                # YAML formatting with Prettier
-        -e "FIX_PYTHON_BLACK=true"                 # Python formatting with Black
-        -e "FIX_PYTHON_ISORT=true"                 # Python import sorting
-        -e "FIX_PYTHON_RUFF=true"                  # Python linting fixes with Ruff
-        -e "FIX_NATURAL_LANGUAGE=true"             # Natural language fixes with textlint
+
+        # Web technologies (CSS, JavaScript, TypeScript)
+        -e "FIX_CSS=true"                 # CSS/SCSS linting fixes
+        -e "FIX_CSS_PRETTIER=true"        # CSS/SCSS formatting with Prettier
+        -e "FIX_JAVASCRIPT_ES=true"       # JavaScript ESLint fixes
+        -e "FIX_JAVASCRIPT_PRETTIER=true" # JavaScript formatting with Prettier
+        -e "FIX_TYPESCRIPT_ES=true"       # TypeScript ESLint fixes
+        -e "FIX_TYPESCRIPT_PRETTIER=true" # TypeScript formatting with Prettier
+
+        # Data formats
+        -e "FIX_JSON=true"          # JSON linting fixes
+        -e "FIX_JSON_PRETTIER=true" # JSON formatting with Prettier
+        -e "FIX_YAML_PRETTIER=true" # YAML formatting with Prettier
+
+        # Documentation and content
+        -e "FIX_MARKDOWN=true"          # Markdown linting fixes
+        -e "FIX_MARKDOWN_PRETTIER=true" # Markdown formatting with Prettier
+        -e "FIX_NATURAL_LANGUAGE=true"  # Natural language fixes with textlint
+
+        # Python
+        -e "FIX_PYTHON_BLACK=true" # Python formatting with Black
+        -e "FIX_PYTHON_ISORT=true" # Python import sorting
+        -e "FIX_PYTHON_RUFF=true"  # Python linting fixes with Ruff
     )
 fi
 
