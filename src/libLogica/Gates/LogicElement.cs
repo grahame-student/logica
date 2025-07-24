@@ -13,12 +13,13 @@ public abstract class LogicElement
     private readonly UInt64 _instanceCount;
 
     // Caching for debug info - Option 1 optimization
+    // IDs never change during simulation, so they can be cached permanently
     private IEnumerable<String>? _cachedIds;
-    private IEnumerable<Boolean>? _cachedValues;
-    private Boolean _debugInfoCached = false;
+    private Boolean _idsCached = false;
     
-    // Change detection to avoid unnecessary cache clearing
-    private Boolean _stateChanged = true; // Initially true to ensure first cache is cleared
+    // Values change during simulation, so they need to be cleared on each Update()
+    private IEnumerable<Boolean>? _cachedValues;  
+    private Boolean _valuesCached = false;
 
     protected LogicElement()
     {
@@ -41,74 +42,43 @@ public abstract class LogicElement
 
     /// <summary>
     /// Cached version of GetIds() - Option 1 optimization.
+    /// IDs never change during simulation, so they are cached permanently once calculated.
     /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
     /// </summary>
     public IEnumerable<String> GetIdsCached()
     {
-        if (!_debugInfoCached)
+        if (!_idsCached)
         {
-            var (ids, values) = GetDebugInfoInternal();
-            _cachedIds = ids.ToList(); // Materialize to avoid re-enumeration
-            _cachedValues = values.ToList();
-            _debugInfoCached = true;
+            _cachedIds = GetIds().ToList(); // Materialize to avoid re-enumeration
+            _idsCached = true;
         }
         return _cachedIds!;
     }
 
     /// <summary>
     /// Cached version of GetValues() - Option 1 optimization.
+    /// Values change during simulation, so cache is cleared on each Update() call.
     /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
     /// </summary>
     public IEnumerable<Boolean> GetValuesCached()
     {
-        if (!_debugInfoCached)
+        if (!_valuesCached)
         {
-            var (ids, values) = GetDebugInfoInternal();
-            _cachedIds = ids.ToList(); // Materialize to avoid re-enumeration
-            _cachedValues = values.ToList();
-            _debugInfoCached = true;
+            _cachedValues = GetValues().ToList(); // Materialize to avoid re-enumeration
+            _valuesCached = true;
         }
         return _cachedValues!;
     }
 
-    /// <summary>
-    /// Internal method to get debug info tuple. Override this instead of GetIds/GetValues when using caching.
-    /// </summary>
-    protected virtual (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal()
-    {
-        // Default implementation calls the abstract methods for backward compatibility
-        return (GetIds(), GetValues());
-    }
 
-    /// <summary>
-    /// Mark that the element's state has changed and cache should be cleared on next access.
-    /// Call this from Update() methods when the element's state actually changes.
+    /// <summary>  
+    /// Clear the values cache. Call this at the beginning of Update() methods to ensure
+    /// fresh values are calculated for educational observability, even when outputs don't change.
+    /// IDs are never cleared since they don't change during simulation.
     /// </summary>
-    protected void MarkStateChanged()
+    protected void ClearValuesCache()
     {
-        _stateChanged = true;
-    }
-
-    /// <summary>
-    /// Clear the debug info cache if state has changed. Call this at the beginning of Update() methods.
-    /// This provides better performance by avoiding false cache misses when nothing actually changed.
-    /// </summary>
-    protected void ClearDebugInfoCacheIfChanged()
-    {
-        if (_stateChanged)
-        {
-            ClearDebugInfoCache();
-            _stateChanged = false;
-        }
-    }
-
-    /// <summary>
-    /// Clear the debug info cache. Call this if the element's state changes and debug info needs to be recalculated.
-    /// </summary>
-    protected void ClearDebugInfoCache()
-    {
-        _debugInfoCached = false;
-        _cachedIds = null;
+        _valuesCached = false;
         _cachedValues = null;
     }
 

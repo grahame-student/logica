@@ -65,7 +65,8 @@ public class Ram256x8 : LogicElement
 
     public override void Update()
     {
-        ClearDebugInfoCache(); // Clear cache to ensure dynamic observability for educational use
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         _decoder.Update();
         _selectEnable.Update();
         _selectWrite.Update();
@@ -75,7 +76,7 @@ public class Ram256x8 : LogicElement
         }
     }
 
-    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
+    public override IEnumerable<String> GetIds() => 
         DebugInfo()
             .AddArray(nameof(Address), Address)
             .AddArray(nameof(DataIn), DataIn)
@@ -86,9 +87,18 @@ public class Ram256x8 : LogicElement
             .AddChild(_selectWrite)
             .AddChild(_selectEnable)
             .AddChildren(_ramBlocks)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => GetIdsCached();
-
-    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
+    public override IEnumerable<Boolean> GetValues() => 
+        DebugInfo()
+            .AddArray(nameof(Address), Address)
+            .AddArray(nameof(DataIn), DataIn)
+            .AddArray(nameof(DataOut), DataOut)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(Enable), Enable)
+            .AddChild(_decoder)
+            .AddChild(_selectWrite)
+            .AddChild(_selectEnable)
+            .AddChildren(_ramBlocks)
+            .Build().values;
 }

@@ -39,10 +39,9 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         PerformUpdate();
-        // For composite gates, we conservatively mark state as changed since child state might have changed
-        MarkStateChanged();
-        ClearDebugInfoCacheIfChanged();
     }
 
     private void PerformUpdate()
@@ -71,13 +70,15 @@ public class FlipFlopLevelTriggeredDType : LogicElement, IDTypeFlipFlop
     */
     }
 
-    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
+    public override IEnumerable<String> GetIds() => 
         DebugInfo()
             .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_not, _and1, _and2, _rs)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => GetIdsCached();
-
-    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
+    public override IEnumerable<Boolean> GetValues() => 
+        DebugInfo()
+            .AddLocals((nameof(D), D), (nameof(Clock), Clock), (nameof(Q), Q), (nameof(NQ), NQ))
+            .AddChildren(_not, _and1, _and2, _rs)
+            .Build().values;
 }

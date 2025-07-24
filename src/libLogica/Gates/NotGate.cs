@@ -14,19 +14,15 @@ public class NotGate : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         var newValue = !A.Value;
-        if (O.Value != newValue)
-        {
-            O.Value = newValue;
-            MarkStateChanged();
-        }
-        ClearDebugInfoCacheIfChanged();
+        O.Value = newValue;
     }
 
-    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
-        DebugInfo().AddLocals((nameof(A), A), (nameof(O), O)).Build();
+    public override IEnumerable<String> GetIds() => 
+        DebugInfo().AddLocals((nameof(A), A), (nameof(O), O)).Build().ids;
 
-    public override IEnumerable<String> GetIds() => GetIdsCached();
-
-    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
+    public override IEnumerable<Boolean> GetValues() => 
+        DebugInfo().AddLocals((nameof(A), A), (nameof(O), O)).Build().values;
 }

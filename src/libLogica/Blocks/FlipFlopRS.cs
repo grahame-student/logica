@@ -40,10 +40,9 @@ public class FlipFlopRS : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         PerformUpdate();
-        // For composite gates, we conservatively mark state as changed since child state might have changed
-        MarkStateChanged();
-        ClearDebugInfoCacheIfChanged();
     }
 
     private void PerformUpdate()
@@ -53,13 +52,15 @@ public class FlipFlopRS : LogicElement
         _nor1.Update();
     }
 
-    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
+    public override IEnumerable<String> GetIds() => 
         DebugInfo()
             .AddLocals((nameof(R), R), (nameof(S), S), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_nor1, _nor2)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => GetIdsCached();
-
-    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
+    public override IEnumerable<Boolean> GetValues() => 
+        DebugInfo()
+            .AddLocals((nameof(R), R), (nameof(S), S), (nameof(Q), Q), (nameof(NQ), NQ))
+            .AddChildren(_nor1, _nor2)
+            .Build().values;
 }

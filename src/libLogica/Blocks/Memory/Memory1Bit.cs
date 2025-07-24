@@ -25,21 +25,24 @@ public class Memory1Bit : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+        
         _flipFlop.Update();
-        // For composite gates, we conservatively mark state as changed since child state might have changed
-        MarkStateChanged();
-        ClearDebugInfoCacheIfChanged();
     }
 
-    protected override (IEnumerable<String> ids, IEnumerable<Boolean> values) GetDebugInfoInternal() =>
+    public override IEnumerable<String> GetIds() => 
         DebugInfo()
             .AddLocal(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)
             .AddLocal(nameof(DataOut), DataOut)
             .AddChild(_flipFlop)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => GetIdsCached();
-
-    public override IEnumerable<Boolean> GetValues() => GetValuesCached();
+    public override IEnumerable<Boolean> GetValues() => 
+        DebugInfo()
+            .AddLocal(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(DataOut), DataOut)
+            .AddChild(_flipFlop)
+            .Build().values;
 }
