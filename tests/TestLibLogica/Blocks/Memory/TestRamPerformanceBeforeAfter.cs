@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using LibLogica.Blocks.Memory;
 using LibLogica.Gates;
 using NUnit.Framework;
@@ -101,12 +100,10 @@ public class TestRamPerformanceBeforeAfter
     }
 
     /// <summary>
-    /// Uses reflection to clear the debug info cache for testing purposes
+    /// Clear the debug info cache for testing purposes using the public API
     /// </summary>
     private static void ClearDebugInfoCache(LogicElement element)
     {
-        var method = typeof(LogicElement).GetMethod("ClearDebugInfoCache", 
-            BindingFlags.NonPublic | BindingFlags.Instance);
-        method?.Invoke(element, null);
+        element.ClearDebugInfoCacheForTesting();
     }
 }

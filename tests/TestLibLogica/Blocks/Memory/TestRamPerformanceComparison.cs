@@ -85,7 +85,6 @@ public class TestRamPerformanceComparison
         // Ram4096x8: ~1.3M entries (16x Ram256x8 + overhead)
         // Ram65536x8: ~21M entries (16x Ram4096x8 + overhead)
 
-        const Int32 ram1x8Entries = 315;
         const Int32 ram16x8Entries = 5170;
         const Int32 ram256x8Entries = 82920;
         

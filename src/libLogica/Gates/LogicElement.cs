@@ -83,6 +83,19 @@ public abstract class LogicElement
     }
 
     /// <summary>
+    /// Clear both ID and values cache for testing purposes.
+    /// In normal operation, only values cache is cleared as IDs never change.
+    /// This method is public to allow testing without reflection.
+    /// </summary>
+    public void ClearDebugInfoCacheForTesting()
+    {
+        _idsCached = false;
+        _cachedIds = null;
+        _valuesCached = false;
+        _cachedValues = null;
+    }
+
+    /// <summary>
     /// Helper to create both GetIds() and GetValues() implementations with the same builder.
     /// This ensures perfect alignment and eliminates the need to duplicate the builder calls.
     /// Usage: protected (IEnumerable<string> ids, IEnumerable<bool> values) BuildDebugInfo() =>
