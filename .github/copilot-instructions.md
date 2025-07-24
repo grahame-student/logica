@@ -2,6 +2,10 @@
 
 This repository uses Super-Linter for automated code quality checks. Make sure your changes pass all linter rules before submitting.
 
+`script/lint` has been provided to allow you to run `super-linter` locally, with the same configuration as the workflow. You must
+use this script to ensure that all of your changes are correctly linted / formatted **before** committing your changes, this step
+is not optional.
+
 ## Code Formatting Guidelines
 
 This repository uses an `.editorconfig` file to define coding standards. When making code changes, ensure compliance with the following formatting rules:
