@@ -8,7 +8,7 @@ As RAM assemblies grow larger (256x8, 4096x8, 65536x8), exhaustive testing becom
 
 **Current Approach:**
 - Ram8x8: Tests all 8 addresses (16 parameterized tests) - feasible
-- Ram16x8: Tests all 16 addresses (32 parameterized tests) - still feasible  
+- Ram16x8: Tests all 16 addresses (32 parameterized tests) - still feasible
 - Ram256x8: Previously had NO functional tests - problem identified!
 
 **Scaling Challenge:**
@@ -61,7 +61,7 @@ Located in `/tests/TestLibLogica/Blocks/Memory/RamTestBase.cs`
 
 **Key Methods:**
 - `GenerateBoundaryAddresses()` - Boundary value testing
-- `GeneratePartitionAddresses()` - Equivalence partitioning  
+- `GeneratePartitionAddresses()` - Equivalence partitioning
 - `GeneratePowerOfTwoAddresses()` - Power-of-2 testing
 - `GenerateOptimizedAddresses()` - Combined approach
 - `GenerateTestDataPatterns()` - Data pattern generation

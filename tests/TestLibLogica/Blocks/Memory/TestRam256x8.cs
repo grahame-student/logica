@@ -71,26 +71,22 @@ internal class TestRam256x8 : RamTestBase<Ram256x8>
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(dataOut));
     }
 
-    [Test]
-    public void WriteReadInvariant_RandomSampling()
-    {
-        // Property-based test: writing and then reading should return the same value
-        var testCases = new[]
-        {
-            new { Address = 0u, Data = 0b01000010u },
-            new { Address = 255u, Data = 0b10101010u },
-            new { Address = 128u, Data = 0b01010101u },
-            new { Address = 64u, Data = 0b11001100u },
-            new { Address = 192u, Data = 0b00110011u }
-        };
+    public static readonly Object[] WriteReadInvariantTestCases =
+    [
+        new Object[] { 0u, 0b01000010u },
+        new Object[] { 255u, 0b10101010u },
+        new Object[] { 128u, 0b01010101u },
+        new Object[] { 64u, 0b11001100u },
+        new Object[] { 192u, 0b00110011u }
+    ];
 
-        foreach (var testCase in testCases)
-        {
-            _element.Enable.Value = true;
-            VerifyWriteReadInvariant(testCase.Address, testCase.Data, MAX_ADDRESS,
-                _element.Address, _element.Write, _element.DataIn, _element.DataOut,
-                () => _element.Update());
-        }
+    [TestCaseSource(nameof(WriteReadInvariantTestCases))]
+    public void WriteReadInvariant_RandomSampling(UInt32 address, UInt32 data)
+    {
+        _element.Enable.Value = true;
+        VerifyWriteReadInvariant(address, data, MAX_ADDRESS,
+            _element.Address, _element.Write, _element.DataIn, _element.DataOut,
+            () => _element.Update());
     }
 
     [Test]

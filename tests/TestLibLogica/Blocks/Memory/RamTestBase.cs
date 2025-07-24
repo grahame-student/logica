@@ -63,7 +63,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
             if (powerOfTwo > maxAddress) break;
 
             yield return powerOfTwo;
-            
+
             // Test adjacent values if they're within range
             if (powerOfTwo > 0) yield return powerOfTwo - 1;
             if (powerOfTwo < maxAddress) yield return powerOfTwo + 1;
@@ -76,7 +76,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<UInt32> GenerateOptimizedAddresses(UInt32 maxAddress)
     {
-        var addresses = new HashSet<UInt32>();
+        HashSet<UInt32> addresses = new HashSet<UInt32>();
 
         // Boundary value testing
         foreach (UInt32 addr in GenerateBoundaryAddresses(maxAddress))
@@ -84,7 +84,7 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
             addresses.Add(addr);
         }
 
-        // Equivalence partitioning  
+        // Equivalence partitioning
         foreach (UInt32 addr in GeneratePartitionAddresses(maxAddress))
         {
             addresses.Add(addr);
@@ -121,8 +121,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<Object[]> GenerateWriteTestCases(UInt32 maxAddress)
     {
-        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        var dataPatterns = GenerateTestDataPatterns().ToList();
+        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
 
         // Test each optimized address with a representative data pattern
         for (Int32 i = 0; i < addresses.Count; i++)
@@ -139,8 +139,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected static IEnumerable<Object[]> GenerateReadTestCases(UInt32 maxAddress)
     {
-        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        var dataPatterns = GenerateTestDataPatterns().ToList();
+        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
 
         // Test reading from each optimized address with expected data pattern
         for (Int32 i = 0; i < addresses.Count; i++)
@@ -157,8 +157,8 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
     /// </summary>
     protected void InitializeMemoryForReading(UInt32 maxAddress, LogicArray<Input> address, Input write, LogicArray<Input> dataIn, Action updateAction)
     {
-        var addresses = GenerateOptimizedAddresses(maxAddress).ToList();
-        var dataPatterns = GenerateTestDataPatterns().ToList();
+        List<UInt32> addresses = GenerateOptimizedAddresses(maxAddress).ToList();
+        List<UInt32> dataPatterns = GenerateTestDataPatterns().ToList();
 
         for (Int32 i = 0; i < addresses.Count; i++)
         {
@@ -192,23 +192,21 @@ public abstract class RamTestBase<T> : LogicElementTestBase<T> where T : LogicEl
         updateAction();
 
         UInt32 readData = LogicElementTestHelper.GetArrayValue(dataOut);
-        Assert.That(readData, Is.EqualTo(testData & 0xFF), 
+        Assert.That(readData, Is.EqualTo(testData & 0xFF),
             $"Write-read invariant failed: wrote {testData:X2} to address {testAddress}, read {readData:X2}");
     }
 
     /// <summary>
     /// Stress test helper: Perform rapid write-read cycles to test timing and state consistency.
     /// </summary>
-    protected void PerformStressTest(UInt32 maxAddress, LogicArray<Input> address, Input write, 
+    protected void PerformStressTest(UInt32 maxAddress, LogicArray<Input> address, Input write,
         LogicArray<Input> dataIn, LogicArray<Output> dataOut, Action updateAction, Int32 cycles = 100)
     {
-        var random = new Random(42); // Fixed seed for reproducible tests
-        
+        Random random = new Random(42); // Fixed seed for reproducible tests
         for (Int32 i = 0; i < cycles; i++)
         {
             UInt32 testAddress = (UInt32)random.Next(0, (Int32)maxAddress + 1);
             UInt32 testData = (UInt32)random.Next(0, 256);
-            
             VerifyWriteReadInvariant(testAddress, testData, maxAddress, address, write, dataIn, dataOut, updateAction);
         }
     }

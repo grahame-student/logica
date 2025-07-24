@@ -180,14 +180,17 @@ internal class TestRam16x8 : RamTestBase<Ram16x8>
         Assert.That(LogicElementTestHelper.GetArrayValue(_element.DataOut), Is.EqualTo(0b11111111u));
     }
 
-    [Test]
-    public void WriteReadInvariant_PropertyBasedTest()
+    public static readonly Object[] WriteReadInvariantTestCases =
+    [
+        new Object[] { 0u, 0b01000010u },
+        new Object[] { 15u, 0b10101010u }
+    ];
+
+    [TestCaseSource(nameof(WriteReadInvariantTestCases))]
+    public void WriteReadInvariant_PropertyBasedTest(UInt32 address, UInt32 data)
     {
         _element.Enable.Value = true;
-        VerifyWriteReadInvariant(0u, 0b01000010u, MAX_ADDRESS,
-            _element.Address, _element.Write, _element.DataIn, _element.DataOut,
-            () => _element.Update());
-        VerifyWriteReadInvariant(15u, 0b10101010u, MAX_ADDRESS,
+        VerifyWriteReadInvariant(address, data, MAX_ADDRESS,
             _element.Address, _element.Write, _element.DataIn, _element.DataOut,
             () => _element.Update());
     }
