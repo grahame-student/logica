@@ -49,45 +49,45 @@ DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --all|--validate-all)
-            VALIDATE_ALL_CODEBASE=true
-            shift
-            ;;
-        --verbose)
-            LOG_LEVEL="DEBUG"
-            shift
-            ;;
-        --info)
-            LOG_LEVEL="INFO"
-            shift
-            ;;
-        --dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-        --help)
-            echo "Usage: $0 [options]"
-            echo ""
-            echo "Run super-linter locally with the same configuration as GitHub Actions"
-            echo ""
-            echo "Options:"
-            echo "  --all, --validate-all  Validate entire codebase (default: only changed files)"
-            echo "  --verbose              Enable verbose debug logging"
-            echo "  --info                 Enable info level logging"
-            echo "  --dry-run              Show the Docker command that would be run"
-            echo "  --help                 Show this help message"
-            echo ""
-            echo "Examples:"
-            echo "  $0                     # Lint only changed files"
-            echo "  $0 --all               # Lint entire codebase"
-            echo "  $0 --verbose           # Lint with detailed output"
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"
-            echo "Use --help for usage information"
-            exit 1
-            ;;
+    --all | --validate-all)
+        VALIDATE_ALL_CODEBASE=true
+        shift
+        ;;
+    --verbose)
+        LOG_LEVEL="DEBUG"
+        shift
+        ;;
+    --info)
+        LOG_LEVEL="INFO"
+        shift
+        ;;
+    --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+    --help)
+        echo "Usage: $0 [options]"
+        echo ""
+        echo "Run super-linter locally with the same configuration as GitHub Actions"
+        echo ""
+        echo "Options:"
+        echo "  --all, --validate-all  Validate entire codebase (default: only changed files)"
+        echo "  --verbose              Enable verbose debug logging"
+        echo "  --info                 Enable info level logging"
+        echo "  --dry-run              Show the Docker command that would be run"
+        echo "  --help                 Show this help message"
+        echo ""
+        echo "Examples:"
+        echo "  $0                     # Lint only changed files"
+        echo "  $0 --all               # Lint entire codebase"
+        echo "  $0 --verbose           # Lint with detailed output"
+        exit 0
+        ;;
+    *)
+        echo "Unknown option: $1"
+        echo "Use --help for usage information"
+        exit 1
+        ;;
     esac
 done
 
