@@ -20,6 +20,7 @@ public abstract class LogicElement
     // Values change during simulation, so they need to be cleared on each Update()
     private IEnumerable<Boolean>? _cachedValues;
     private Boolean _valuesCached = false;
+    private readonly Object _valuesCacheLock = new Object();
 
     protected LogicElement()
     {
@@ -66,15 +67,19 @@ public abstract class LogicElement
     /// Cached version of GetValues() - Option 1 optimization.
     /// Values change during simulation, so cache is cleared on each Update() call.
     /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// Uses thread-safe locking to prevent race conditions.
     /// </summary>
     public IEnumerable<Boolean> GetValuesCached()
     {
-        if (!_valuesCached)
+        lock (_valuesCacheLock)
         {
-            _cachedValues = GetValues().ToList(); // Materialize to avoid re-enumeration
-            _valuesCached = true;
+            if (!_valuesCached || _cachedValues == null)
+            {
+                _cachedValues = GetValues().ToList(); // Materialize to avoid re-enumeration
+                _valuesCached = true;
+            }
+            return _cachedValues;
         }
-        return _cachedValues!;
     }
 
 
@@ -82,17 +87,22 @@ public abstract class LogicElement
     /// Clear the values cache. Call this at the beginning of Update() methods to ensure
     /// fresh values are calculated for educational observability, even when outputs don't change.
     /// IDs are never cleared since they don't change during simulation.
+    /// Uses the same lock as GetValuesCached() to prevent race conditions.
     /// </summary>
     protected void ClearValuesCache()
     {
-        _valuesCached = false;
-        _cachedValues = null;
+        lock (_valuesCacheLock)
+        {
+            _valuesCached = false;
+            _cachedValues = null;
+        }
     }
 
     /// <summary>
     /// Clear both ID and values cache for testing purposes.
     /// In normal operation, only values cache is cleared as IDs never change.
     /// This method is public to allow testing without reflection.
+    /// Uses both locks to ensure thread safety.
     /// </summary>
     public void ClearDebugInfoCacheForTesting()
     {
@@ -100,8 +110,11 @@ public abstract class LogicElement
         {
             _cachedIds = null;
         }
-        _valuesCached = false;
-        _cachedValues = null;
+        lock (_valuesCacheLock)
+        {
+            _valuesCached = false;
+            _cachedValues = null;
+        }
     }
 
     /// <summary>
