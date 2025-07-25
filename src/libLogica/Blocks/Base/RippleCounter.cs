@@ -36,6 +36,8 @@ public class RippleCounter : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         // Propagate the ripple through all flip-flops
         for (Int32 pass = 0; pass < _flipflops.Count; pass++)
         {

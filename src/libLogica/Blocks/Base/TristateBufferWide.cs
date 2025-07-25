@@ -33,20 +33,25 @@ public class TristateBufferWide : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         for (Int32 i = 0; i < _buffers.Count; i++)
         {
             _buffers[i].Update();
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddArray(nameof(Inputs), Inputs)
             .AddLocal(nameof(Enable), Enable)
             .AddArray(nameof(Outputs), Outputs)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddArray(nameof(Inputs), Inputs)
+            .AddLocal(nameof(Enable), Enable)
+            .AddArray(nameof(Outputs), Outputs)
+            .Build().values;
 }
