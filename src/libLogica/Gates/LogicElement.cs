@@ -14,8 +14,8 @@ public abstract class LogicElement
 
     // Caching for debug info - Option 1 optimization
     // IDs never change during simulation, so they can be cached permanently
-    private IEnumerable<String>? _cachedIds;
-    private Boolean _idsCached = false;
+    private String[]? _cachedIds;
+    private readonly Object _idsCacheLock = new Object();
 
     // Values change during simulation, so they need to be cleared on each Update()
     private IEnumerable<Boolean>? _cachedValues;
@@ -44,15 +44,22 @@ public abstract class LogicElement
     /// Cached version of GetIds() - Option 1 optimization.
     /// IDs never change during simulation, so they are cached permanently once calculated.
     /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// Uses Array for better memory efficiency and thread-safe double-checked locking.
     /// </summary>
     public IEnumerable<String> GetIdsCached()
     {
-        if (!_idsCached)
+        // Double-checked locking pattern for thread safety
+        if (_cachedIds == null)
         {
-            _cachedIds = GetIds().ToList(); // Materialize to avoid re-enumeration
-            _idsCached = true;
+            lock (_idsCacheLock)
+            {
+                if (_cachedIds == null)
+                {
+                    _cachedIds = GetIds().ToArray(); // Array for better memory efficiency
+                }
+            }
         }
-        return _cachedIds!;
+        return _cachedIds;
     }
 
     /// <summary>
@@ -89,8 +96,10 @@ public abstract class LogicElement
     /// </summary>
     public void ClearDebugInfoCacheForTesting()
     {
-        _idsCached = false;
-        _cachedIds = null;
+        lock (_idsCacheLock)
+        {
+            _cachedIds = null;
+        }
         _valuesCached = false;
         _cachedValues = null;
     }

@@ -17,9 +17,6 @@ namespace TestLibLogica.Gates;
 /// </summary>
 public class TestLogicElementCachingProfessional
 {
-    private const Int32 StressTestIterations = 10000; // Standard iteration count for stress testing
-    private const Int32 MemoryLeakThresholdBytes = 1024 * 1024; // Maximum allowed memory increase (1MB)
-
     /// <summary>
     /// Test element with controllable behavior for advanced testing scenarios.
     /// </summary>
@@ -386,7 +383,7 @@ public class TestLogicElementCachingProfessional
     public void StressTest_HighFrequencyOperations_MaintainsPerformance()
     {
         var element = new ControllableTestElement();
-        const Int32 iterations = StressTestIterations;
+        const Int32 iterations = 10000;
 
         // Prime the cache
         element.GetIdsCached();
@@ -515,7 +512,7 @@ public class TestLogicElementCachingProfessional
         TestContext.Out.WriteLine($"Memory increase after {iterations} operations: {memoryIncrease} bytes");
 
         // Allow some reasonable memory increase but detect major leaks
-        Assert.That(memoryIncrease, Is.LessThan(MemoryLeakThresholdBytes), // Less than 1MB increase
+        Assert.That(memoryIncrease, Is.LessThan(1024 * 1024), // Less than 1MB increase
             $"Potential memory leak detected: {memoryIncrease} bytes increase");
     }
 
@@ -581,7 +578,7 @@ public class TestLogicElementCachingProfessional
         // 3. Student examines debug info multiple times (common in educational tools)
         for (Int32 i = 0; i < 5; i++)
         {
-            element.GetIdsCached().ToList(); // Trigger caching behavior
+            var ids = element.GetIdsCached().ToList();
             var values = element.GetValuesCached().ToList();
 
             // Verify educational observability - inputs are visible even if output doesn't change

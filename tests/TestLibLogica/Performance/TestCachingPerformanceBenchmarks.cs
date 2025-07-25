@@ -17,6 +17,9 @@ public class TestCachingPerformanceBenchmarks
 {
     private readonly Dictionary<String, PerformanceMetrics> _baselineMetrics = new();
 
+    // Minimum time threshold to avoid division by zero in performance calculations
+    private const Double MinimumTimeThresholdMs = 0.001;
+
     /// <summary>
     /// Performance metrics for benchmark comparison.
     /// </summary>
@@ -90,8 +93,8 @@ public class TestCachingPerformanceBenchmarks
         return new PerformanceMetrics
         {
             FirstCallMs = firstCallMs,
-            CachedCallMs = Math.Max(0.001, cachedCallMs), // Avoid division by zero
-            SpeedupRatio = firstCallMs / Math.Max(0.001, cachedCallMs),
+            CachedCallMs = Math.Max(MinimumTimeThresholdMs, cachedCallMs), // Avoid division by zero
+            SpeedupRatio = firstCallMs / Math.Max(MinimumTimeThresholdMs, cachedCallMs),
             ElementCount = elementCount,
             MemoryUsageBytes = memoryUsage
         };
