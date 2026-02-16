@@ -34,6 +34,8 @@ public abstract class LatchWide<TFlipFlop> : LogicElement, IWideLatch
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         for (Int32 i = 0; i < _latches.Count; i++)
         {
             _latches[i].Update();

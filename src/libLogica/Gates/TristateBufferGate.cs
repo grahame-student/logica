@@ -19,6 +19,8 @@ public class TristateBufferGate : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         if (Enable.Value)
         {
             O.IsHighImpedance = false;
@@ -30,12 +32,13 @@ public class TristateBufferGate : LogicElement
         }
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocals((nameof(A), A), (nameof(Enable), Enable), (nameof(O), O))
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddLocals((nameof(A), A), (nameof(Enable), Enable), (nameof(O), O))
+            .Build().values;
 }

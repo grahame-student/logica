@@ -13,12 +13,17 @@ public class OrGate : LogicElement, IBinaryGate
     // Outputs
     public Output O { get; } = new();
 
-    public override void Update() => O.Value = A.Value || B.Value;
+    public override void Update()
+    {
+        ClearValuesCache(); // Always clear values cache for educational observability
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
-        DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build();
+        var newValue = A.Value || B.Value;
+        O.Value = newValue;
+    }
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() =>
+        DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo().AddLocals((nameof(A), A), (nameof(B), B), (nameof(O), O)).Build().values;
 }

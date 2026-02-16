@@ -15,21 +15,29 @@ public class AndGate4Input : LogicElement
     // Outputs
     public Output O { get; } = new();
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    public override void Update()
+    {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
+        var newValue = A.Value && B.Value && C.Value && D.Value;
+        O.Value = newValue;
+    }
+
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocal(nameof(A), A)
             .AddLocal(nameof(B), B)
             .AddLocal(nameof(C), C)
             .AddLocal(nameof(D), D)
             .AddLocal(nameof(O), O)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<System.String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<System.Boolean> GetValues() => BuildDebugInfo().values;
-
-    public override void Update()
-    {
-        O.Value = A.Value && B.Value && C.Value && D.Value;
-    }
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddLocal(nameof(A), A)
+            .AddLocal(nameof(B), B)
+            .AddLocal(nameof(C), C)
+            .AddLocal(nameof(D), D)
+            .AddLocal(nameof(O), O)
+            .Build().values;
 }

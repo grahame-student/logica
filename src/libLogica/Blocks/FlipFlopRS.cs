@@ -40,6 +40,8 @@ public class FlipFlopRS : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         PerformUpdate();
     }
 
@@ -50,13 +52,15 @@ public class FlipFlopRS : LogicElement
         _nor1.Update();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddLocals((nameof(R), R), (nameof(S), S), (nameof(Q), Q), (nameof(NQ), NQ))
             .AddChildren(_nor1, _nor2)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddLocals((nameof(R), R), (nameof(S), S), (nameof(Q), Q), (nameof(NQ), NQ))
+            .AddChildren(_nor1, _nor2)
+            .Build().values;
 }

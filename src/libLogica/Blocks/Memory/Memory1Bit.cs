@@ -23,17 +23,26 @@ public class Memory1Bit : LogicElement
         DataOut.Connect(_flipFlop.Q);
     }
 
-    public override void Update() => _flipFlop.Update();
+    public override void Update()
+    {
+        ClearValuesCache(); // Always clear values cache for educational observability
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
-    DebugInfo()
-        .AddLocal(nameof(DataIn), DataIn)
-        .AddLocal(nameof(Write), Write)
-        .AddLocal(nameof(DataOut), DataOut)
-        .AddChild(_flipFlop)
-        .Build();
+        _flipFlop.Update();
+    }
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
+    public override IEnumerable<String> GetIds() =>
+        DebugInfo()
+            .AddLocal(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(DataOut), DataOut)
+            .AddChild(_flipFlop)
+            .Build().ids;
 
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddLocal(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(DataOut), DataOut)
+            .AddChild(_flipFlop)
+            .Build().values;
 }

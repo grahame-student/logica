@@ -43,6 +43,8 @@ public class Ram1x8 : LogicElement
 
     public override void Update()
     {
+        ClearValuesCache(); // Always clear values cache for educational observability
+
         for (Int32 i = 0; i < _memory.Count; i++)
         {
             _memory[i].Update();
@@ -50,7 +52,7 @@ public class Ram1x8 : LogicElement
         _tristateBuffer.Update();
     }
 
-    protected (IEnumerable<String> ids, IEnumerable<Boolean> values) BuildDebugInfo() =>
+    public override IEnumerable<String> GetIds() =>
         DebugInfo()
             .AddArray(nameof(DataIn), DataIn)
             .AddLocal(nameof(Write), Write)
@@ -58,9 +60,15 @@ public class Ram1x8 : LogicElement
             .AddArray(nameof(DataOut), DataOut)
             .AddChildren(_memory)
             .AddChild(_tristateBuffer)
-            .Build();
+            .Build().ids;
 
-    public override IEnumerable<String> GetIds() => BuildDebugInfo().ids;
-
-    public override IEnumerable<Boolean> GetValues() => BuildDebugInfo().values;
+    public override IEnumerable<Boolean> GetValues() =>
+        DebugInfo()
+            .AddArray(nameof(DataIn), DataIn)
+            .AddLocal(nameof(Write), Write)
+            .AddLocal(nameof(Enable), Enable)
+            .AddArray(nameof(DataOut), DataOut)
+            .AddChildren(_memory)
+            .AddChild(_tristateBuffer)
+            .Build().values;
 }

@@ -12,6 +12,16 @@ public abstract class LogicElement
     private static Int64 _gateCount;
     private readonly UInt64 _instanceCount;
 
+    // Caching for debug info - Option 1 optimization
+    // IDs never change during simulation, so they can be cached permanently
+    private String[]? _cachedIds;
+    private readonly Object _idsCacheLock = new Object();
+
+    // Values change during simulation, so they need to be cleared on each Update()
+    private IEnumerable<Boolean>? _cachedValues;
+    private Boolean _valuesCached = false;
+    private readonly Object _valuesCacheLock = new Object();
+
     protected LogicElement()
     {
         _instanceCount = GetNextGateCount();
@@ -29,6 +39,82 @@ public abstract class LogicElement
     protected String IdPrefix()
     {
         return $"{GetType().Name}_{_instanceCount}.";
+    }
+
+    /// <summary>
+    /// Cached version of GetIds() - Option 1 optimization.
+    /// IDs never change during simulation, so they are cached permanently once calculated.
+    /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// Uses Array for better memory efficiency and thread-safe double-checked locking.
+    /// </summary>
+    public IEnumerable<String> GetIdsCached()
+    {
+        // Double-checked locking pattern for thread safety
+        if (_cachedIds == null)
+        {
+            lock (_idsCacheLock)
+            {
+                if (_cachedIds == null)
+                {
+                    _cachedIds = GetIds().ToArray(); // Array for better memory efficiency
+                }
+            }
+        }
+        return _cachedIds;
+    }
+
+    /// <summary>
+    /// Cached version of GetValues() - Option 1 optimization.
+    /// Values change during simulation, so cache is cleared on each Update() call.
+    /// Use this in DebugInfoBuilder.AddChild() to avoid redundant calculations.
+    /// Uses thread-safe locking to prevent race conditions.
+    /// </summary>
+    public IEnumerable<Boolean> GetValuesCached()
+    {
+        lock (_valuesCacheLock)
+        {
+            if (!_valuesCached || _cachedValues == null)
+            {
+                _cachedValues = GetValues().ToList(); // Materialize to avoid re-enumeration
+                _valuesCached = true;
+            }
+            return _cachedValues;
+        }
+    }
+
+
+    /// <summary>
+    /// Clear the values cache. Call this at the beginning of Update() methods to ensure
+    /// fresh values are calculated for educational observability, even when outputs don't change.
+    /// IDs are never cleared since they don't change during simulation.
+    /// Uses the same lock as GetValuesCached() to prevent race conditions.
+    /// </summary>
+    protected void ClearValuesCache()
+    {
+        lock (_valuesCacheLock)
+        {
+            _valuesCached = false;
+            _cachedValues = null;
+        }
+    }
+
+    /// <summary>
+    /// Clear both ID and values cache for testing purposes.
+    /// In normal operation, only values cache is cleared as IDs never change.
+    /// This method is public to allow testing without reflection.
+    /// Uses both locks to ensure thread safety.
+    /// </summary>
+    public void ClearDebugInfoCacheForTesting()
+    {
+        lock (_idsCacheLock)
+        {
+            _cachedIds = null;
+        }
+        lock (_valuesCacheLock)
+        {
+            _valuesCached = false;
+            _cachedValues = null;
+        }
     }
 
     /// <summary>
@@ -94,11 +180,12 @@ public abstract class LogicElement
 
         /// <summary>
         /// Add a child LogicElement's debug information with proper prefixing.
+        /// Uses cached debug info to avoid redundant calculations - Option 1 optimization.
         /// </summary>
         public DebugInfoBuilder AddChild(LogicElement child)
         {
-            var childIds = child.GetIds().Select(x => _parent.IdPrefix() + x);
-            var childValues = child.GetValues();
+            var childIds = child.GetIdsCached().Select(x => _parent.IdPrefix() + x);
+            var childValues = child.GetValuesCached();
 
             _ids.AddRange(childIds);
             _values.AddRange(childValues);
